@@ -9,6 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.ControlPanelCommand;
@@ -34,6 +35,10 @@ public class RobotContainer {
   private final XboxController driver = new XboxController(0);
 
 
+  MC = new MotorController();
+  IM = new InputManager();
+
+
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -41,6 +46,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
   }
 
   /**
@@ -53,7 +59,9 @@ public class RobotContainer {
     JoystickButton triggerSpinner = new JoystickButton(driver, 1);
     triggerSpinner.toggleWhenPressed(m_controlPanelCommand);  //Whenever you push the button, the referenced command is run
   }
-
+  private void configureGenericBindings(){
+    
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
