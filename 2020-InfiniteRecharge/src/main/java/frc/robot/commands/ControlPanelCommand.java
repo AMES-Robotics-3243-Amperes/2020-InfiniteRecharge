@@ -8,7 +8,6 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.ControlPanelSubsystem;
-import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class ControlPanelCommand extends CommandBase {
