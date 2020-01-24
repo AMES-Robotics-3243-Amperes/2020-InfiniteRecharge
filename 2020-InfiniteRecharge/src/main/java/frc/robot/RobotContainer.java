@@ -26,25 +26,29 @@ import frc.robot.commands.DriveTrainCommand;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
 
+  //Defined Suybsystems
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final DriveTrainSubSystem m_robotDriveSubsystem = new DriveTrainSubSystem();
   public static ControlPanelSubsystem m_controlPanelSubsystem = new ControlPanelSubsystem();
   
-  public final DriveTrainCommand m_robotDriveCommand = new DriveTrainCommand(m_robotDriveSubsystem, configureGenericBindings());
+  //Defined Commands
+  public final DriveTrainCommand m_robotDriveCommand = new DriveTrainCommand(m_robotDriveSubsystem, configureDriveBindings());
   private final ControlPanelCommand m_controlPanelCommand = new ControlPanelCommand(m_controlPanelSubsystem);
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
+  //Joysticks
   private final XboxController driver = new XboxController(0);
 
+  //Other variables
   Double[] steering = new Double[2];
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    // Configure the button bindings
+
+    //Configure the button bindings
     configureButtonBindings();
 
   }
@@ -59,10 +63,10 @@ public class RobotContainer {
     JoystickButton triggerSpinner = new JoystickButton(driver, 1);
     triggerSpinner.toggleWhenPressed(m_controlPanelCommand);  //Whenever you push the button, the referenced command is run
   }
-  private Double[] configureGenericBindings(){
-    Joystick drive = new Joystick(0);
-    steering[0] = drive.getRawAxis(1);  //Should be the left axis
-    steering[1] = drive.getRawAxis(3);  //Should be the right axis
+  private Double[] configureDriveBindings(){  //This passes in the axis steering for robot drive
+
+    steering[0] = driver.getRawAxis(1);  //Should be the left axis
+    steering[1] = driver.getRawAxis(3);  //Should be the right axis
     
     return steering;
   }
