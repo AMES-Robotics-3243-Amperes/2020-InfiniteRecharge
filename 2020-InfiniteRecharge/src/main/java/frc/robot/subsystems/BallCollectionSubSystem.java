@@ -7,34 +7,18 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class BallCollectionSubSystem extends CommandBase {
+public class BallCollectionSubsystem extends SubsystemBase {
   /**
-   * Creates a new BallCollectionSubSystem.
+   * Creates a new BallCollectionSubsystem.
    */
-  public BallCollectionSubSystem() {
-    // Use addRequirements() here to declare subsystem dependencies.
+  public BallCollectionSubsystem() {
+
   }
 
-  // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-  }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-  }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-  }
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
+  public void periodic() {
+    // This method will be called once per scheduler run
   }
 }

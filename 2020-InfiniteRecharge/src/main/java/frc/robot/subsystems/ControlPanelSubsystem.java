@@ -24,7 +24,7 @@ public class ControlPanelSubsystem extends SubsystemBase {
   private double nowEncoder = 0;
 
   public ControlPanelSubsystem() {
-    m_trenchEncoder = m_trenchMotor.getEncoder(); //Sets up the encoder in the motor
+    m_trenchEncoder = m_trenchMotor.getEncoder(); //Sets up the encoder in the motor;
   }
 
   public void getStartPosition(){
