@@ -15,8 +15,9 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.ControlPanelCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.ControlPanelSubsystem;
+import frc.robot.subsystems.DriveTrainSubSystem;
 import edu.wpi.first.wpilibj2.command.Command;
-
+import frc.robot.commands.DriveTrainCommand;
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -26,7 +27,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-
+  private final DriveTrainSubSystem m_robotDrive = new DriveTrainSubSystem();
   public static ControlPanelSubsystem m_controlPanelSubsystem = new ControlPanelSubsystem();
 
   private final ControlPanelCommand m_controlPanelCommand = new ControlPanelCommand(m_controlPanelSubsystem);
@@ -34,9 +35,9 @@ public class RobotContainer {
 
   private final XboxController driver = new XboxController(0);
 
-
-  MC = new MotorController();
-  IM = new InputManager();
+private final Joystick generic = new Joystick(1);
+  //MC = new MotorController();
+  //IM = new InputManager();
 
 
 
@@ -46,8 +47,11 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-
+    m_robotDrive.setDefaultCommand(new DriveTrainCommand(m_robotDrive,
+    () -> generic.getRawAxis(1), 
+    () -> generic.getRawAxis(3)));
   }
+
 
   /**
    * Use this method to define your button->command mappings.  Buttons can be created by
