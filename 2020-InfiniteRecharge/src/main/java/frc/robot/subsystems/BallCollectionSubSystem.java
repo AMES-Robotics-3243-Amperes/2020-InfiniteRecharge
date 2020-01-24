@@ -9,11 +9,11 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class BallCollectionSubsystem extends SubsystemBase {
+public class BallCollectionSubSystem extends SubsystemBase {
   /**
    * Creates a new BallCollectionSubsystem.
    */
-  public BallCollectionSubsystem() {
+  public BallCollectionSubSystem() {
 
   }
 
