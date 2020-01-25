@@ -43,7 +43,7 @@ public class RobotContainer {
   private final ControlPanelCommand.TurnToColor turnToColorYellow = new ControlPanelCommand.TurnToColor(m_controlPanelSubsystem, ControlPanelSubsystem.PanelColor.YELLOW);
 
   //Joysticks
-  private final XboxController driver = new XboxController(0);
+  private final Joystick driver = new Joystick(0);
 
   //Other variables
   Double[] steering = new Double[2];
@@ -82,9 +82,9 @@ public class RobotContainer {
     colorGreen.whenPressed(turnToColorGreen);
     colorRed.whenPressed(turnToColorRed);
     colorYellow.whenPressed(turnToColorYellow);
+    triggerSpinner.toggleWhenPressed(m_controlPanelCommand);  //Whenever you push the button, the referenced command is run
   }
   private Double[] configureDriveBindings(){  //This passes in the axis steering for robot drive
-
     steering[0] = driver.getRawAxis(1);  //Should be the left axis
     steering[1] = driver.getRawAxis(3);  //Should be the right axis
     
@@ -99,5 +99,10 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     return m_autoCommand;
+  }
+
+  public Command getDriveCommand() {
+
+    return m_robotDriveCommand;
   }
 }

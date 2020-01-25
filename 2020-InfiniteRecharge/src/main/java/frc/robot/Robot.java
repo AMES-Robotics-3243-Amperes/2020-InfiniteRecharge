@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
+  private Command m_driveCommand;
   //public static DriveTrain drivetrain = new DriveTrain();
   //public static OI oi;
 
@@ -107,6 +108,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    m_robotContainer.getDriveCommand();
   }
 
   @Override
