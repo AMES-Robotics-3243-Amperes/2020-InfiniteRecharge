@@ -54,11 +54,12 @@ public class ControlPanelSubsystem extends SubsystemBase {
   /**
    * Creates a new ControlPanel.
    */
-  private CANSparkMax m_panelSpinner = new CANSparkMax(1, MotorType.kBrushless);
-  private PIDMotor panelSpinnerPID = new PIDMotor(m_panelSpinner);
+  private CANSparkMax panelSpinner = new CANSparkMax(5, MotorType.kBrushless);
+  private PIDMotor panelSpinnerPID = new PIDMotor(panelSpinner);
   private static final double PANEL_SPINNER_SPEED = 1;
-  private CANEncoder m_trenchEncoder;
+  private CANEncoder panelSpinnerEncoder;
   private static final double SPINNER_RADIUS_INCHES = 2;
+  private static final double PANEL_CIRCUMFRENCE_INCHES = 100;
 
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
   private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
@@ -73,7 +74,7 @@ public class ControlPanelSubsystem extends SubsystemBase {
   private double nowEncoder = 0;
 
   public ControlPanelSubsystem() {
-    m_trenchEncoder = m_panelSpinner.getEncoder(); //Sets up the encoder in the motor;
+    panelSpinnerEncoder = panelSpinner.getEncoder(); //Sets up the encoder in the motor;
 
     // Set up color matcher
     colorMatcher.addColorMatch(CTARGET_BLUE);
@@ -82,25 +83,18 @@ public class ControlPanelSubsystem extends SubsystemBase {
     colorMatcher.addColorMatch(CTARGET_YELLOW);
   }
 
-  public void getStartPosition(){
-    offsetEncoder = m_trenchEncoder.getPosition();  //Gives starting position
+  /**
+   * Rotate the control panel a certain number of rotations.
+   * @param panelRotations The number of times to rotate the control panel.
+   */
+  public void spinPanel(double panelRotations)
+  {
+    panelSpinnerEncoder.setPosition(0);
+    panelSpinnerPID.setPIDPosition(inchesToRotations(panelRotations * PANEL_CIRCUMFRENCE_INCHES));
   }
-
-  public void getEndPosition(){
-    nowEncoder = m_trenchEncoder.getPosition(); //Gets the current position
-    nowEncoder = nowEncoder - offsetEncoder;  //Gives the difference (# of revolutions we want to look at)
-  }
-
-  public boolean getCheckEnd(){
-    return nowEncoder >= 10;  //10 isn't tuned to the right # yet
-  }
-
-  public void spin(){
-    m_panelSpinner.set(1); //Sets to 100% speed
-  }
-
-  public void stop(){
-    m_panelSpinner.stopMotor();  //Stops the motor
+  public double getPanelRotations()
+  {
+    return rotationsToInches(panelSpinnerEncoder.getPosition()) / PANEL_CIRCUMFRENCE_INCHES;
   }
 
   /**
@@ -110,12 +104,12 @@ public class ControlPanelSubsystem extends SubsystemBase {
   public int seekColor(PanelColor targetColor)
   {
     int spinDir = getSensorColor().dirToTarget(targetColor);
-    m_panelSpinner.set(PANEL_SPINNER_SPEED * spinDir);
+    panelSpinner.set(PANEL_SPINNER_SPEED * spinDir);
     return spinDir;
   }
   public void overrunInDir(int spinDir, double inches)
   {
-    panelSpinnerPID.setPIDPosition(m_trenchEncoder.getPosition() + spinDir*inchesToRotations(inches));
+    panelSpinnerPID.setPIDPosition(panelSpinnerEncoder.getPosition() + spinDir*inchesToRotations(inches));
   }
 
   @Override
@@ -125,7 +119,11 @@ public class ControlPanelSubsystem extends SubsystemBase {
 
   private double inchesToRotations(double inches)
   {
-    return inches / Math.PI*2*SPINNER_RADIUS_INCHES;
+    return inches / (Math.PI*2*SPINNER_RADIUS_INCHES);
+  }
+  private double rotationsToInches(double rotations)
+  {
+    return rotations * (Math.PI*2*SPINNER_RADIUS_INCHES);
   }
 
   private PanelColor getSensorColor()
