@@ -45,4 +45,58 @@ public class ControlPanelCommand extends CommandBase {
   public boolean isFinished() {
     return m_controlPanel.getCheckEnd();  //We see if the motor has rotated 10 revolutions or not.
   }
+
+
+
+
+  public static class TurnToColor extends CommandBase
+  {
+      /**
+     * Creates a new ControlPanelCommand.
+     */
+    private final ControlPanelSubsystem controlPanel;
+    private final ControlPanelSubsystem.PanelColor targetColor;
+    private int prevSpinDir = 0;
+    private boolean isFinished = false;
+
+    public TurnToColor(ControlPanelSubsystem controlPanel, ControlPanelSubsystem.PanelColor targetColor) {
+      this.controlPanel = controlPanel;  //Sets the variable to the object
+      this.targetColor = targetColor;
+      // Use addRequirements() here to declare subsystem dependencies.
+    }
+
+    // Called when the command is initially scheduled.
+    @Override
+    public void initialize() {
+    }
+
+    // Called every time the scheduler runs while the command is scheduled.
+    @Override
+    public void execute() {
+      if(isFinished)
+        return;
+
+      int spinDir = controlPanel.seekColor(targetColor);
+      if(spinDir==0) // If no spin dir, we've reached the target color
+      {
+        controlPanel.overrunInDir(prevSpinDir, 4);
+        isFinished = true;
+      } else // We're still seeking the color
+      {
+        prevSpinDir = spinDir;
+      }
+    }
+
+    // Called once the command ends or is interrupted.
+    @Override
+    public void end(boolean interrupted) {
+      
+    }
+
+    // Returns true when the command should end.
+    @Override
+    public boolean isFinished() {
+      return isFinished;
+    }
+  }
 }

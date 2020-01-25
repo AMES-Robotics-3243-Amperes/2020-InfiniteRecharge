@@ -36,9 +36,19 @@ public class RobotContainer {
   private final ControlPanelCommand m_controlPanelCommand = new ControlPanelCommand(m_controlPanelSubsystem);
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
+  private final ControlPanelCommand.TurnToColor turnToColorBlue = new ControlPanelCommand.TurnToColor(m_controlPanelSubsystem, ControlPanelSubsystem.PanelColor.BLUE);
+  private final ControlPanelCommand.TurnToColor turnToColorGreen = new ControlPanelCommand.TurnToColor(m_controlPanelSubsystem, ControlPanelSubsystem.PanelColor.GREEN);
+  private final ControlPanelCommand.TurnToColor turnToColorRed = new ControlPanelCommand.TurnToColor(m_controlPanelSubsystem, ControlPanelSubsystem.PanelColor.RED);
+  private final ControlPanelCommand.TurnToColor turnToColorYellow = new ControlPanelCommand.TurnToColor(m_controlPanelSubsystem, ControlPanelSubsystem.PanelColor.YELLOW);
+
   private final XboxController driver = new XboxController(0);
 
   Double[] steering = new Double[2];
+
+  private static final int B_BLUE = 0;
+  private static final int B_GREEN = 1;
+  private static final int B_RED = 2;
+  private static final int B_YELLOW = 3;
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -57,7 +67,17 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     JoystickButton triggerSpinner = new JoystickButton(driver, 1);
+
+    JoystickButton selectColor = new JoystickButton(driver, 7);
+    JoystickButton colorBlue = new JoystickButton(driver, B_BLUE); // TODO: and selectColor
+    JoystickButton colorGreen = new JoystickButton(driver, B_GREEN);
+    JoystickButton colorRed = new JoystickButton(driver, B_RED);
+    JoystickButton colorYellow = new JoystickButton(driver, B_YELLOW);
     triggerSpinner.toggleWhenPressed(m_controlPanelCommand);  //Whenever you push the button, the referenced command is run
+    colorBlue.whenPressed(turnToColorBlue);
+    colorGreen.whenPressed(turnToColorGreen);
+    colorRed.whenPressed(turnToColorRed);
+    colorYellow.whenPressed(turnToColorYellow);
   }
   private Double[] configureGenericBindings(){
     Joystick drive = new Joystick(0);
