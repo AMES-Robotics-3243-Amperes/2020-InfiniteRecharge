@@ -15,10 +15,9 @@ public class PIDMotor
 {
 	private final CANSparkMax motor;
 	private final CANPIDController pidController;
-	// TODO: I & D might be mixed up in the following instructions
 	// 1) tune P until responds fast enough,
-	// 2) tune I until stops overshooting
-	// 3) increase D until "steady-state" error disappears
+	// 2) tune D until stops overshooting
+	// 3) increase I until "steady-state" error disappears
 	private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput; // PID coefficients
 	private String name;
 
