@@ -30,15 +30,15 @@ public class RobotContainer {
   //Defined Suybsystems
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final DriveTrainSubSystem m_robotDriveSubsystem = new DriveTrainSubSystem();
-  public static ControlPanelSubsystem m_controlPanelSubsystem = new ControlPanelSubsystem();
+  //public static ControlPanelSubsystem m_controlPanelSubsystem = new ControlPanelSubsystem();
   
   //Defined Commands
   public final DriveTrainCommand m_robotDriveCommand = new DriveTrainCommand(m_robotDriveSubsystem, configureDriveBindings());
-  private final ControlPanelCommand m_controlPanelCommand = new ControlPanelCommand(m_controlPanelSubsystem);
+  //private final ControlPanelCommand m_controlPanelCommand = new ControlPanelCommand(m_controlPanelSubsystem);
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
   //Joysticks
-  private final XboxController driver = new XboxController(0);
+  private final Joystick driver = new Joystick(0);
 
   //Other variables
   Double[] steering = new Double[2];
@@ -61,10 +61,9 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     JoystickButton triggerSpinner = new JoystickButton(driver, 1);
-    triggerSpinner.toggleWhenPressed(m_controlPanelCommand);  //Whenever you push the button, the referenced command is run
+   // triggerSpinner.toggleWhenPressed(m_controlPanelCommand);  //Whenever you push the button, the referenced command is run
   }
   private Double[] configureDriveBindings(){  //This passes in the axis steering for robot drive
-
     steering[0] = driver.getRawAxis(1);  //Should be the left axis
     steering[1] = driver.getRawAxis(3);  //Should be the right axis
     
@@ -79,5 +78,10 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     return m_autoCommand;
+  }
+
+  public Command getDriveCommand() {
+
+    return m_robotDriveCommand;
   }
 }

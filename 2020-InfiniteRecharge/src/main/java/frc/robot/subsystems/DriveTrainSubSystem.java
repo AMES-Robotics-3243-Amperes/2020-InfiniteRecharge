@@ -17,20 +17,20 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
  * Add your docs here.
  */
 public class DriveTrainSubSystem {
-    private CANSparkMax motor_1 = new CANSparkMax(0, MotorType.kBrushless);
-    private CANSparkMax motor_2 = new CANSparkMax(1, MotorType.kBrushless);
-    private CANSparkMax motor_3 = new CANSparkMax(2, MotorType.kBrushless);
-    private CANSparkMax motor_4 = new CANSparkMax(3, MotorType.kBrushless);
+    private CANSparkMax motor_LT = new CANSparkMax(2, MotorType.kBrushless);
+    private CANSparkMax motor_LB = new CANSparkMax(1, MotorType.kBrushless);
+    private CANSparkMax motor_RT = new CANSparkMax(3, MotorType.kBrushless);
+    private CANSparkMax motor_RB = new CANSparkMax(4, MotorType.kBrushless);
 
     // Left and right side drive
-    private final SpeedControllerGroup m_leftmotors = new SpeedControllerGroup(motor_1, motor_3);
-    private final SpeedControllerGroup m_rightmotors = new SpeedControllerGroup(motor_2, motor_4);
+    private final SpeedControllerGroup m_leftmotors = new SpeedControllerGroup(motor_LT, motor_LB);
+    private final SpeedControllerGroup m_rightmotors = new SpeedControllerGroup(motor_RT, motor_RB);
 
     private final DifferentialDrive m_drive = new DifferentialDrive(m_leftmotors, m_rightmotors);
 
     public void tankDrive(Double[] var){
-      deadZone(var);
-      scaleZone(var);
+      //deadZone(var);
+      //scaleZone(var);
       m_drive.tankDrive(var[0], var[1]);
     }
     
