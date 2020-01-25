@@ -55,7 +55,7 @@ public class ControlPanelSubsystem extends SubsystemBase {
    * Creates a new ControlPanel.
    */
   private CANSparkMax panelSpinner = new CANSparkMax(5, MotorType.kBrushless);
-  private PIDMotor panelSpinnerPID = new PIDMotor(panelSpinner);
+  private PIDMotor panelSpinnerPID = new PIDMotor(panelSpinner, "Panel Spinner");
   private static final double PANEL_SPINNER_SPEED = 1;
   private CANEncoder panelSpinnerEncoder;
   private static final double SPINNER_RADIUS_INCHES = 2;
@@ -75,6 +75,7 @@ public class ControlPanelSubsystem extends SubsystemBase {
 
   public ControlPanelSubsystem() {
     panelSpinnerEncoder = panelSpinner.getEncoder(); //Sets up the encoder in the motor;
+    panelSpinnerPID.dashboardPut();
 
     // Set up color matcher
     colorMatcher.addColorMatch(CTARGET_BLUE);
@@ -115,6 +116,7 @@ public class ControlPanelSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     getSensorColor(); // Cause color data to be written to dashboard
+    panelSpinnerPID.dashboardGet();
   }
 
   private double inchesToRotations(double inches)
