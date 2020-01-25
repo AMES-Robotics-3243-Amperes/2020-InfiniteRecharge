@@ -15,6 +15,7 @@ public class PIDMotor
 {
 	private final CANSparkMax motor;
 	private final CANPIDController pidController;
+	public final CANEncoder encoder;
 	// 1) tune P until responds fast enough,
 	// 2) tune D until stops overshooting
 	// 3) increase I until "steady-state" error disappears
@@ -28,7 +29,7 @@ public class PIDMotor
 
 	public PIDMotor(CANSparkMax motor, String name)
 	{
-		this(motor, name, 0.1, 0.0001, 1, 0, 0, 1, -1, 5700);
+		this(motor, name, 0.1, 0.0001, 1, 0, 0, 1, -1);
 	}
 
 	public PIDMotor(CANSparkMax motor, double kP, double kI, double kD, double kIz, double kFF, double kMaxOutput, double kMinOutput)
