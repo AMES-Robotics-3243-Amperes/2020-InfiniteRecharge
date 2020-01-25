@@ -12,45 +12,50 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.commands.DriveTrainCommand;
+import frc.robot.RobotContainer;
+import frc.robot.subsystems.DrivetrainPIDSubsystem;
+
 
 /**
  * Add your docs here.
  */
-public class DriveTrainSubSystem {
+public class DriveTrainSubSystem extends SubsystemBase {
     private CANSparkMax motor_LT = new CANSparkMax(2, MotorType.kBrushless);
     private CANSparkMax motor_LB = new CANSparkMax(1, MotorType.kBrushless);
     private CANSparkMax motor_RT = new CANSparkMax(3, MotorType.kBrushless);
     private CANSparkMax motor_RB = new CANSparkMax(4, MotorType.kBrushless);
 
     // Left and right side drive
-    private final SpeedControllerGroup m_leftmotors = new SpeedControllerGroup(motor_LT, motor_LB);
-    private final SpeedControllerGroup m_rightmotors = new SpeedControllerGroup(motor_RT, motor_RB);
+    public final SpeedControllerGroup m_leftmotors = new SpeedControllerGroup(motor_LT, motor_LB);
+    public final SpeedControllerGroup m_rightmotors = new SpeedControllerGroup(motor_RT, motor_RB);
+    
 
     private final DifferentialDrive m_drive = new DifferentialDrive(m_leftmotors, m_rightmotors);
 
+    private final DrivetrainPIDSubsystem m_rightSide = new DrivetrainPIDSubsystem();
+
+    public DriveTrainSubSystem(){
+      m_rightSide.enable();
+    }
+
     public void tankDrive(Double[] var){
-      //deadZone(var);
-      //scaleZone(var);
-      m_drive.tankDrive(var[0], var[1]);
+      //m_drive.tankDrive(var[0], var[1]);
+      m_rightSide.setSetpoint(var[1]);
+      m_leftmotors.set(0);
     }
     
-    public Double[] deadZone(Double[] dead){      
-      
-      if(-0.09 < dead[0] || -0.09 < dead[1] && 0.09 > dead[0] || 0.09 < dead[1]){
-        dead[0] = 0.0;
-        dead[1] = 0.0;
-      }
-
-      return dead;
+    public double getRightSpeed(){
+      return motor_RT.getEncoder().getVelocity()/5676;
     }
 
-    public Double[] scaleZone(Double[] scale){
-
-      scale[0] = scale[0] * Math.abs(scale[0]); //Dampens the input value by squaring it
-      scale[1] = scale[1] * Math.abs(scale[1]); //Dampens the input value by squaring it
-
-      return scale;
+    @Override
+    public void periodic() {
+      // This method will be called once per scheduler run
+      tankDrive(
+        RobotContainer.configureDriveBindings()
+      );
     }
-
 
 }
