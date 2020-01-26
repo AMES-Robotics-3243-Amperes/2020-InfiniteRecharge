@@ -20,7 +20,7 @@ public class ControlPanelCommand extends CommandBase {
     m_controlPanel = controlPanel;  //Sets the variable to the object
     // Use addRequirements() here to declare subsystem dependencies.
   }
-
+/*
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
@@ -45,15 +45,37 @@ public class ControlPanelCommand extends CommandBase {
   public boolean isFinished() {
     return m_controlPanel.getCheckEnd();  //We see if the motor has rotated 10 revolutions or not.
   }
+*/
 
 
 
+  public static class TurnNumTimes extends CommandBase
+  {
+    private final ControlPanelSubsystem controlPanel;
+    private final double rotations;
+
+    public TurnNumTimes(ControlPanelSubsystem controlPanel, double rotations)
+    {
+      this.controlPanel = controlPanel;
+      this.rotations = rotations;
+    }
+
+    // Called when the command is initially scheduled.
+    @Override
+    public void initialize() {
+      controlPanel.spinPanel(rotations);
+    }
+
+    // Returns true when the command should end.
+    @Override
+    public boolean isFinished() {
+      // Finish when within 1/10th a rotation of the target
+      return Math.abs(controlPanel.getPanelRotations() - rotations) <= 0.1;
+    } 
+  }
 
   public static class TurnToColor extends CommandBase
   {
-      /**
-     * Creates a new ControlPanelCommand.
-     */
     private final ControlPanelSubsystem controlPanel;
     private final ControlPanelSubsystem.PanelColor targetColor;
     private int prevSpinDir = 0;

@@ -28,6 +28,7 @@ import frc.robot.commands.DriveTrainCommand;
 public class RobotContainer {
 
   private static Joystick driver = new Joystick(0);
+  private static Joystick secondary = new Joystick(1);
   static Double[] steering = new Double[2];
 
   
@@ -42,6 +43,7 @@ public class RobotContainer {
   private final ControlPanelCommand m_controlPanelCommand = new ControlPanelCommand(m_controlPanelSubsystem);
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
+  private final ControlPanelCommand.TurnNumTimes turn4Times = new ControlPanelCommand.TurnNumTimes(m_controlPanelSubsystem, 4);
   private final ControlPanelCommand.TurnToColor turnToColorBlue = new ControlPanelCommand.TurnToColor(m_controlPanelSubsystem, ControlPanelSubsystem.PanelColor.BLUE);
   private final ControlPanelCommand.TurnToColor turnToColorGreen = new ControlPanelCommand.TurnToColor(m_controlPanelSubsystem, ControlPanelSubsystem.PanelColor.GREEN);
   private final ControlPanelCommand.TurnToColor turnToColorRed = new ControlPanelCommand.TurnToColor(m_controlPanelSubsystem, ControlPanelSubsystem.PanelColor.RED);
@@ -51,15 +53,22 @@ public class RobotContainer {
 
   //Other variables
 
-  private static final int B_BLUE = 4;  //Was 0?
-  private static final int B_GREEN = 1;
-  private static final int B_RED = 2;
-  private static final int B_YELLOW = 3;
+  private static final int B_BLUE = 1;
+  private static final int B_GREEN = 2;
+  private static final int B_RED = 3;
+  private static final int B_YELLOW = 4;
+  private static final int B_TURN_4_TIMES = 10;
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    // Setup Commands
+    turnToColorBlue.addRequirements(m_controlPanelSubsystem); // Keep panel rotation cmds from running simultaneously
+    turnToColorGreen.addRequirements(m_controlPanelSubsystem);
+    turnToColorRed.addRequirements(m_controlPanelSubsystem);
+    turnToColorYellow.addRequirements(m_controlPanelSubsystem);
+    turn4Times.addRequirements(m_controlPanelSubsystem);
 
     //Configure the button bindings
     configureButtonBindings();
@@ -80,12 +89,13 @@ public class RobotContainer {
     JoystickButton colorGreen = new JoystickButton(driver, B_GREEN);
     JoystickButton colorRed = new JoystickButton(driver, B_RED);
     JoystickButton colorYellow = new JoystickButton(driver, B_YELLOW);
+    JoystickButton turn4TimeButton = new JoystickButton(driver, B_TURN_4_TIMES);
     triggerSpinner.toggleWhenPressed(m_controlPanelCommand);  //Whenever you push the button, the referenced command is run
-    colorBlue.whenPressed(turnToColorBlue);
-    colorGreen.whenPressed(turnToColorGreen);
-    colorRed.whenPressed(turnToColorRed);
-    colorYellow.whenPressed(turnToColorYellow);
-    triggerSpinner.toggleWhenPressed(m_controlPanelCommand);  //Whenever you push the button, the referenced command is run
+    colorBlue.whenPressed(turnToColorBlue, true); // 'true'=interruptible
+    colorGreen.whenPressed(turnToColorGreen, true);
+    colorRed.whenPressed(turnToColorRed, true);
+    colorYellow.whenPressed(turnToColorYellow, true);
+    turn4TimeButton.whenPressed(turn4Times, true);
   }
   
   public static Double[] configureDriveBindings(){  //This passes in the axis steering for robot drive
@@ -97,6 +107,7 @@ public class RobotContainer {
     //steering = scaleZone(steering);
     return steering;
   }
+
   public static Double[] deadZone(Double[] dead){      
       
     if(-0.09 < dead[0] && 0.09 > dead[0]){
