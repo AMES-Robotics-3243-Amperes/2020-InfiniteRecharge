@@ -27,13 +27,18 @@ import frc.robot.commands.DriveTrainCommand;
  */
 public class RobotContainer {
 
+  private static Joystick driver = new Joystick(0);
+  static Double[] steering = new Double[2];
+
+  
+
   //Defined Suybsystems
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final DriveTrainSubSystem m_robotDriveSubsystem = new DriveTrainSubSystem();
+  public static DriveTrainSubSystem m_robotDriveSubsystem = new DriveTrainSubSystem();
   public static ControlPanelSubsystem m_controlPanelSubsystem = new ControlPanelSubsystem();
   
   //Defined Commands
-  public final DriveTrainCommand m_robotDriveCommand = new DriveTrainCommand(m_robotDriveSubsystem, configureDriveBindings());
+  public final DriveTrainCommand m_robotDriveCommand = new DriveTrainCommand(m_robotDriveSubsystem);
   private final ControlPanelCommand m_controlPanelCommand = new ControlPanelCommand(m_controlPanelSubsystem);
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
@@ -43,12 +48,10 @@ public class RobotContainer {
   private final ControlPanelCommand.TurnToColor turnToColorYellow = new ControlPanelCommand.TurnToColor(m_controlPanelSubsystem, ControlPanelSubsystem.PanelColor.YELLOW);
 
   //Joysticks
-  private final Joystick driver = new Joystick(0);
 
   //Other variables
-  Double[] steering = new Double[2];
 
-  private static final int B_BLUE = 0;
+  private static final int B_BLUE = 4;  //Was 0?
   private static final int B_GREEN = 1;
   private static final int B_RED = 2;
   private static final int B_YELLOW = 3;
@@ -84,11 +87,33 @@ public class RobotContainer {
     colorYellow.whenPressed(turnToColorYellow);
     triggerSpinner.toggleWhenPressed(m_controlPanelCommand);  //Whenever you push the button, the referenced command is run
   }
-  private Double[] configureDriveBindings(){  //This passes in the axis steering for robot drive
-    steering[0] = driver.getRawAxis(1);  //Should be the left axis
-    steering[1] = driver.getRawAxis(3);  //Should be the right axis
+  
+  public static Double[] configureDriveBindings(){  //This passes in the axis steering for robot drive
     
+    steering[0] = -driver.getRawAxis(1);  //Should be the left axis
+    steering[1] = -driver.getRawAxis(3);  //Should be the right axis
+    
+    steering = deadZone(steering);
+    //steering = scaleZone(steering);
     return steering;
+  }
+  public static Double[] deadZone(Double[] dead){      
+      
+    if(-0.09 < dead[0] && 0.09 > dead[0]){
+      dead[0] = 0.0;
+    } else if(-0.09 < dead[1] && 0.09 > dead[1]){
+      dead[1] = 0.0;
+    }
+
+    return dead;
+  }
+
+  public static Double[] scaleZone(Double[] scale){
+
+    scale[0] = 0.8 * Math.pow(scale[0], 3) + 0.2 * scale[0]; //Dampens the input value by squaring it
+    scale[1] = 0.8 * Math.pow(scale[1], 3) + 0.2 * scale[1]; //Dampens the input value by squaring it
+
+    return scale;
   }
 
   /**
