@@ -65,10 +65,10 @@ public class ControlPanelSubsystem extends SubsystemBase {
   private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
   private final ColorMatch colorMatcher = new ColorMatch();
   //TUNE THESE COLORS BEFORE MATCHES DURING COMPETITION
-  private static final Color CTARGET_BLUE = ColorMatch.makeColor(0.143, 0.427, 0.429);
-  private static final Color CTARGET_GREEN = ColorMatch.makeColor(0.197, 0.561, 0.240);
-  private static final Color CTARGET_RED = ColorMatch.makeColor(0.561, 0.232, 0.114);
-  private static final Color CTARGET_YELLOW = ColorMatch.makeColor(0.361, 0.524, 0.113);
+  private static final Color CTARGET_BLUE = ColorMatch.makeColor(0.285, 0.48, 0.22); // (0.143, 0.427, 0.429);
+  private static final Color CTARGET_GREEN = ColorMatch.makeColor(0.325, 0.515, 0.15); // (0.197, 0.561, 0.240);
+  private static final Color CTARGET_RED = ColorMatch.makeColor(0.585, 0.375, 0.085); // (0.561, 0.232, 0.114);
+  private static final Color CTARGET_YELLOW = ColorMatch.makeColor(0.43, 0.48, 0.095); // (0.361, 0.524, 0.113);
 
   private double offsetEncoder = 0;
   private double nowEncoder = 0;
