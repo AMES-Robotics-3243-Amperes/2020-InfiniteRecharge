@@ -18,7 +18,7 @@ public class DrivetrainPIDSubsystem extends PIDSubsystem {
   public DrivetrainPIDSubsystem() {
     super(
         // The PIDController used by the subsystem
-        new PIDController(0.6255, 5.225e-34, 7.385e-153));
+        new PIDController(0.6255, 5.225e-34, 7.585e-153));
         //0.7, 1e-20, 1e-300
         //0.36, 1.55e-35, 9.35e-152
   }
