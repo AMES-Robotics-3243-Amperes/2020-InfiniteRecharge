@@ -34,20 +34,18 @@ public class DriveTrainSubSystem extends SubsystemBase {
 
     private final DifferentialDrive m_drive = new DifferentialDrive(m_leftmotors, m_rightmotors);
 
-    private final DrivetrainPIDSubsystem m_rightSide = new DrivetrainPIDSubsystem();
+    private final DrivetrainPIDSubsystem m_rightSide = new DrivetrainPIDSubsystem(m_rightmotors, motor_RT.getEncoder());
+    private final DrivetrainPIDSubsystem m_leftSide = new DrivetrainPIDSubsystem(m_leftmotors, motor_LT.getEncoder());
 
     public DriveTrainSubSystem(){
       m_rightSide.enable();
+      m_leftSide.enable();
     }
 
     public void tankDrive(Double[] var){
       //m_drive.tankDrive(var[0], var[1]);
-      m_rightSide.setSetpoint(var[1]);
-      m_leftmotors.set(0);
-    }
-    
-    public double getRightSpeed(){
-      return motor_RT.getEncoder().getVelocity()/5676;
+      m_rightSide.setSetpoint(-var[1]);
+      m_leftSide.setSetpoint(var[0]);
     }
 
     @Override

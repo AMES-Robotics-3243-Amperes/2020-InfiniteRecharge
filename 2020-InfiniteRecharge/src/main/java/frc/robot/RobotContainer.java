@@ -104,7 +104,7 @@ public class RobotContainer {
     steering[1] = -driver.getRawAxis(3);  //Should be the right axis
     
     steering = deadZone(steering);
-    //steering = scaleZone(steering);
+    steering = scaleZone(steering);
     return steering;
   }
 
@@ -120,9 +120,10 @@ public class RobotContainer {
   }
 
   public static Double[] scaleZone(Double[] scale){
-
-    scale[0] = 0.8 * Math.pow(scale[0], 3) + 0.2 * scale[0]; //Dampens the input value by squaring it
-    scale[1] = 0.8 * Math.pow(scale[1], 3) + 0.2 * scale[1]; //Dampens the input value by squaring it
+    double a = 0.4;
+    double b = 0.4;
+    scale[0] = a * Math.pow(scale[0], 3) + b * scale[0]; //Dampens the input value by squaring it
+    scale[1] = a * Math.pow(scale[1], 3) + b * scale[1]; //Dampens the input value by squaring it
 
     return scale;
   }

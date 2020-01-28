@@ -7,6 +7,9 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANEncoder;
+
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.RobotContainer;
@@ -15,23 +18,29 @@ public class DrivetrainPIDSubsystem extends PIDSubsystem {
   /**
    * Creates a new DrivetrainPID.
    */
-  public DrivetrainPIDSubsystem() {
+  SpeedControllerGroup m_group;
+  CANEncoder m_encoder;
+
+  public DrivetrainPIDSubsystem(SpeedControllerGroup group, CANEncoder encoder) {
     super(
         // The PIDController used by the subsystem
-        new PIDController(0.6255, 5.225e-34, 7.385e-153));
-        //0.7, 1e-20, 1e-300
-        //0.36, 1.55e-35, 9.35e-152
+        new PIDController(0.6, 9e-5, 9e-5));
+        //0.8, 9e-5, 9e-4
+
+    m_group = group;
+    m_encoder = encoder;
   }
 
   @Override
   public void useOutput(double output, double setpoint) {
     // Use the output here
-    RobotContainer.m_robotDriveSubsystem.m_rightmotors.pidWrite(output);
+    m_group.pidWrite(output);
   }
 
   @Override
   public double getMeasurement() {
     // Return the process variable measurement here
-    return RobotContainer.m_robotDriveSubsystem.getRightSpeed();
+    return m_encoder.getVelocity()/5676;
   }
 }
+
