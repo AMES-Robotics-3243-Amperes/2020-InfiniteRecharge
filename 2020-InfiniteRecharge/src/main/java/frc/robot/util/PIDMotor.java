@@ -111,13 +111,13 @@ public class PIDMotor
 	/** Retrieve PID parameters from the dashboard. Call this once each periodic step. */
 	public void dashboardGet()
 	{
-		double p = SmartDashboard.getNumber("P Gain", 0);
-        double i = SmartDashboard.getNumber("I Gain", 0);
-        double d = SmartDashboard.getNumber("D Gain", 0);
-        double iz = SmartDashboard.getNumber("I Zone", 0);
-        double ff = SmartDashboard.getNumber("Feed Forward", 0);
-        double max = SmartDashboard.getNumber("Max Output", 0);
-        double min = SmartDashboard.getNumber("Min Output", 0);
+		setP(SmartDashboard.getNumber(name+" P Gain", kP));
+        setI(SmartDashboard.getNumber(name+" I Gain", kI));
+        setD(SmartDashboard.getNumber(name+" D Gain", kD));
+        setIZone(SmartDashboard.getNumber(name+" I Zone", kIz));
+        setFF(SmartDashboard.getNumber(name+" Feed Forward", kFF));
+        setMaxOutput(SmartDashboard.getNumber(name+" Max Output", kMaxOutput));
+        setMinOutput(SmartDashboard.getNumber(name+" Min Output", kMinOutput));
     }
     
     /**
