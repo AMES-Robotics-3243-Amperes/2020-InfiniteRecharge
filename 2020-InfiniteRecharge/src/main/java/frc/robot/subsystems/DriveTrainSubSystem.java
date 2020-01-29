@@ -12,6 +12,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.commands.DriveTrainCommand;
 import frc.robot.RobotContainer;
@@ -41,6 +42,7 @@ public class DriveTrainSubSystem extends SubsystemBase {
       m_rightSide.enable();
       m_leftSide.enable();
     }
+    
 
     public void tankDrive(Double[] var){
       //m_drive.tankDrive(var[0], var[1]);
@@ -54,6 +56,7 @@ public class DriveTrainSubSystem extends SubsystemBase {
       tankDrive(
         RobotContainer.configureDriveBindings()
       );
+      SmartDashboard.putNumber("EncoderVelocity", motor_RT.getEncoder().getVelocity()); // Prints speed of encoder
     }
 
 }

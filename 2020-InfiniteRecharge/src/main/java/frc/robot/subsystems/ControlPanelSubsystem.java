@@ -60,6 +60,7 @@ public class ControlPanelSubsystem extends SubsystemBase {
   private CANEncoder panelSpinnerEncoder;
   private static final double SPINNER_RADIUS_INCHES = 2;
   private static final double PANEL_CIRCUMFRENCE_INCHES = 100;
+  private static final double GEARBOX_RATIO = 12/1; // motor turns PER axle turn
 
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
   private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
@@ -121,11 +122,11 @@ public class ControlPanelSubsystem extends SubsystemBase {
 
   private double inchesToRotations(double inches)
   {
-    return inches / (Math.PI*2*SPINNER_RADIUS_INCHES);
+    return (inches / (Math.PI*2*SPINNER_RADIUS_INCHES)) * GEARBOX_RATIO;
   }
   private double rotationsToInches(double rotations)
   {
-    return rotations * (Math.PI*2*SPINNER_RADIUS_INCHES);
+    return (rotations / GEARBOX_RATIO) * (Math.PI*2*SPINNER_RADIUS_INCHES);
   }
 
   private PanelColor getSensorColor()
