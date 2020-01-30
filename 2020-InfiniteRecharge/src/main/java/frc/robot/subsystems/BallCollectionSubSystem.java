@@ -4,7 +4,11 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-
+/* Todo: 
+      - Determine neccesary class imports
+      - Find out what motors and classes are being used
+      - PIDs?
+*/
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
