@@ -15,6 +15,8 @@ import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 
+//import com.ctre.phoenix.motorcontrol.can.*; For "snow blower" motor that raises the panel spinner
+
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
@@ -60,6 +62,8 @@ public class ControlPanelSubsystem extends SubsystemBase {
   private CANEncoder panelSpinnerEncoder;
   private static final double SPINNER_RADIUS_INCHES = 2;
   private static final double PANEL_CIRCUMFRENCE_INCHES = 100;
+
+  //private VictorSPX mechanismLifter
 
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
   private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
