@@ -4,7 +4,7 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-
+///       Packages and Imports      \\\
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.PIDMotor;
-
+/*\\\     Packages and Imports      ///*/
 public class ControlPanelSubsystem extends SubsystemBase {
 
   public static enum PanelColor
@@ -62,6 +62,7 @@ public class ControlPanelSubsystem extends SubsystemBase {
   private CANEncoder panelSpinnerEncoder;
   private static final double SPINNER_RADIUS_INCHES = 2;
   private static final double PANEL_CIRCUMFRENCE_INCHES = 100;
+  private static final double GEARBOX_RATIO = 12/1; // motor turns PER axle turn
 
   //private VictorSPX mechanismLifter
 
@@ -125,11 +126,11 @@ public class ControlPanelSubsystem extends SubsystemBase {
 
   private double inchesToRotations(double inches)
   {
-    return inches / (Math.PI*2*SPINNER_RADIUS_INCHES);
+    return (inches / (Math.PI*2*SPINNER_RADIUS_INCHES)) * GEARBOX_RATIO;
   }
   private double rotationsToInches(double rotations)
   {
-    return rotations * (Math.PI*2*SPINNER_RADIUS_INCHES);
+    return (rotations / GEARBOX_RATIO) * (Math.PI*2*SPINNER_RADIUS_INCHES);
   }
 
   private PanelColor getSensorColor()
@@ -146,7 +147,7 @@ public class ControlPanelSubsystem extends SubsystemBase {
       panelCol = PanelColor.RED;
     else if(match.color == CTARGET_YELLOW)
       panelCol = PanelColor.YELLOW;
-
+/// SmartDashboard Outputs \\\
     SmartDashboard.putNumber("Red", detectedColor.red);
     SmartDashboard.putNumber("Green", detectedColor.green);
     SmartDashboard.putNumber("Blue", detectedColor.blue);

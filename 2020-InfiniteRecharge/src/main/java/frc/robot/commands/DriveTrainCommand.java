@@ -13,9 +13,9 @@ import frc.robot.RobotContainer;
 
 public class DriveTrainCommand extends CommandBase {
   
-  private final DriveTrainSubSystem m_drive;
+  private final DriveTrainSubSystem m_drive;  //This class's object of DriveTrainSubSystem
   
-  public DriveTrainCommand(DriveTrainSubSystem drive) {
+  public DriveTrainCommand(DriveTrainSubSystem drive) { //drive = actual import from DriveTrainSubSystem
     m_drive = drive;
   }
 

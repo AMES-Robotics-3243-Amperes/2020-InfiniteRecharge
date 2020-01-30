@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.ControlPanelSubsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class ControlPanelCommand extends CommandBase {
@@ -64,6 +65,7 @@ public class ControlPanelCommand extends CommandBase {
     @Override
     public void initialize() {
       controlPanel.spinPanel(rotations);
+      SmartDashboard.putString("CtlPanCmd", "TurnNumTimes");
     }
 
     // Returns true when the command should end.
@@ -90,6 +92,7 @@ public class ControlPanelCommand extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+      SmartDashboard.putString("CtlPanCmd", "TurnToColor");
     }
 
     // Called every time the scheduler runs while the command is scheduled.
