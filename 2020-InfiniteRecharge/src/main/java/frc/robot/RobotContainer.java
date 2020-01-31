@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.ControlPanelCommand;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ControlPanelSubsystem;
 import frc.robot.subsystems.DriveTrainSubSystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -30,6 +31,8 @@ public class RobotContainer {
   private static Joystick driver = new Joystick(0);
   private static Joystick secondary = new Joystick(1);
   static Double[] steering = new Double[2];
+  static double steerLeft;
+  static double steerRight;
 
   
 
@@ -37,9 +40,10 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   public static DriveTrainSubSystem m_robotDriveSubsystem = new DriveTrainSubSystem();
   public static ControlPanelSubsystem m_controlPanelSubsystem = new ControlPanelSubsystem();
-  
+  public final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem(m_robotDriveSubsystem);
+
   //Defined Commands
-  public final DriveTrainCommand m_robotDriveCommand = new DriveTrainCommand(m_robotDriveSubsystem);
+  public final DriveTrainCommand m_robotDriveCommand = new DriveTrainCommand(m_robotDriveSubsystem, m_limelightSubsystem);
   private final ControlPanelCommand m_controlPanelCommand = new ControlPanelCommand(m_controlPanelSubsystem);
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
@@ -98,32 +102,42 @@ public class RobotContainer {
     turn4TimeButton.whenPressed(turn4Times, true);
   }
   
-  public static Double[] configureDriveBindings(){  //This passes in the axis steering for robot drive
+  public static double configureDriveLeft(){  //This passes in the axis steering for robot drive
+    steerLeft = -driver.getRawAxis(1);  //Should be the left axis
     
-    steering[0] = -driver.getRawAxis(1);  //Should be the left axis
-    steering[1] = -driver.getRawAxis(3);  //Should be the right axis
-    
-    steering = deadZone(steering);
-    steering = scaleZone(steering);
-    return steering;
+    steerLeft = deadZone(steerLeft);
+    steerLeft = scaleZone(steerLeft);
+
+    return steerLeft;
+  }
+  public static double configureDriveRight(){
+    steerRight = -driver.getRawAxis(3);
+
+    steerRight = deadZone(steerRight);
+    steerRight = scaleZone(steerRight);
+
+    return steerRight;
   }
 
-  public static Double[] deadZone(Double[] dead){      
+  public static boolean driveLime(){
+    return driver.getRawButton(12); //I don't know which button to choose yet.
+  }
+
+  public static double deadZone(double dead){      
       
-    if(-0.09 < dead[0] && 0.09 > dead[0]){
-      dead[0] = 0.0;
-    } else if(-0.09 < dead[1] && 0.09 > dead[1]){
-      dead[1] = 0.0;
-    }
+    if(-0.09 < dead && 0.09 > dead){
+      dead = 0.0;
+    } /*else if(-0.09 < dead && 0.09 > dead){
+      dead = 0.0;
+    }*/
 
     return dead;
   }
 
-  public static Double[] scaleZone(Double[] scale){
+  public static double scaleZone(double scale){
     double a = 0.4;
     double b = 0.4;
-    scale[0] = a * Math.pow(scale[0], 3) + b * scale[0]; //Dampens the input value by squaring it
-    scale[1] = a * Math.pow(scale[1], 3) + b * scale[1]; //Dampens the input value by squaring it
+    scale = a * Math.pow(scale, 3) + b * scale;
 
     return scale;
   }

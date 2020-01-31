@@ -36,8 +36,8 @@ public class DriveTrainSubSystem extends SubsystemBase {
 
     private final DifferentialDrive m_drive = new DifferentialDrive(m_leftmotors, m_rightmotors); // m_drive is a combination of both left and right motors
     // Encoder data objects
-    private final DrivetrainPIDSubsystem m_rightSide = new DrivetrainPIDSubsystem(m_rightmotors, motor_RT.getEncoder());
-    private final DrivetrainPIDSubsystem m_leftSide = new DrivetrainPIDSubsystem(m_leftmotors, motor_LT.getEncoder());
+    private final static DrivetrainPIDSubsystem m_rightSide = new DrivetrainPIDSubsystem(m_rightmotors, motor_RT.getEncoder());
+    private final static DrivetrainPIDSubsystem m_leftSide = new DrivetrainPIDSubsystem(m_leftmotors, motor_LT.getEncoder());
     // Command Based code requirement: enabling motors
     public DriveTrainSubSystem(){
       m_rightSide.enable();
@@ -45,17 +45,18 @@ public class DriveTrainSubSystem extends SubsystemBase {
     }
     
 
-    public void tankDrive(Double[] var){
+    public static void tankDrive(double varLeft, double varRight){
       //m_drive.tankDrive(var[0], var[1]);
-      m_rightSide.setSetpoint(-var[1]);
-      m_leftSide.setSetpoint(var[0]);
+      m_rightSide.setSetpoint(-varRight);
+      m_leftSide.setSetpoint(varLeft);
     }
 
     @Override
     public void periodic() {
       // This method will be called once per scheduler run
       tankDrive(
-        RobotContainer.configureDriveBindings()
+        RobotContainer.configureDriveLeft(),
+        RobotContainer.configureDriveRight()
       );
       SmartDashboard.putNumber("EncoderVelocity", motor_RT.getEncoder().getVelocity()); // Prints speed of encoder
     }
