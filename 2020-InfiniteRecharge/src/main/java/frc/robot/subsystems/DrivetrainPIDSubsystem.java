@@ -24,7 +24,10 @@ public class DrivetrainPIDSubsystem extends PIDSubsystem {
   public DrivetrainPIDSubsystem(SpeedControllerGroup group, CANEncoder encoder) {
     super(
         // The PIDController used by the subsystem
-        new PIDController(0.6, 9e-10, 9e-5));
+        // 1/29 Adjusting PIDs as per this doc:
+        // https://frc-pdr.readthedocs.io/en/latest/control/pid_control.html#tuning-methods
+        // Currently at step 1.
+        new PIDController(1.8, 0/*9e-10*/, 0/*9e-5*/));
         //0.8, 9e-5, 9e-4
 
     m_group = group;
