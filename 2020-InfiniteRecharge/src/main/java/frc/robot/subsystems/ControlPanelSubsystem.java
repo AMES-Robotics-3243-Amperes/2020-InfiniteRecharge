@@ -4,7 +4,7 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-
+///       Packages and Imports      \\\
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
@@ -15,12 +15,14 @@ import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 
+//import com.ctre.phoenix.motorcontrol.can.*; For "snow blower" motor that raises the panel spinner
+
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.PIDMotor;
-
+/*\\\     Packages and Imports      ///*/
 public class ControlPanelSubsystem extends SubsystemBase {
 
   public static enum PanelColor
@@ -61,6 +63,8 @@ public class ControlPanelSubsystem extends SubsystemBase {
   private static final double SPINNER_RADIUS_INCHES = 2;
   private static final double PANEL_CIRCUMFRENCE_INCHES = 100;
   private static final double GEARBOX_RATIO = 12/1; // motor turns PER axle turn
+
+  //private VictorSPX mechanismLifter
 
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
   private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
@@ -150,7 +154,7 @@ public class ControlPanelSubsystem extends SubsystemBase {
       panelCol = PanelColor.RED;
     else if(match.color == CTARGET_YELLOW)
       panelCol = PanelColor.YELLOW;
-
+/// SmartDashboard Outputs \\\
     SmartDashboard.putNumber("Red", detectedColor.red);
     SmartDashboard.putNumber("Green", detectedColor.green);
     SmartDashboard.putNumber("Blue", detectedColor.blue);
