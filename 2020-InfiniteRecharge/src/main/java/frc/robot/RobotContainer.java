@@ -20,6 +20,7 @@ import frc.robot.subsystems.DriveTrainSubSystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.DriveTrainCommand;
+import frc.robot.commands.LimelightCommand;
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -46,6 +47,7 @@ public class RobotContainer {
   public final DriveTrainCommand m_robotDriveCommand = new DriveTrainCommand(m_robotDriveSubsystem);
   private final ControlPanelCommand m_controlPanelCommand = new ControlPanelCommand(m_controlPanelSubsystem);
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  private final LimelightCommand m_limelightCommand = new LimelightCommand(m_robotDriveSubsystem, m_limelightSubsystem);
 
   private final ControlPanelCommand.TurnNumTimes turn4Times = new ControlPanelCommand.TurnNumTimes(m_controlPanelSubsystem, 4);
   private final ControlPanelCommand.TurnToColor turnToColorBlue = new ControlPanelCommand.TurnToColor(m_controlPanelSubsystem, ControlPanelSubsystem.PanelColor.BLUE);
@@ -102,6 +104,10 @@ public class RobotContainer {
     turn4TimeButton.whenPressed(turn4Times, true);
   }
   
+  public static boolean driveLime(){
+    return driver.getRawButton(12); //I don't know which button to choose yet.
+  }
+
   public static double configureDriveLeft(){  //This passes in the axis steering for robot drive
     steerLeft = -driver.getRawAxis(1);  //Should be the left axis
     
@@ -117,10 +123,6 @@ public class RobotContainer {
     steerRight = scaleZone(steerRight);
 
     return steerRight;
-  }
-
-  public static boolean driveLime(){
-    return driver.getRawButton(12); //I don't know which button to choose yet.
   }
 
   public static double deadZone(double dead){      
@@ -153,5 +155,8 @@ public class RobotContainer {
   public Command getDriveCommand() {
 
     return m_robotDriveCommand;
+  }
+  public Command getLimelightCommand(){
+    return m_limelightCommand;
   }
 }

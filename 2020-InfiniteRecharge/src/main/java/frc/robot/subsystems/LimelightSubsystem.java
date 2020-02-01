@@ -33,7 +33,7 @@ public class LimelightSubsystem extends SubsystemBase {
   static double v = tv.getDouble(0.0);
   static double area = ta.getDouble(0.0);
 
-  // These constants haven't been tuned 1/30/20
+  //These constants haven't been tuned 1/30/20
   static float KpSteer = 0;
   static float KpSteer2 = 0;
   static float KpDist = 0;
@@ -42,20 +42,33 @@ public class LimelightSubsystem extends SubsystemBase {
   static float refArea = 0;
 
   public LimelightSubsystem(DriveTrainSubSystem drive) {
-    m_drive = drive; // this class's object "drive" is equal to the DriveTrainSubSystem's object
-                     // "drive"
+    //this class's object "drive" is equal to the DriveTrainSubSystem's object "drive"
+    m_drive = drive;
   }
 
-  public static double setVision(boolean value) {
-    // These constants haven't been tuned to the robot!
+  public static double setDist(){
     double heading_error = x;
-    double steer_adjust = 0.0;
     double dist_error = area;
     double dist_adjust = 0.0;
     double maxDistAdjust = 0.0;
     double maxAngAdjust = 1.0;
+      if (v == 0.0) {
+        dist_adjust = 0.0;
+      }
 
-    if (value) {
+      if (area != 0) {
+        dist_error = refArea - dist_error;
+        dist_adjust = KpDist * Math.pow(dist_error, 3) + KpDist2 * dist_error;
+      }
+    return dist_adjust;
+  }
+
+  public static double setSteer() {
+    // These constants haven't been tuned to the robot!
+    double heading_error = x;
+    double steer_adjust = 0.0;
+    double maxAngAdjust = 1.0;
+
 
       if (-.25 < heading_error && heading_error < .25) {
         heading_error = 0.0;
@@ -69,18 +82,7 @@ public class LimelightSubsystem extends SubsystemBase {
         steer_adjust = (KpSteer * Math.pow(heading_error, 3) + KpSteer2 * heading_error) - min_command;
       }
 
-      if (v == 0.0) {
-        dist_adjust = 0.0;
-      }
-
-      if (area != 0) {
-        dist_error = refArea - dist_error;
-        dist_adjust = KpDist * Math.pow(dist_error, 3) + KpDist2 * dist_error;
-      }
-
       steer_adjust = Math.tanh(steer_adjust) * maxAngAdjust;
-      
-    }
 
     return steer_adjust;
   }

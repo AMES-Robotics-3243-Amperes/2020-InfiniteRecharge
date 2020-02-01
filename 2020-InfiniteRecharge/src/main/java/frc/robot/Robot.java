@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private Command m_driveCommand;
+  private Command m_limelightCommand;
   //public static DriveTrain drivetrain = new DriveTrain();
   //public static OI oi;
 
@@ -101,8 +102,16 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    
     m_driveCommand = m_robotContainer.getDriveCommand();
-    m_driveCommand.schedule();
+    m_limelightCommand = m_robotContainer.getLimelightCommand();
+    
+    if(RobotContainer.driveLime()){
+      m_limelightCommand.schedule();
+    } else if(!RobotContainer.driveLime()){
+      m_driveCommand.schedule();
+    }
+
     CommandScheduler.getInstance().run();
   }
 
