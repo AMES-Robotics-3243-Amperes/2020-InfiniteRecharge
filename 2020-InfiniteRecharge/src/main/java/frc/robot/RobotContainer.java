@@ -127,9 +127,7 @@ public class RobotContainer {
       
     if(-0.09 < dead && 0.09 > dead){
       dead = 0.0;
-    } /*else if(-0.09 < dead && 0.09 > dead){
-      dead = 0.0;
-    }*/
+    }
 
     return dead;
   }

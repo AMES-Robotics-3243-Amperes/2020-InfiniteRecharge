@@ -24,14 +24,14 @@ import frc.robot.subsystems.DrivetrainPIDSubsystem;
  */
 public class DriveTrainSubSystem extends SubsystemBase {
   // New Encoder Objects \\
-    private CANSparkMax motor_LT = new CANSparkMax(2, MotorType.kBrushless);
-    private CANSparkMax motor_LB = new CANSparkMax(1, MotorType.kBrushless);
-    private CANSparkMax motor_RT = new CANSparkMax(3, MotorType.kBrushless);
-    private CANSparkMax motor_RB = new CANSparkMax(4, MotorType.kBrushless);
+    private static CANSparkMax motor_LT = new CANSparkMax(2, MotorType.kBrushless);
+    private static CANSparkMax motor_LB = new CANSparkMax(1, MotorType.kBrushless);
+    private static CANSparkMax motor_RT = new CANSparkMax(3, MotorType.kBrushless);
+    private static CANSparkMax motor_RB = new CANSparkMax(4, MotorType.kBrushless);
 
     // Left and right side drive
-    public final SpeedControllerGroup m_leftmotors = new SpeedControllerGroup(motor_LT, motor_LB); // Classifying left side motors
-    public final SpeedControllerGroup m_rightmotors = new SpeedControllerGroup(motor_RT, motor_RB); // Classifying right side motors
+    public final static SpeedControllerGroup m_leftmotors = new SpeedControllerGroup(motor_LT, motor_LB); // Classifying left side motors
+    public final static SpeedControllerGroup m_rightmotors = new SpeedControllerGroup(motor_RT, motor_RB); // Classifying right side motors
     
 
     private final DifferentialDrive m_drive = new DifferentialDrive(m_leftmotors, m_rightmotors); // m_drive is a combination of both left and right motors
@@ -54,11 +54,8 @@ public class DriveTrainSubSystem extends SubsystemBase {
     @Override
     public void periodic() {
       // This method will be called once per scheduler run
-      tankDrive(
-        RobotContainer.configureDriveLeft(),
-        RobotContainer.configureDriveRight()
-      );
       SmartDashboard.putNumber("EncoderVelocity", motor_RT.getEncoder().getVelocity()); // Prints speed of encoder
+    
     }
 
 }
