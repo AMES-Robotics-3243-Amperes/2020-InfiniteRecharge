@@ -58,7 +58,7 @@ public class ControlPanelSubsystem extends SubsystemBase {
    */
   private CANSparkMax panelSpinner = new CANSparkMax(5, MotorType.kBrushless);
   private PIDMotor panelSpinnerPID = new PIDMotor(panelSpinner, "Panel Spinner");
-  private static final double PANEL_SPINNER_SPEED = 1;
+  private static final double PANEL_SPINNER_SPEED = 0.5;
   private CANEncoder panelSpinnerEncoder;
   private static final double SPINNER_RADIUS_INCHES = 2;
   private static final double PANEL_CIRCUMFRENCE_INCHES = 100;
@@ -79,6 +79,8 @@ public class ControlPanelSubsystem extends SubsystemBase {
   private double nowEncoder = 0;
 
   public ControlPanelSubsystem() {
+    panelSpinnerPID.setOutputRange(-PANEL_SPINNER_SPEED, PANEL_SPINNER_SPEED);
+
     panelSpinnerEncoder = panelSpinner.getEncoder(); //Sets up the encoder in the motor;
     panelSpinnerPID.dashboardPut();
 
@@ -109,7 +111,12 @@ public class ControlPanelSubsystem extends SubsystemBase {
    */
   public int seekColor(PanelColor targetColor)
   {
-    int spinDir = getSensorColor().dirToTarget(targetColor);
+    PanelColor sensorColor = getSensorColor();
+    if(sensorColor == null)
+      return 0; // No sensor is connected
+
+    //            v   dirToTarget returns the opposite of the direction we want
+    int spinDir = - sensorColor.dirToTarget(targetColor);
     panelSpinner.set(PANEL_SPINNER_SPEED * spinDir);
     return spinDir;
   }

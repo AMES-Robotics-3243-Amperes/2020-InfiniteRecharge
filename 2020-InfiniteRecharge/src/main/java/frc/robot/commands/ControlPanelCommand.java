@@ -64,6 +64,7 @@ public class ControlPanelCommand extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+      System.out.println("TurnNumTimes initialize");
       controlPanel.spinPanel(rotations);
       SmartDashboard.putString("CtlPanCmd", "TurnNumTimes");
     }
@@ -71,6 +72,7 @@ public class ControlPanelCommand extends CommandBase {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
+      System.out.println("TurnNumTimes isFinished "+controlPanel.getPanelRotations());
       // Finish when within 1/10th a rotation of the target
       return Math.abs(controlPanel.getPanelRotations() - rotations) <= 0.1;
     } 
@@ -92,12 +94,16 @@ public class ControlPanelCommand extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+      prevSpinDir = 0; // reset
+      isFinished = false;
       SmartDashboard.putString("CtlPanCmd", "TurnToColor");
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+System.out.println("TurnToColor execute");
+
       if(isFinished)
         return;
 

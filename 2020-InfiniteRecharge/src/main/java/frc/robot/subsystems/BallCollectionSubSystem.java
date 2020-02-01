@@ -26,7 +26,7 @@ public class BallCollectionSubSystem extends SubsystemBase {
 
   }
   
-  public void runball(boolean spin) //boolean bc it's a button {
+  public void runball(boolean spin){ //boolean bc it's a button {
     if (spin) {
       motor1.set(.65); // sets the motor to 65% speed
     }
