@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -18,19 +19,17 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * project.
  */
 public class Robot extends TimedRobot {
+  
   private Command m_autonomousCommand;
   private Command m_driveCommand;
   private Command m_limelightCommand;
-  //public static DriveTrain drivetrain = new DriveTrain();
-  //public static OI oi;
+  private Command m_ballCollectCommand;
 
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
-  //private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
-  //MotorController MC;
-  //InputManager IM;
   private RobotContainer m_robotContainer;
 
   /**
@@ -105,12 +104,15 @@ public class Robot extends TimedRobot {
     
     m_driveCommand = m_robotContainer.getDriveCommand();
     m_limelightCommand = m_robotContainer.getLimelightCommand();
+    m_ballCollectCommand = m_robotContainer.getBallCollectCommand();
     
     if(RobotContainer.driveLime()){
       m_limelightCommand.schedule();
     } else if(!RobotContainer.driveLime()){
       m_driveCommand.schedule();
     }
+
+    m_ballCollectCommand.schedule();
 
     CommandScheduler.getInstance().run();
   }

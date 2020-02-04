@@ -4,35 +4,29 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-/* Todo: 
-      - Determine neccesary class imports
-      - Find out what motors and classes are being used
-      - PIDs?
-*/
+
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+public class ShooterSubsystem extends SubsystemBase {
 
-
-public class BallCollectionSubSystem extends SubsystemBase {
+  static CANSparkMax shoot = new CANSparkMax(0, MotorType.kBrushless);
   /**
-   * Creates a new BallCollectionSubsystem.
+   * Creates a new ShooterSubsystem.
    */
-  static CANSparkMax motorSpin = new CANSparkMax(6 ,MotorType.kBrushless); //Don't know the motor id yet
-
-  public BallCollectionSubSystem() {
+  public ShooterSubsystem() {
 
   }
-  
-  public static void setSpin(boolean spin){ //boolean bc it's a button
-    if (spin) {
-      motorSpin.set(.65); // sets the motor to 65% speed
-    }
-    else {
-      motorSpin.set(0); // if the button is not pressed it sets the motor to 0% speed
+
+  public static void setShoot(boolean value){ //Tune the speed as necessary
+    if(value){
+      shoot.set(0.70);  // Set shoot motor to 70% spd
+    } else if(!value){
+      shoot.set(0.0); // Set shoot motor to 0% spd
     }
   }
 

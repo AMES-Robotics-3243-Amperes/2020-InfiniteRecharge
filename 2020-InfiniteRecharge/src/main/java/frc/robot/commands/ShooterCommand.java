@@ -8,18 +8,17 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.BallCollectionSubSystem;
+
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.RobotContainer;
 
-public class BallCollectionCommand extends CommandBase {
-  /**
-   * Creates a new BallCollectionCommand.
-   */
-  private final BallCollectionSubSystem m_bCollect;
+public class ShooterCommand extends CommandBase {
+  
+  private final ShooterSubsystem m_shoot;
 
-  public BallCollectionCommand(BallCollectionSubSystem bCollect) {
+  public ShooterCommand(ShooterSubsystem shoot) {
     // Use addRequirements() here to declare subsystem dependencies.
-  m_bCollect = bCollect;
+    m_shoot = shoot;
   }
 
   // Called when the command is initially scheduled.
@@ -30,13 +29,15 @@ public class BallCollectionCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    BallCollectionSubSystem.setSpin(RobotContainer.configureballbindings());
+    ShooterSubsystem.setShoot(
+      RobotContainer.configureshootbindings()
+    );
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    BallCollectionSubSystem.setSpin(false);
+    ShooterSubsystem.setShoot(false);
   }
 
   // Returns true when the command should end.

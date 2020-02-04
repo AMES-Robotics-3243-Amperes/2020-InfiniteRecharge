@@ -43,8 +43,8 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   public static DriveTrainSubSystem m_robotDriveSubsystem = new DriveTrainSubSystem();
   public static ControlPanelSubsystem m_controlPanelSubsystem = new ControlPanelSubsystem();
-  public static BallCollectionSubSystem m_ballCollectionSubsystem = new BallCollectionSubSystem();
   public final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem(m_robotDriveSubsystem);
+  public static BallCollectionSubSystem m_ballCollectionSubsystem = new BallCollectionSubSystem();
 
   //Defined Commands
   public final DriveTrainCommand m_robotDriveCommand = new DriveTrainCommand(m_robotDriveSubsystem);
@@ -108,10 +108,12 @@ public class RobotContainer {
     turn4TimeButton.whenPressed(turn4Times, true);
   }
   
+  //-------------------- LIMELIGHT SECTION OF JOYSTICK ---------------------
   public static boolean driveLime(){
     return driver.getRawButton(12); //I don't know which button to choose yet.
   }
 
+  //-------------------- DRIVING SECTION OF JOYSTICK -----------------------
   public static double configureDriveLeft(){  //This passes in the axis steering for robot drive
     steerLeft = -driver.getRawAxis(1);  //Should be the left axis
     
@@ -127,11 +129,6 @@ public class RobotContainer {
     steerRight = scaleZone(steerRight);
 
     return steerRight;
-  }
-
-  public static boolean configureballbindings(){
-    return driver.getRawButton(5);
-
   }
 
   public static double deadZone(double dead){      
@@ -151,11 +148,22 @@ public class RobotContainer {
     return scale;
   }
 
+  //----------------- INDEXER (BALL COLLECTION) SECTION OF JOYSTICK -------------------
+  public static boolean configureballbindings(){
+    return driver.getRawButton(5);  // Possibly change this to secondary joystick
+  }
+
+  //----------------- SHOOTER SECTION OF JOYSTICK --------------------
+  public static boolean configureshootbindings(){
+    return driver.getRawButton(10); // Possibly change this to secondary joystick
+  }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
+
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     return m_autoCommand;
@@ -165,7 +173,14 @@ public class RobotContainer {
 
     return m_robotDriveCommand;
   }
+
   public Command getLimelightCommand(){
+
     return m_limelightCommand;
+  }
+
+  public Command getBallCollectCommand(){
+
+    return m_ballCollectionCommand;
   }
 }
