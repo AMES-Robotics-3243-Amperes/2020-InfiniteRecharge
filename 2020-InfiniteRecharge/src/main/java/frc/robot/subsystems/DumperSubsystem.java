@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.PIDMotor;
 /*\\\     Packages and Imports      ///*/
-public class ControlPanelSubsystem extends SubsystemBase {
+public class DumperSubsystem extends SubsystemBase {
 
   public static enum PanelColor
   {
@@ -78,90 +78,12 @@ public class ControlPanelSubsystem extends SubsystemBase {
   private double offsetEncoder = 0;
   private double nowEncoder = 0;
 
-  public ControlPanelSubsystem() {
-    panelSpinnerPID.setOutputRange(-PANEL_SPINNER_SPEED, PANEL_SPINNER_SPEED);
-
-    panelSpinnerEncoder = panelSpinner.getEncoder(); //Sets up the encoder in the motor;
-    panelSpinnerPID.dashboardPut();
-
-    // Set up color matcher
-    colorMatcher.addColorMatch(CTARGET_BLUE);
-    colorMatcher.addColorMatch(CTARGET_GREEN);
-    colorMatcher.addColorMatch(CTARGET_RED);
-    colorMatcher.addColorMatch(CTARGET_YELLOW);
-  }
-
-  /**
-   * Rotate the control panel a certain number of rotations.
-   * @param panelRotations The number of times to rotate the control panel.
-   */
-  public void spinPanel(double panelRotations)
-  {
-    panelSpinnerEncoder.setPosition(0);
-    panelSpinnerPID.setPIDPosition(inchesToRotations(panelRotations * PANEL_CIRCUMFRENCE_INCHES));
-  }
-  public double getPanelRotations()
-  {
-    return rotationsToInches(panelSpinnerEncoder.getPosition()) / PANEL_CIRCUMFRENCE_INCHES;
-  }
-
-  /**
-   * @param targetColor The PanelColor to seek toward
-   * @return The motor spin direction the subsystem decides on
-   */
-  public int seekColor(PanelColor targetColor, double speedMulti)
-  {
-    PanelColor sensorColor = getSensorColor();
-    if(sensorColor == null)
-      return 0; // No sensor is connected
-
-    //            v   dirToTarget returns the opposite of the direction we want
-    int spinDir = - sensorColor.dirToTarget(targetColor);
-    panelSpinner.set(PANEL_SPINNER_SPEED * speedMulti * spinDir);
-    return spinDir;
-  }
-  public void overrunInDir(int spinDir, double inches)
-  {
-    panelSpinnerEncoder.setPosition(0);
-    panelSpinnerPID.setPIDPosition(panelSpinnerEncoder.getPosition() + spinDir*inchesToRotations(inches));
+  public DumperSubsystem() {
+    
   }
 
   @Override
   public void periodic() {
-    getSensorColor(); // Cause color data to be written to dashboard
-    panelSpinnerPID.dashboardGet();
-  }
-
-  private double inchesToRotations(double inches)
-  {
-    return (inches / (Math.PI*2*SPINNER_RADIUS_INCHES)) * GEARBOX_RATIO;
-  }
-  private double rotationsToInches(double rotations)
-  {
-    return (rotations / GEARBOX_RATIO) * (Math.PI*2*SPINNER_RADIUS_INCHES);
-  }
-
-  private PanelColor getSensorColor()
-  {
-    Color detectedColor = colorSensor.getColor();
-    ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
-
-    PanelColor panelCol = null;
-    if(match.color == CTARGET_BLUE)
-        panelCol = PanelColor.BLUE;
-    else if(match.color == CTARGET_GREEN)
-      panelCol = PanelColor.GREEN;
-    else if(match.color == CTARGET_RED)
-      panelCol = PanelColor.RED;
-    else if(match.color == CTARGET_YELLOW)
-      panelCol = PanelColor.YELLOW;
-/// SmartDashboard Outputs \\\
-    SmartDashboard.putNumber("Red", detectedColor.red);
-    SmartDashboard.putNumber("Green", detectedColor.green);
-    SmartDashboard.putNumber("Blue", detectedColor.blue);
-    SmartDashboard.putNumber("Confidence", match.confidence);
-    SmartDashboard.putString("Detected Color", (panelCol==null) ?"Unknown :(" :panelCol.name);
-
-    return panelCol;
+    
   }
 }
