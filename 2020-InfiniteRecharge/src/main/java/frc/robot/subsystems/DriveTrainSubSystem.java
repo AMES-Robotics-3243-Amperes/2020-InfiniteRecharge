@@ -14,8 +14,8 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.commands.DriveTrainCommand;
-import frc.robot.RobotContainer;
+//import frc.robot.commands.DriveTrainCommand;
+//import frc.robot.RobotContainer;
 import frc.robot.subsystems.DrivetrainPIDSubsystem;
 
 
@@ -33,11 +33,13 @@ public class DriveTrainSubSystem extends SubsystemBase {
     public final static SpeedControllerGroup m_leftmotors = new SpeedControllerGroup(motor_LT, motor_LB); // Classifying left side motors
     public final static SpeedControllerGroup m_rightmotors = new SpeedControllerGroup(motor_RT, motor_RB); // Classifying right side motors
     
-
-    private final DifferentialDrive m_drive = new DifferentialDrive(m_leftmotors, m_rightmotors); // m_drive is a combination of both left and right motors
+    // m_drive is a combination of both left and right motors
+    private final DifferentialDrive m_drive = new DifferentialDrive(m_leftmotors, m_rightmotors);
+    
     // Encoder data objects
     private final static DrivetrainPIDSubsystem m_rightSide = new DrivetrainPIDSubsystem(m_rightmotors, motor_RT.getEncoder());
     private final static DrivetrainPIDSubsystem m_leftSide = new DrivetrainPIDSubsystem(m_leftmotors, motor_LT.getEncoder());
+    
     // Command Based code requirement: enabling motors
     public DriveTrainSubSystem(){
       m_rightSide.enable();
@@ -46,7 +48,6 @@ public class DriveTrainSubSystem extends SubsystemBase {
     
 
     public static void tankDrive(double varLeft, double varRight){
-      //m_drive.tankDrive(var[0], var[1]);
       m_rightSide.setSetpoint(-varRight);
       m_leftSide.setSetpoint(varLeft);
     }
@@ -54,8 +55,8 @@ public class DriveTrainSubSystem extends SubsystemBase {
     @Override
     public void periodic() {
       // This method will be called once per scheduler run
-      SmartDashboard.putNumber("EncoderVelocity", motor_RT.getEncoder().getVelocity()); // Prints speed of encoder
-    
+      SmartDashboard.putNumber("Right Motor Spd: ", motor_RT.getEncoder().getVelocity()); // Prints spd of right encoder
+      SmartDashboard.putNumber("Left Motor Spd: ", motor_LT.getEncoder().getVelocity());  // Prints spd of left encoder
     }
 
 }

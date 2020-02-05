@@ -31,4 +31,8 @@ public final class Constants {
     public static final class ControlPanelConstants {
         public static final int kMotorCP = 0;   //Don't know which port yet, so using random # for now 1/16/20
     }
+
+    public static final class BallCollectConstants {
+        public static final int kBallID = 7; // Don't know which CAN ID this is yet 2/4/20
+    }
 }
