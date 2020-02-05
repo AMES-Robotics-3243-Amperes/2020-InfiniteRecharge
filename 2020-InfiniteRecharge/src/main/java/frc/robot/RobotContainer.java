@@ -52,6 +52,7 @@ public class RobotContainer {
   private final ControlPanelCommand.TurnToColor turnToColorGreen = new ControlPanelCommand.TurnToColor(m_controlPanelSubsystem, ControlPanelSubsystem.PanelColor.GREEN);
   private final ControlPanelCommand.TurnToColor turnToColorRed = new ControlPanelCommand.TurnToColor(m_controlPanelSubsystem, ControlPanelSubsystem.PanelColor.RED);
   private final ControlPanelCommand.TurnToColor turnToColorYellow = new ControlPanelCommand.TurnToColor(m_controlPanelSubsystem, ControlPanelSubsystem.PanelColor.YELLOW);
+  private final ControlPanelCommand.LowerMechanism lowerControlPanel = new ControlPanelCommand.LowerMechanism(m_controlPanelSubsystem);
 
   private final DumperCommand dumperCommand = new DumperCommand(dumperSubsystem, 2);
 
@@ -64,6 +65,7 @@ public class RobotContainer {
   private static final int B_RED = 3;
   private static final int B_YELLOW = 4;
   private static final int B_TURN_4_TIMES = 10;
+  private static final int B_LOWER_CTLPANEL = 9;
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -101,6 +103,8 @@ public class RobotContainer {
     colorRed.whenPressed(turnToColorRed, true);
     colorYellow.whenPressed(turnToColorYellow, true);
     turn4TimeButton.whenPressed(turn4Times, true);
+    JoystickButton bLowerControlPanel = new JoystickButton(driver, B_LOWER_CTLPANEL);
+    bLowerControlPanel.whenPressed(lowerControlPanel);
 
     JoystickButton dump = new JoystickButton(driver, 6);
     dump.whenPressed(dumperCommand);
