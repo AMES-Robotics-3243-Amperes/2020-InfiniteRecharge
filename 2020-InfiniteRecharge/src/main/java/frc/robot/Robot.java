@@ -36,6 +36,7 @@ public class Robot extends TimedRobot {
   private Command m_driveCommand;
   private Command m_limelightCommand;
   private Command m_ballCollectCommand;
+  private Command m_climbCommand;
 
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
@@ -132,7 +133,8 @@ public class Robot extends TimedRobot {
     m_driveCommand = m_robotContainer.getDriveCommand();
     m_limelightCommand = m_robotContainer.getLimelightCommand();
     m_ballCollectCommand = m_robotContainer.getBallCollectCommand();
-    
+    m_climbCommand = m_robotContainer.getClimbCommand();
+
     if(RobotContainer.driveLime()){
       m_limelightCommand.schedule();
     } else if(!RobotContainer.driveLime()){
@@ -140,6 +142,7 @@ public class Robot extends TimedRobot {
     }
 
     m_ballCollectCommand.schedule();
+    m_climbCommand.schedule();
 
     CommandScheduler.getInstance().run();
   }

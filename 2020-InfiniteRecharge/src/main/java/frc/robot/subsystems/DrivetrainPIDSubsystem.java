@@ -27,7 +27,6 @@ public class DrivetrainPIDSubsystem extends PIDSubsystem {
         // The PIDController used by the subsystem
         new PIDController(0.6, 9e-10, 9e-5)); // P I D // P In PID being used for correcting oscillation
         //0.8, 9e-5, 9e-4
-        );
       
     m_group = group;
     m_encoder = encoder;

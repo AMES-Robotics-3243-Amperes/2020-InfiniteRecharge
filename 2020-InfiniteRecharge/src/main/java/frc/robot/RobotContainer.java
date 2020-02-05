@@ -11,18 +11,21 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.ControlPanelCommand;
+
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ControlPanelSubsystem;
 import frc.robot.subsystems.DriveTrainSubSystem;
 import frc.robot.subsystems.BallCollectionSubSystem;
+import frc.robot.subsystems.ClimbSubsystem;
+
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.ControlPanelCommand;
 import frc.robot.commands.DriveTrainCommand;
 import frc.robot.commands.LimelightCommand;
 import frc.robot.commands.BallCollectionCommand;
+import frc.robot.commands.ClimbCommand;
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -45,6 +48,7 @@ public class RobotContainer {
   public static ControlPanelSubsystem m_controlPanelSubsystem = new ControlPanelSubsystem();
   public final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem(m_robotDriveSubsystem);
   public static BallCollectionSubSystem m_ballCollectionSubsystem = new BallCollectionSubSystem();
+  public static ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
 
   //Defined Commands
   public final DriveTrainCommand m_robotDriveCommand = new DriveTrainCommand(m_robotDriveSubsystem);
@@ -52,7 +56,8 @@ public class RobotContainer {
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   private final LimelightCommand m_limelightCommand = new LimelightCommand(m_robotDriveSubsystem, m_limelightSubsystem);
   private final BallCollectionCommand m_ballCollectionCommand = new BallCollectionCommand(m_ballCollectionSubsystem);
-  
+  public static ClimbCommand m_climbCommand = new ClimbCommand(m_climbSubsystem);
+
   private final ControlPanelCommand.TurnNumTimes turn4Times = new ControlPanelCommand.TurnNumTimes(m_controlPanelSubsystem, 4);
   private final ControlPanelCommand.TurnToColor turnToColorBlue = new ControlPanelCommand.TurnToColor(m_controlPanelSubsystem, ControlPanelSubsystem.PanelColor.BLUE);
   private final ControlPanelCommand.TurnToColor turnToColorGreen = new ControlPanelCommand.TurnToColor(m_controlPanelSubsystem, ControlPanelSubsystem.PanelColor.GREEN);
@@ -158,6 +163,11 @@ public class RobotContainer {
     return driver.getRawButton(10); // Possibly change this to secondary joystick
   }
 
+  //--------------- CLIMB GYRO SENSOR SECTION OF JOYSTICK ------------------ 
+  public static boolean configuregyrobindings(){
+    return driver.getRawButton(9);  //Possibly change this to secondary joystick
+  }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -182,5 +192,10 @@ public class RobotContainer {
   public Command getBallCollectCommand(){
 
     return m_ballCollectionCommand;
+  }
+
+  public Command getClimbCommand(){
+    
+    return m_climbCommand;
   }
 }
