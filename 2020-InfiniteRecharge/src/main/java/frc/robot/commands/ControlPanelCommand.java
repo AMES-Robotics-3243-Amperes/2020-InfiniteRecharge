@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.ControlPanelSubsystem;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -80,9 +81,12 @@ public class ControlPanelCommand extends CommandBase {
 
   public static class TurnToColor extends CommandBase
   {
+    private static final double COLOR_REACHED_STABLE_TIME = 0.5;
     private final ControlPanelSubsystem controlPanel;
     private final ControlPanelSubsystem.PanelColor targetColor;
     private int prevSpinDir = 0;
+    private int tryIdx = 0; // How many times have we reached the target color?
+    private double lastTimeReachedColor = -10000;
     private boolean isFinished = false;
 
     public TurnToColor(ControlPanelSubsystem controlPanel, ControlPanelSubsystem.PanelColor targetColor) {
@@ -95,6 +99,8 @@ public class ControlPanelCommand extends CommandBase {
     @Override
     public void initialize() {
       prevSpinDir = 0; // reset
+      tryIdx = 0;
+      lastTimeReachedColor = Timer.getFPGATimestamp();
       isFinished = false;
       SmartDashboard.putString("CtlPanCmd", "TurnToColor");
     }
@@ -102,20 +108,30 @@ public class ControlPanelCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-System.out.println("TurnToColor execute");
+      System.out.println("TurnToColor execute");
 
       if(isFinished)
         return;
 
-      int spinDir = controlPanel.seekColor(targetColor);
+      int spinDir = controlPanel.seekColor(targetColor, 1/*Math.pow(0.5, tryIdx)*/);
+      SmartDashboard.putNumber("spinDir", spinDir);
+
+      //if(spinDir==0 && prevSpinDir!=spinDir)
+      //  tryIdx++;
+      
       if(spinDir==0) // If no spin dir, we've reached the target color
       {
-        controlPanel.overrunInDir(prevSpinDir, 4);
-        isFinished = true;
+        controlPanel.overrunInDir(prevSpinDir, 0);
+        //if(Timer.getFPGATimestamp() - lastTimeReachedColor > COLOR_REACHED_STABLE_TIME)
+          isFinished = true;
       } else // We're still seeking the color
       {
+        // This will start being in the past when spinDir starts being 0
+        lastTimeReachedColor = Timer.getFPGATimestamp();
         prevSpinDir = spinDir;
       }
+
+      //prevSpinDir = spinDir;
     }
 
     // Called once the command ends or is interrupted.

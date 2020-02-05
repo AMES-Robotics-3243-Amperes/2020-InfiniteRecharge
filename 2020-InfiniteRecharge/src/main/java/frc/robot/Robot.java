@@ -7,9 +7,18 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -18,6 +27,10 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * project.
  */
 public class Robot extends TimedRobot {
+  
+  Joystick testJoyst = new Joystick(0);
+  private CANSparkMax testMotor = new CANSparkMax(5, MotorType.kBrushless);
+  
   private Command m_autonomousCommand;
   private Command m_driveCommand;
   //public static DriveTrain drivetrain = new DriveTrain();
@@ -28,6 +41,13 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   //private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
+  NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+  NetworkTable Yleft = NetworkTableInstance.getDefault().getTable("Yleft");
+  NetworkTable Yright = NetworkTableInstance.getDefault().getTable("Yright");
+  NetworkTableEntry camMode;
+  NetworkTableEntry pipeline;
+
+
   //MotorController MC;
   //InputManager IM;
   private RobotContainer m_robotContainer;
@@ -37,7 +57,14 @@ public class Robot extends TimedRobot {
    * initialization code.
    */
   @Override
-  public void robotInit() {
+  public void robotInit() { 
+    camMode = table.getEntry("camMode");
+    pipeline = table.getEntry("pipeline");
+
+    Yleft.getEntry("Yleft").setDouble(23.2); //Joystick Value. I'm not sure where it's held
+   
+    Yright.getEntry("Yright").setDouble(22.4);
+    
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
@@ -59,6 +86,8 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
+    testMotor.set(0.25 * testJoyst.getRawAxis(1));
   }
 
   /**
