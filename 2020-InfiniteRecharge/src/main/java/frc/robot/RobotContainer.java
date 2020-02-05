@@ -14,11 +14,15 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.ControlPanelCommand;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ControlPanelSubsystem;
 import frc.robot.subsystems.DriveTrainSubSystem;
+import frc.robot.subsystems.BallCollectionSubSystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.DriveTrainCommand;
+import frc.robot.commands.LimelightCommand;
+import frc.robot.commands.BallCollectionCommand;
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -30,6 +34,8 @@ public class RobotContainer {
   private static Joystick driver = new Joystick(0);
   private static Joystick secondary = new Joystick(1);
   static Double[] steering = new Double[2];
+  static double steerLeft;
+  static double steerRight;
 
   
 
@@ -37,12 +43,16 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   public static DriveTrainSubSystem m_robotDriveSubsystem = new DriveTrainSubSystem();
   public static ControlPanelSubsystem m_controlPanelSubsystem = new ControlPanelSubsystem();
-  
+  public static BallCollectionSubSystem m_ballCollectionSubsystem = new BallCollectionSubSystem();
+  public final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem(m_robotDriveSubsystem);
+
   //Defined Commands
   public final DriveTrainCommand m_robotDriveCommand = new DriveTrainCommand(m_robotDriveSubsystem);
   private final ControlPanelCommand m_controlPanelCommand = new ControlPanelCommand(m_controlPanelSubsystem);
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-
+  private final LimelightCommand m_limelightCommand = new LimelightCommand(m_robotDriveSubsystem, m_limelightSubsystem);
+  private final BallCollectionCommand m_ballCollectionCommand = new BallCollectionCommand(m_ballCollectionSubsystem);
+  
   private final ControlPanelCommand.TurnNumTimes turn4Times = new ControlPanelCommand.TurnNumTimes(m_controlPanelSubsystem, 4);
   private final ControlPanelCommand.TurnToColor turnToColorBlue = new ControlPanelCommand.TurnToColor(m_controlPanelSubsystem, ControlPanelSubsystem.PanelColor.BLUE);
   private final ControlPanelCommand.TurnToColor turnToColorGreen = new ControlPanelCommand.TurnToColor(m_controlPanelSubsystem, ControlPanelSubsystem.PanelColor.GREEN);
@@ -98,32 +108,45 @@ public class RobotContainer {
     turn4TimeButton.whenPressed(turn4Times, true);
   }
   
-  public static Double[] configureDriveBindings(){  //This passes in the axis steering for robot drive
-    
-    steering[0] = -driver.getRawAxis(1);  //Should be the left axis
-    steering[1] = -driver.getRawAxis(3);  //Should be the right axis
-    
-    steering = deadZone(steering);
-    steering = scaleZone(steering);
-    return steering;
+  public static boolean driveLime(){
+    return driver.getRawButton(12); //I don't know which button to choose yet.
   }
 
-  public static Double[] deadZone(Double[] dead){      
+  public static double configureDriveLeft(){  //This passes in the axis steering for robot drive
+    steerLeft = -driver.getRawAxis(1);  //Should be the left axis
+    
+    steerLeft = deadZone(steerLeft);
+    steerLeft = scaleZone(steerLeft);
+
+    return steerLeft;
+  }
+  public static double configureDriveRight(){
+    steerRight = -driver.getRawAxis(3);
+
+    steerRight = deadZone(steerRight);
+    steerRight = scaleZone(steerRight);
+
+    return steerRight;
+  }
+
+  public static boolean configureballbindings(){
+    return driver.getRawButton(5);
+
+  }
+
+  public static double deadZone(double dead){      
       
-    if(-0.09 < dead[0] && 0.09 > dead[0]){
-      dead[0] = 0.0;
-    } else if(-0.09 < dead[1] && 0.09 > dead[1]){
-      dead[1] = 0.0;
+    if(-0.09 < dead && 0.09 > dead){
+      dead = 0.0;
     }
 
     return dead;
   }
 
-  public static Double[] scaleZone(Double[] scale){
+  public static double scaleZone(double scale){
     double a = 0.4;
     double b = 0.4;
-    scale[0] = a * Math.pow(scale[0], 3) + b * scale[0]; //Dampens the input value by squaring it
-    scale[1] = a * Math.pow(scale[1], 3) + b * scale[1]; //Dampens the input value by squaring it
+    scale = a * Math.pow(scale, 3) + b * scale;
 
     return scale;
   }
@@ -141,5 +164,8 @@ public class RobotContainer {
   public Command getDriveCommand() {
 
     return m_robotDriveCommand;
+  }
+  public Command getLimelightCommand(){
+    return m_limelightCommand;
   }
 }

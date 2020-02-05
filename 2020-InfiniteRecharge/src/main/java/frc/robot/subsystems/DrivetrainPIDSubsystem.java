@@ -25,12 +25,7 @@ public class DrivetrainPIDSubsystem extends PIDSubsystem {
     // Commented out temporarily because of compile errors - Silas 2020 Jan 31
     super(
         // The PIDController used by the subsystem
-        // 1/29 Adjusting PIDs as per this doc:
-        // https://frc-pdr.readthedocs.io/en/latest/control/pid_control.html#tuning-methods
-        // Currently at step 1.
-        new PIDController(1.8, 0/*9e-10*/, 0/*9e-5*/),
-          0 // TEMP FIX
-    //    new PIDController(0.6, 9e-10, 9e-5); // P I D // P In PID being used for correcting oscillation
+        new PIDController(0.6, 9e-10, 9e-5)); // P I D // P In PID being used for correcting oscillation
         //0.8, 9e-5, 9e-4
         );
       
