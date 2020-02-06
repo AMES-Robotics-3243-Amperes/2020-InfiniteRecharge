@@ -21,7 +21,7 @@ public class DumperCommand extends CommandBase {
   private double startTime;
   private double runTime;
 
-  public DumperCommand(DumperSubsystem controlPanel, double runTime) {
+  public DumperCommand(DumperSubsystem dumper, double runTime) {  // Changed DumperSubsystem variable from "controlPanel" to "dumper"
 	this.dumper = dumper;  //Sets the variable to the object
 	this.runTime = runTime;
   }

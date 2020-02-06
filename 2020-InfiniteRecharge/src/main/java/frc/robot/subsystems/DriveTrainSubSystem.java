@@ -17,17 +17,17 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 //import frc.robot.commands.DriveTrainCommand;
 //import frc.robot.RobotContainer;
 import frc.robot.subsystems.DrivetrainPIDSubsystem;
-
+import frc.robot.Constants;
 
 /**
  * Add your docs here.
  */
 public class DriveTrainSubSystem extends SubsystemBase {
   // New Encoder Objects \\
-    private static CANSparkMax motor_LT = new CANSparkMax(2, MotorType.kBrushless);
-    private static CANSparkMax motor_LB = new CANSparkMax(1, MotorType.kBrushless);
-    private static CANSparkMax motor_RT = new CANSparkMax(3, MotorType.kBrushless);
-    private static CANSparkMax motor_RB = new CANSparkMax(4, MotorType.kBrushless);
+    private static CANSparkMax motor_LT = new CANSparkMax(Constants.DriveConstants.kLTID, MotorType.kBrushless);
+    private static CANSparkMax motor_LB = new CANSparkMax(Constants.DriveConstants.kLBID, MotorType.kBrushless);
+    private static CANSparkMax motor_RT = new CANSparkMax(Constants.DriveConstants.kRTID, MotorType.kBrushless);
+    private static CANSparkMax motor_RB = new CANSparkMax(Constants.DriveConstants.kRBID, MotorType.kBrushless);
 
     // Left and right side drive
     public final static SpeedControllerGroup m_leftmotors = new SpeedControllerGroup(motor_LT, motor_LB); // Classifying left side motors

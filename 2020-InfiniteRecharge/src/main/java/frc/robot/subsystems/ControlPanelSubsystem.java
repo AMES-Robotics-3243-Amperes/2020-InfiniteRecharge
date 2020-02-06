@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.PIDMotor;
+import frc.robot.Constants;
 public class ControlPanelSubsystem extends SubsystemBase {
 
   public static enum PanelColor
@@ -45,10 +46,8 @@ public class ControlPanelSubsystem extends SubsystemBase {
     }
   }
 
-  /**
-   * Creates a new ControlPanel.
-   */
-  private CANSparkMax panelSpinner = new CANSparkMax(5, MotorType.kBrushless);
+  //  Changed the panelSpinner ID number to a unchangeable variable constant in Constants.java 2/5/20
+  private CANSparkMax panelSpinner = new CANSparkMax(Constants.ControlPanelConstants.kpanelSpinnerID, MotorType.kBrushless);
   private PIDMotor panelSpinnerPID = new PIDMotor(panelSpinner, "Panel Spinner");
   private static final double PANEL_SPINNER_SPEED = 0.5;
   private CANEncoder panelSpinnerEncoder;

@@ -8,7 +8,6 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.CANSparkMax;
@@ -16,14 +15,15 @@ import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANPIDController;
 
+import frc.robot.Constants;
+
 public class ClimbSubsystem extends SubsystemBase {
   
-  private static CANSparkMax climber = new CANSparkMax(8, MotorType.kBrushless);
+  private static CANSparkMax climber = new CANSparkMax(Constants.ClimbingConstant.kClimbID, MotorType.kBrushless);  // Don't know what motor ID it is yet
   private static CANPIDController pidControl;
 
-  public static ADXRS450_Gyro climbSensor = new ADXRS450_Gyro();
 
-
+  // NOT YET TUNED TO THE ROBOT! 2/5/20
   double kp = 0.0;
   double ki = 0.0;
   double kd = 0.0;
@@ -44,10 +44,6 @@ public class ClimbSubsystem extends SubsystemBase {
     if (value) {
       pidControl.setReference(angle, ControlType.kPosition);
     }
-  }
-
-  public static double getClimb(){
-    return climbSensor.getAngle();
   }
 
   @Override

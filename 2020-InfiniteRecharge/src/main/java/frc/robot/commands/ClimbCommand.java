@@ -8,7 +8,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.RobotContainer;
@@ -19,13 +18,12 @@ public class ClimbCommand extends CommandBase {
 
   public ClimbCommand(ClimbSubsystem elevator) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_elevator = elevator;
+    m_elevator = elevator;  // Set variable to the object
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    ClimbSubsystem.climbSensor.reset();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
