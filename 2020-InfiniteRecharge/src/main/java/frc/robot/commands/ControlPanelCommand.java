@@ -116,22 +116,22 @@ public class ControlPanelCommand extends CommandBase {
       int spinDir = controlPanel.seekColor(targetColor, 1/*Math.pow(0.5, tryIdx)*/);
       SmartDashboard.putNumber("spinDir", spinDir);
 
-      //if(spinDir==0 && prevSpinDir!=spinDir)
-      //  tryIdx++;
+      if(spinDir==0 && prevSpinDir!=spinDir)
+        tryIdx++;
       
       if(spinDir==0) // If no spin dir, we've reached the target color
       {
         controlPanel.overrunInDir(prevSpinDir, 0);
-        //if(Timer.getFPGATimestamp() - lastTimeReachedColor > COLOR_REACHED_STABLE_TIME)
+        if(Timer.getFPGATimestamp() - lastTimeReachedColor > COLOR_REACHED_STABLE_TIME)
           isFinished = true;
       } else // We're still seeking the color
       {
         // This will start being in the past when spinDir starts being 0
         lastTimeReachedColor = Timer.getFPGATimestamp();
-        prevSpinDir = spinDir;
+        //prevSpinDir = spinDir;
       }
 
-      //prevSpinDir = spinDir;
+      prevSpinDir = spinDir;
     }
 
     // Called once the command ends or is interrupted.

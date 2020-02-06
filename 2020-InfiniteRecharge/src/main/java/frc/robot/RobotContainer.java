@@ -11,18 +11,10 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.ControlPanelCommand;
-import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.LimelightSubsystem;
-import frc.robot.subsystems.ControlPanelSubsystem;
-import frc.robot.subsystems.DriveTrainSubSystem;
-import frc.robot.subsystems.BallCollectionSubSystem;
+import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.DriveTrainCommand;
-import frc.robot.commands.LimelightCommand;
-import frc.robot.commands.BallCollectionCommand;
+import frc.robot.commands.*;
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -45,10 +37,10 @@ public class RobotContainer {
   public static ControlPanelSubsystem m_controlPanelSubsystem = new ControlPanelSubsystem();
   public final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem(m_robotDriveSubsystem);
   public static BallCollectionSubSystem m_ballCollectionSubsystem = new BallCollectionSubSystem();
+  public final DumperSubsystem dumperSubsystem = new DumperSubsystem();
 
   //Defined Commands
   public final DriveTrainCommand m_robotDriveCommand = new DriveTrainCommand(m_robotDriveSubsystem);
-  private final ControlPanelCommand m_controlPanelCommand = new ControlPanelCommand(m_controlPanelSubsystem);
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   private final LimelightCommand m_limelightCommand = new LimelightCommand(m_robotDriveSubsystem, m_limelightSubsystem);
   private final BallCollectionCommand m_ballCollectionCommand = new BallCollectionCommand(m_ballCollectionSubsystem);
@@ -58,6 +50,8 @@ public class RobotContainer {
   private final ControlPanelCommand.TurnToColor turnToColorGreen = new ControlPanelCommand.TurnToColor(m_controlPanelSubsystem, ControlPanelSubsystem.PanelColor.GREEN);
   private final ControlPanelCommand.TurnToColor turnToColorRed = new ControlPanelCommand.TurnToColor(m_controlPanelSubsystem, ControlPanelSubsystem.PanelColor.RED);
   private final ControlPanelCommand.TurnToColor turnToColorYellow = new ControlPanelCommand.TurnToColor(m_controlPanelSubsystem, ControlPanelSubsystem.PanelColor.YELLOW);
+
+  private final DumperCommand dumperCommand = new DumperCommand(dumperSubsystem, 2);
 
   //Joysticks
 
@@ -100,12 +94,14 @@ public class RobotContainer {
     JoystickButton colorRed = new JoystickButton(driver, B_RED);
     JoystickButton colorYellow = new JoystickButton(driver, B_YELLOW);
     JoystickButton turn4TimeButton = new JoystickButton(driver, B_TURN_4_TIMES);
-    triggerSpinner.toggleWhenPressed(m_controlPanelCommand);  //Whenever you push the button, the referenced command is run
     colorBlue.whenPressed(turnToColorBlue, true); // 'true'=interruptible
     colorGreen.whenPressed(turnToColorGreen, true);
     colorRed.whenPressed(turnToColorRed, true);
     colorYellow.whenPressed(turnToColorYellow, true);
     turn4TimeButton.whenPressed(turn4Times, true);
+
+    JoystickButton dump = new JoystickButton(driver, 6);
+    dump.whenPressed(dumperCommand);
   }
   
   //-------------------- LIMELIGHT SECTION OF JOYSTICK ---------------------
