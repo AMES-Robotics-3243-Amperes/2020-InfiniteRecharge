@@ -18,11 +18,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.PIDMotor;
+import frc.robot.Constants;
 /*\\\     Packages and Imports      ///*/
 public class DumperSubsystem extends SubsystemBase {
   
   VictorSPX[] dumpMotors = new VictorSPX[] {
-    new VictorSPX(7);
+    new VictorSPX(Constants.DumperConstants.kDumpID);
   }
   private final double speedMulti = 1;
 

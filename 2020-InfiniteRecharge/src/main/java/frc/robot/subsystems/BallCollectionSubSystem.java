@@ -12,16 +12,15 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-
+import frc.robot.Constants;
 
 public class BallCollectionSubSystem extends SubsystemBase {
-  /**
-   * Creates a new BallCollectionSubsystem.
-   */
-  static CANSparkMax motorSpin = new CANSparkMax(6 ,MotorType.kBrushless); //Don't know the motor id yet
+  
+  static CANSparkMax motorSpin = new CANSparkMax(Constants.BallCollectConstants.kBallID ,MotorType.kBrushless);
 
   public BallCollectionSubSystem() {
 

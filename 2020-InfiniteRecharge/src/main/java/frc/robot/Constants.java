@@ -17,19 +17,26 @@ package frc.robot;
  */
 public final class Constants {
     public static final class DriveConstants {
-
+        public static final int kLTID = 2;
+        public static final int kLBID = 1;
+        public static final int kRTID = 3;
+        public static final int kRBID = 4;
     }
 
-    public static final class LimeLightConstants {
-
+    public static final class ShooterConstants {
+        public static final int kShootID = 0;   // Don't know ID yet
     }
 
     public static final class ClimbingConstant {
-
+        public static final int kClimbID = 8;   // Don't know ID yet
     }
 
     public static final class ControlPanelConstants {
-        public static final int kMotorCP = 0;   //Don't know which port yet, so using random # for now 1/16/20
+        public static final int kpanelSpinnerID = 5;   //Don't know which port yet, so using random # for now 1/16/20
+    }
+
+    public static final class DumperConstants {
+        public static final int kDumpID = 7;
     }
 
     public static final class BallCollectConstants {
