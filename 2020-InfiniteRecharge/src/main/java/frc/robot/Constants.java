@@ -23,8 +23,9 @@ public final class Constants {
         public static final int kRBID = 4;
     }
 
-    public static final class ShooterConstants {
-        public static final int kShootID = 0;   // Don't know ID yet
+    public static final class IndexerConstants {
+        public static final int[] kBeltIDs = { 0 };   // Don't know ID yet
+        public static final double BELT_SPEED = 1;
     }
 
     public static final class ClimbingConstant {

@@ -9,17 +9,19 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.BallCollectionSubSystem;
+import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.RobotContainer;
 
-public class BallCollectionCommand extends CommandBase {
+public class BallCollectionCommand extends IndexerCommand{
   /**
    * Creates a new BallCollectionCommand.
    */
   private final BallCollectionSubSystem m_bCollect;
 
-  public BallCollectionCommand(BallCollectionSubSystem bCollect) {
+  public BallCollectionCommand(BallCollectionSubSystem bCollect, IndexerSubsystem indexer) {
+    super(indexer);
     // Use addRequirements() here to declare subsystem dependencies.
-  m_bCollect = bCollect;
+    m_bCollect = bCollect;
   }
 
   // Called when the command is initially scheduled.

@@ -7,8 +7,7 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.ControlPanelSubsystem;
-import frc.robot.subsystems.DumperSubsystem;
+import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -16,14 +15,15 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 /**
  * Spins the dumper mototr for a set amount of time
  */
-public class DumperCommand extends CommandBase {
+public class DumperCommand extends IndexerCommand {
   private final DumperSubsystem dumper;
   private double startTime;
   private double runTime;
 
-  public DumperCommand(DumperSubsystem dumper, double runTime) {  // Changed DumperSubsystem variable from "controlPanel" to "dumper"
-	this.dumper = dumper;  //Sets the variable to the object
-	this.runTime = runTime;
+  public DumperCommand(DumperSubsystem dumper, IndexerSubsystem indexer, double runTime) {  // Changed DumperSubsystem variable from "controlPanel" to "dumper"
+    super(indexer);
+    this.dumper = dumper;  //Sets the variable to the object
+    this.runTime = runTime;
   }
 
   // Called when the command is initially scheduled.
