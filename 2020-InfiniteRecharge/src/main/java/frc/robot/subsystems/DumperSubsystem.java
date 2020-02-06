@@ -21,7 +21,9 @@ import frc.robot.util.PIDMotor;
 /*\\\     Packages and Imports      ///*/
 public class DumperSubsystem extends SubsystemBase {
   
-  VictorSPX dumpMotor = new VictorSPX(7);
+  VictorSPX[] dumpMotors = new VictorSPX[] {
+    new VictorSPX(7);
+  }
   private final double speedMulti = 1;
 
   public DumperSubsystem() {
@@ -35,6 +37,9 @@ public class DumperSubsystem extends SubsystemBase {
 
   public void setMotorSpeed(double speed)
   {
-    dumpMotor.set(ControlMode.Velocity, speed * speedMulti);
+    for(VicotrSPX motor : dumperMotors)
+    {
+      motor.set(ControlMode.Velocity, speed * speedMulti);
+    }
   }
 }
