@@ -36,7 +36,7 @@ public final class Constants {
     }
 
     public static final class DumperConstants {
-        public static final int kDumpID = 7;
+        public static final int[] kDumpIDs = { 9 }; // DumperSubsystem automatically creates VictorSPXs for each ID
     }
 
     public static final class BallCollectConstants {
