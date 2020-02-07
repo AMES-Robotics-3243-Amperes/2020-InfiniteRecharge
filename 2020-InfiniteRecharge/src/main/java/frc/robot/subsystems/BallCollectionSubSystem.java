@@ -14,6 +14,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class BallCollectionSubSystem extends SubsystemBase {
@@ -38,5 +39,8 @@ public class BallCollectionSubSystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.getBoolean("BallCollection: ", true);
+    SmartDashboard.getNumber("CollectorCurrent: ", motor1.getOutputCurrent());
+    SmartDashboard.getNumber("CollectorVoltage: ", motor1.getBusVoltage()); 
   }
 }
