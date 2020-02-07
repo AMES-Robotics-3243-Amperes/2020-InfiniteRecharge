@@ -18,6 +18,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.Constants;
 
@@ -48,6 +49,13 @@ public class BallCollectionSubSystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+<<<<<<< HEAD
     if(Timer.getFPGATimestamp() > deployInitTime + 1); // actuator runs for 1 second
+=======
+    // This method will be called once per scheduler run
+    SmartDashboard.getBoolean("BallCollection: ", true);
+    SmartDashboard.getNumber("CollectorCurrent: ", motorSpin.getOutputCurrent());
+    SmartDashboard.getNumber("CollectorVoltage: ", motorSpin.getBusVoltage()); 
+>>>>>>> 02da13210c463239fc74b9ba2ec6ac6c30dfbbfc
   }
 }

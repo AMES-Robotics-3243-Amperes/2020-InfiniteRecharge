@@ -55,8 +55,19 @@ public class DriveTrainSubSystem extends SubsystemBase {
     @Override
     public void periodic() {
       // This method will be called once per scheduler run
-      SmartDashboard.putNumber("Right Motor Spd: ", motor_RT.getEncoder().getVelocity()); // Prints spd of right encoder
-      SmartDashboard.putNumber("Left Motor Spd: ", motor_LT.getEncoder().getVelocity());  // Prints spd of left encoder
+      SmartDashboard.putNumber("EncoderVelocity", motor_RT.getEncoder().getVelocity()); // Prints speed of encoder
+      SmartDashboard.getNumber("VelocityMotorLT: ", motor_LT.getEncoder().getVelocity());
+      SmartDashboard.getNumber("VelocityMotorLB: ", motor_LB.getEncoder().getVelocity());
+      SmartDashboard.getNumber("VelocityMotorRT: ", motor_RT.getEncoder().getVelocity());
+      SmartDashboard.getNumber("VelocityMotorRB: ", motor_RB.getEncoder().getVelocity());
+      SmartDashboard.getNumber("CurrentMotorLT: ", motor_LT.getOutputCurrent());
+      SmartDashboard.getNumber("CurrentMotorLB: ", motor_LB.getOutputCurrent());
+      SmartDashboard.getNumber("CurrentMotorRT: ", motor_RT.getOutputCurrent());
+      SmartDashboard.getNumber("CurrentMotorRB: ", motor_RB.getOutputCurrent());
+      SmartDashboard.getNumber("CurrentMotorLT: ", motor_LT.getBusVoltage());
+      SmartDashboard.getNumber("CurrentMotorLB: ", motor_LB.getBusVoltage());
+      SmartDashboard.getNumber("CurrentMotorRT: ", motor_RT.getBusVoltage());
+      SmartDashboard.getNumber("CurrentMotorRB: ", motor_RB.getBusVoltage());
     }
 
 }

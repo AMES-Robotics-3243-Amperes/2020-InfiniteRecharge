@@ -38,8 +38,9 @@ public class Robot extends TimedRobot {
   private Command m_ballCollectCommand;
   private Command m_climbCommand;
 
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
+  private static final String kDefaultAuto = "No Auto";
+  private static final String kCustomAuto = "Auto Line";
+  private static final String kShootAuto = "Auto Shoot";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
@@ -68,7 +69,6 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
-    
   }
 
   /**

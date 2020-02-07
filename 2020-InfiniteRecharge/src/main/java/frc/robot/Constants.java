@@ -29,7 +29,11 @@ public final class Constants {
     }
 
     public static final class ClimbingConstant {
-        public static final int kClimbID = 8;   // Don't know ID yet
+        public static final int kClimbAdjID = 8;   // Don't know ID yet
+        public static final int kClimbRID = 12;
+        public static final int kClimbLID = 13;
+        public static final int kLimitTopID = 1;
+        public static final int kLimitBottomID = 2;
     }
 
     public static final class ControlPanelConstants {
