@@ -135,20 +135,13 @@ public class RobotContainer {
   }
 
   public static double deadZone(double dead){      
-      
-    if(-0.09 < dead && 0.09 > dead){
-      dead = 0.0;
-    }
-
-    return dead;
+    double deadZoneRadius = 0.09;
+    // This makes input increase smoothly, instead of jumping up slightly as soon as 0.09 is passed.
+    return Math.signum(dead) * Math.max(0, Math.abs(dead*(1+deadZoneRadius))-deadZoneRadius);
   }
 
   public static double scaleZone(double scale){
-    double a = 0.4;
-    double b = 0.4;
-    scale = a * Math.pow(scale, 3) + b * scale;
-
-    return scale;
+    return Math.pow(scale, 3);
   }
 
   //----------------- INDEXER (BALL COLLECTION) SECTION OF JOYSTICK -------------------
