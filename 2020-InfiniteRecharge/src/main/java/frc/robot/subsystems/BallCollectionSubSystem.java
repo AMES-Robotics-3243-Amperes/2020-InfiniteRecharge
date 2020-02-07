@@ -40,7 +40,7 @@ public class BallCollectionSubSystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.getBoolean("BallCollection: ", true);
-    SmartDashboard.getNumber("CollectorCurrent: ", motor1.getOutputCurrent());
-    SmartDashboard.getNumber("CollectorVoltage: ", motor1.getBusVoltage()); 
+    SmartDashboard.getNumber("CollectorCurrent: ", motorSpin.getOutputCurrent());
+    SmartDashboard.getNumber("CollectorVoltage: ", motorSpin.getBusVoltage()); 
   }
 }
