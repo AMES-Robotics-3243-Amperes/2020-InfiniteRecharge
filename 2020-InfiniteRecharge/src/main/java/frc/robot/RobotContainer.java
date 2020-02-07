@@ -37,12 +37,13 @@ public class RobotContainer {
   public static BallCollectionSubSystem m_ballCollectionSubsystem = new BallCollectionSubSystem();
   public final DumperSubsystem dumperSubsystem = new DumperSubsystem();
   public static ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
+  public final IndexerSubsystem indexerSubsystem = new IndexerSubsystem();
 
   //Defined Commands
   public final DriveTrainCommand m_robotDriveCommand = new DriveTrainCommand(m_robotDriveSubsystem);
   private final AutoCommand m_autoCommand = new AutoCommand(m_exampleSubsystem);
   private final LimelightCommand m_limelightCommand = new LimelightCommand(m_robotDriveSubsystem, m_limelightSubsystem);
-  private final BallCollectionCommand m_ballCollectionCommand = new BallCollectionCommand(m_ballCollectionSubsystem);
+  private final BallCollectionCommand m_ballCollectionCommand = new BallCollectionCommand(m_ballCollectionSubsystem, indexerSubsystem);
   public static ClimbCommand m_climbCommand = new ClimbCommand(m_climbSubsystem);
 
   private final ControlPanelCommand.TurnNumTimes turn4Times = new ControlPanelCommand.TurnNumTimes(m_controlPanelSubsystem, 4);
@@ -52,7 +53,7 @@ public class RobotContainer {
   private final ControlPanelCommand.TurnToColor turnToColorYellow = new ControlPanelCommand.TurnToColor(m_controlPanelSubsystem, ControlPanelSubsystem.PanelColor.YELLOW);
   private final ControlPanelCommand.LowerMechanism lowerControlPanel = new ControlPanelCommand.LowerMechanism(m_controlPanelSubsystem);
 
-  private final DumperCommand dumperCommand = new DumperCommand(dumperSubsystem, 2);
+  private final DumperCommand dumperCommand = new DumperCommand(dumperSubsystem, indexerSubsystem, 2);
 
   //Joysticks
 

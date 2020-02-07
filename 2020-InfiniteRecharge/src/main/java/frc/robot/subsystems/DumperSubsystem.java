@@ -22,11 +22,15 @@ import frc.robot.Constants;
 /*\\\     Packages and Imports      ///*/
 public class DumperSubsystem extends SubsystemBase {
   
-  VictorSPX dumpMotor = new VictorSPX(Constants.DumperConstants.kDumpID);
+  VictorSPX[] dumpMotors; // Add IDs in Constants.DumperConstants to make more motors here
   private final double speedMulti = 1;
 
   public DumperSubsystem() {
-    
+    dumpMotors = new VictorSPX[Constants.DumperConstants.kDumpIDs.length];
+    for(int i=0; i<dumpMotors.length; i++)
+    {
+      dumpMotors[i] = new VictorSPX(Constants.DumperConstants.kDumpIDs[i]);
+    }
   }
 
   @Override
@@ -36,6 +40,9 @@ public class DumperSubsystem extends SubsystemBase {
 
   public void setMotorSpeed(double speed)
   {
-    dumpMotor.set(ControlMode.Velocity, speed * speedMulti);
+    for(VictorSPX motor : dumpMotors)
+    {
+      motor.set(ControlMode.Velocity, speed * speedMulti);
+    }
   }
 }
