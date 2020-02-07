@@ -17,18 +17,34 @@ package frc.robot;
  */
 public final class Constants {
     public static final class DriveConstants {
-
+        public static final int kLTID = 2;
+        public static final int kLBID = 1;
+        public static final int kRTID = 3;
+        public static final int kRBID = 4;
     }
 
-    public static final class LimeLightConstants {
-
+    public static final class IndexerConstants {
+        public static final int[] kBeltIDs = { 0 };   // Don't know ID yet
+        public static final double BELT_SPEED = 1;
     }
 
     public static final class ClimbingConstant {
-
+        public static final int kClimbAdjID = 8;   // Don't know ID yet
+        public static final int kClimbRID = 12;
+        public static final int kClimbLID = 13;
+        public static final int kLimitTopID = 1;
+        public static final int kLimitBottomID = 2;
     }
 
     public static final class ControlPanelConstants {
-        public static final int kMotorCP = 0;   //Don't know which port yet, so using random # for now 1/16/20
+        public static final int kpanelSpinnerID = 5;   //Don't know which port yet, so using random # for now 1/16/20
+    }
+
+    public static final class DumperConstants {
+        public static final int[] kDumpIDs = { 9 }; // DumperSubsystem automatically creates VictorSPXs for each ID
+    }
+
+    public static final class BallCollectConstants {
+        public static final int kBallID = 7; // Don't know which CAN ID this is yet 2/4/20
     }
 }

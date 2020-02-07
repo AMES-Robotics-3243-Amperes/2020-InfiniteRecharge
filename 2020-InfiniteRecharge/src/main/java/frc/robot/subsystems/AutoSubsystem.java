@@ -5,10 +5,20 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.subsystems;
 
-/**
- * Add your docs here.
- */
-public class ARMCommand {
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+public class AutoSubsystem extends SubsystemBase {
+  /**
+   * Creates a new ExampleSubsystem.
+   */
+  public AutoSubsystem() {
+
+  }
+
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+  }
 }

@@ -12,27 +12,27 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import frc.robot.Constants;
 
 public class BallCollectionSubSystem extends SubsystemBase {
-  /**
-   * Creates a new BallCollectionSubsystem.
-   */
-  CANSparkMax motor1 = new CANSparkMax(0,MotorType.kBrushless);
+  
+  static CANSparkMax motorSpin = new CANSparkMax(Constants.BallCollectConstants.kBallID ,MotorType.kBrushless);
 
   public BallCollectionSubSystem() {
 
   }
   
-  public void runball(boolean spin){ //boolean bc it's a button {
+  public static void setSpin(boolean spin){ //boolean bc it's a button
     if (spin) {
-      motor1.set(.65); // sets the motor to 65% speed
+      motorSpin.set(.65); // sets the motor to 65% speed
     }
     else {
-      motor1.set(0); // if the button is not pressed it sets the motor to 0% speed
+      motorSpin.set(0); // if the button is not pressed it sets the motor to 0% speed
     }
   }
 

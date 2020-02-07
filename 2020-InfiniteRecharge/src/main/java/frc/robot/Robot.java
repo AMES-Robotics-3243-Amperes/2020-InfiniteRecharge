@@ -7,9 +7,19 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -18,18 +28,28 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * project.
  */
 public class Robot extends TimedRobot {
+  
+  Joystick testJoyst = new Joystick(0);
+  private CANSparkMax testMotor = new CANSparkMax(5, MotorType.kBrushless);
+  
   private Command m_autonomousCommand;
   private Command m_driveCommand;
-  //public static DriveTrain drivetrain = new DriveTrain();
-  //public static OI oi;
+  private Command m_limelightCommand;
+  private Command m_ballCollectCommand;
+  private Command m_climbCommand;
 
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
+  private static final String kDefaultAuto = "No Auto";
+  private static final String kCustomAuto = "Auto Line";
+  private static final String kShootAuto = "Auto Shoot";
   private String m_autoSelected;
-  //private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
-  //MotorController MC;
-  //InputManager IM;
+  NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+  NetworkTable Yleft = NetworkTableInstance.getDefault().getTable("Yleft");
+  NetworkTable Yright = NetworkTableInstance.getDefault().getTable("Yright");
+  NetworkTableEntry camMode;
+  NetworkTableEntry pipeline;
+
   private RobotContainer m_robotContainer;
 
   /**
@@ -37,12 +57,18 @@ public class Robot extends TimedRobot {
    * initialization code.
    */
   @Override
-  public void robotInit() {
+  public void robotInit() { 
+    camMode = table.getEntry("camMode");
+    pipeline = table.getEntry("pipeline");
+
+    Yleft.getEntry("Yleft").setDouble(23.2); //Joystick Value. I'm not sure where it's held
+   
+    Yright.getEntry("Yright").setDouble(22.4);
+    
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
-    
   }
 
   /**
@@ -59,6 +85,8 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
+    testMotor.set(0.25 * testJoyst.getRawAxis(1));
   }
 
   /**
@@ -101,8 +129,21 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    
     m_driveCommand = m_robotContainer.getDriveCommand();
-    m_driveCommand.schedule();
+    m_limelightCommand = m_robotContainer.getLimelightCommand();
+    m_ballCollectCommand = m_robotContainer.getBallCollectCommand();
+    m_climbCommand = m_robotContainer.getClimbCommand();
+
+    if(RobotContainer.driveLime()){
+      m_limelightCommand.schedule();
+    } else if(!RobotContainer.driveLime()){
+      m_driveCommand.schedule();
+    }
+
+    m_ballCollectCommand.schedule();
+    m_climbCommand.schedule();
+
     CommandScheduler.getInstance().run();
   }
 

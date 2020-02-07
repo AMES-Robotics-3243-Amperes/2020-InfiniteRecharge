@@ -35,16 +35,22 @@ public class LimelightCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
+
     DriveTrainSubSystem.tankDrive(
-      LimelightSubsystem.setVision(RobotContainer.driveLime()),
-      LimelightSubsystem.setVision(RobotContainer.driveLime())
+      //Left side
+      LimelightSubsystem.setSteer() 
+      + LimelightSubsystem.setDist(),
+
+      //Right side
+      LimelightSubsystem.setSteer() 
+      - LimelightSubsystem.setDist()
       );
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    DriveTrainSubSystem.tankDrive(0,0);
   }
 
   // Returns true when the command should end.

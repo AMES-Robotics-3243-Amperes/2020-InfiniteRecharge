@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
@@ -7,21 +7,25 @@
 
 package frc.robot.commands;
 
+import frc.robot.subsystems.AutoSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.BallCollectionSubSystem;
-import frc.robot.subsystems.IndexerSubsystem;
-import frc.robot.RobotContainer;
 
-public class BallCollectionCommand extends IndexerCommand{
+/**
+ * An example command that uses an example subsystem.
+ */
+public class AutoCommand extends CommandBase {
+  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
+  private final AutoSubsystem m_subsystem;
+
   /**
-   * Creates a new BallCollectionCommand.
+   * Creates a new ExampleCommand.
+   *
+   * @param subsystem The subsystem used by this command.
    */
-  private final BallCollectionSubSystem m_bCollect;
-
-  public BallCollectionCommand(BallCollectionSubSystem bCollect, IndexerSubsystem indexer) {
-    super(indexer);
+  public AutoCommand(AutoSubsystem subsystem) {
+    m_subsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    m_bCollect = bCollect;
+    addRequirements(subsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -32,13 +36,11 @@ public class BallCollectionCommand extends IndexerCommand{
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    BallCollectionSubSystem.setSpin(RobotContainer.configureballbindings());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    BallCollectionSubSystem.setSpin(false);
   }
 
   // Returns true when the command should end.

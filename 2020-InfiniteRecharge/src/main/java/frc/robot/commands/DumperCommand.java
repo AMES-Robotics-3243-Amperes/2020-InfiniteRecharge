@@ -7,43 +7,41 @@
 
 package frc.robot.commands;
 
+import frc.robot.subsystems.*;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.BallCollectionSubSystem;
-import frc.robot.subsystems.IndexerSubsystem;
-import frc.robot.RobotContainer;
 
-public class BallCollectionCommand extends IndexerCommand{
-  /**
-   * Creates a new BallCollectionCommand.
-   */
-  private final BallCollectionSubSystem m_bCollect;
+/**
+ * Spins the dumper mototr for a set amount of time
+ */
+public class DumperCommand extends IndexerCommand {
+  private final DumperSubsystem dumper;
+  private double startTime;
+  private double runTime;
 
-  public BallCollectionCommand(BallCollectionSubSystem bCollect, IndexerSubsystem indexer) {
+  public DumperCommand(DumperSubsystem dumper, IndexerSubsystem indexer, double runTime) {  // Changed DumperSubsystem variable from "controlPanel" to "dumper"
     super(indexer);
-    // Use addRequirements() here to declare subsystem dependencies.
-    m_bCollect = bCollect;
+    this.dumper = dumper;  //Sets the variable to the object
+    this.runTime = runTime;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-  }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    BallCollectionSubSystem.setSpin(RobotContainer.configureballbindings());
+	startTime = Timer.getFPGATimestamp();
+	dumper.setMotorSpeed(1);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    BallCollectionSubSystem.setSpin(false);
+    dumper.setMotorSpeed(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return Timer.getFPGATimestamp() >= startTime + runTime;
   }
 }

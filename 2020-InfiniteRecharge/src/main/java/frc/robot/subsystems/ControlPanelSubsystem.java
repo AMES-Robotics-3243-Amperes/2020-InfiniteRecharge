@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-///       Packages and Imports      \\\
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
@@ -14,15 +7,15 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
-
-//import com.ctre.phoenix.motorcontrol.can.*; For "snow blower" motor that raises the panel spinner
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.*;
 
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.PIDMotor;
-/*\\\     Packages and Imports      ///*/
+import frc.robot.Constants;
 public class ControlPanelSubsystem extends SubsystemBase {
 
   public static enum PanelColor
@@ -53,10 +46,8 @@ public class ControlPanelSubsystem extends SubsystemBase {
     }
   }
 
-  /**
-   * Creates a new ControlPanel.
-   */
-  private CANSparkMax panelSpinner = new CANSparkMax(5, MotorType.kBrushless);
+  //  Changed the panelSpinner ID number to a unchangeable variable constant in Constants.java 2/5/20
+  private CANSparkMax panelSpinner = new CANSparkMax(Constants.ControlPanelConstants.kpanelSpinnerID, MotorType.kBrushless);
   private PIDMotor panelSpinnerPID = new PIDMotor(panelSpinner, "Panel Spinner");
   private static final double PANEL_SPINNER_SPEED = 0.5;
   private CANEncoder panelSpinnerEncoder;
@@ -64,7 +55,7 @@ public class ControlPanelSubsystem extends SubsystemBase {
   private static final double PANEL_CIRCUMFRENCE_INCHES = 100;
   private static final double GEARBOX_RATIO = 12/1; // motor turns PER axle turn
 
-  //private VictorSPX mechanismLifter
+  private VictorSPX mechanismLifter = new VictorSPX(8);
 
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
   private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
@@ -75,8 +66,7 @@ public class ControlPanelSubsystem extends SubsystemBase {
   private static final Color CTARGET_RED = ColorMatch.makeColor(0.585, 0.375, 0.085); // (0.561, 0.232, 0.114);
   private static final Color CTARGET_YELLOW = ColorMatch.makeColor(0.43, 0.48, 0.095); // (0.361, 0.524, 0.113);
 
-  private double offsetEncoder = 0;
-  private double nowEncoder = 0;
+  private boolean isMechanismLifted = false;
 
   public ControlPanelSubsystem() {
     panelSpinnerPID.setOutputRange(-PANEL_SPINNER_SPEED, PANEL_SPINNER_SPEED);
@@ -109,7 +99,7 @@ public class ControlPanelSubsystem extends SubsystemBase {
    * @param targetColor The PanelColor to seek toward
    * @return The motor spin direction the subsystem decides on
    */
-  public int seekColor(PanelColor targetColor)
+  public int seekColor(PanelColor targetColor, double speedMulti)
   {
     PanelColor sensorColor = getSensorColor();
     if(sensorColor == null)
@@ -117,11 +107,12 @@ public class ControlPanelSubsystem extends SubsystemBase {
 
     //            v   dirToTarget returns the opposite of the direction we want
     int spinDir = - sensorColor.dirToTarget(targetColor);
-    panelSpinner.set(PANEL_SPINNER_SPEED * spinDir);
+    panelSpinner.set(PANEL_SPINNER_SPEED * speedMulti * spinDir);
     return spinDir;
   }
   public void overrunInDir(int spinDir, double inches)
   {
+    panelSpinnerEncoder.setPosition(0);
     panelSpinnerPID.setPIDPosition(panelSpinnerEncoder.getPosition() + spinDir*inchesToRotations(inches));
   }
 
@@ -129,6 +120,8 @@ public class ControlPanelSubsystem extends SubsystemBase {
   public void periodic() {
     getSensorColor(); // Cause color data to be written to dashboard
     panelSpinnerPID.dashboardGet();
+
+    mechanismLifter.set(ControlMode.Velocity, isMechanismLifted ?0.3 :-0.3);
   }
 
   private double inchesToRotations(double inches)
@@ -163,4 +156,14 @@ public class ControlPanelSubsystem extends SubsystemBase {
 
     return panelCol;
   }
+
+  public boolean isMechanismLifted()
+  {
+    return isMechanismLifted;
+  }
+  public void setLiftMechanism(boolean shouldLift)
+  {
+    isMechanismLifted = shouldLift;
+  }
 }
+

@@ -8,42 +8,27 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.BallCollectionSubSystem;
+
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.RobotContainer;
 
-public class BallCollectionCommand extends IndexerCommand{
-  /**
-   * Creates a new BallCollectionCommand.
-   */
-  private final BallCollectionSubSystem m_bCollect;
+public abstract class IndexerCommand extends CommandBase {
+  
+  private final IndexerSubsystem indexer;
 
-  public BallCollectionCommand(BallCollectionSubSystem bCollect, IndexerSubsystem indexer) {
-    super(indexer);
-    // Use addRequirements() here to declare subsystem dependencies.
-    m_bCollect = bCollect;
+  public IndexerCommand(IndexerSubsystem indexer) {
+    this.indexer = indexer;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-  }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    BallCollectionSubSystem.setSpin(RobotContainer.configureballbindings());
+    indexer.addActiveBallCommand(this);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    BallCollectionSubSystem.setSpin(false);
-  }
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
+    indexer.removeActiveBallCommand(this);
   }
 }

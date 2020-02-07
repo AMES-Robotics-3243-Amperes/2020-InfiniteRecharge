@@ -8,62 +8,48 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.ControlPanelSubsystem;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class ControlPanelCommand extends CommandBase {
-  /**
-   * Creates a new ControlPanelCommand.
-   */
-  private final ControlPanelSubsystem m_controlPanel;
+  protected final ControlPanelSubsystem controlPanel;
 
   public ControlPanelCommand(ControlPanelSubsystem controlPanel) {
-    m_controlPanel = controlPanel;  //Sets the variable to the object
+    this.controlPanel = controlPanel;  //Sets the variable to the object
     // Use addRequirements() here to declare subsystem dependencies.
   }
-/*
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    m_controlPanel.getStartPosition();  //At the beginning of this entire command, we get the encoder's position
-    m_controlPanel.spin();  //We start moving the motor.
-  }
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    m_controlPanel.getEndPosition();  //Periodically gets the amount of rotations from start to current
-  }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-    m_controlPanel.stop();  //After a certain amount of rotations, we stop the motor.
-  }
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return m_controlPanel.getCheckEnd();  //We see if the motor has rotated 10 revolutions or not.
-  }
-*/
-
-
-
-  public static class TurnNumTimes extends CommandBase
+  /** @return Whether the mechanism will be lifted. If true, this command should cancel itself.
+   */
+  protected boolean tryLiftMechanism()
   {
-    private final ControlPanelSubsystem controlPanel;
+    if(controlPanel.isMechanismLifted())
+      return false;
+    
+    controlPanel.setLiftMechanism(true);
+    return true;
+  }
+
+  public static class TurnNumTimes extends ControlPanelCommand
+  {
     private final double rotations;
 
     public TurnNumTimes(ControlPanelSubsystem controlPanel, double rotations)
     {
-      this.controlPanel = controlPanel;
+      super(controlPanel);
       this.rotations = rotations;
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+      if(tryLiftMechanism())
+      {
+        this.cancel();
+        return;
+      }
+
       System.out.println("TurnNumTimes initialize");
       controlPanel.spinPanel(rotations);
       SmartDashboard.putString("CtlPanCmd", "TurnNumTimes");
@@ -78,15 +64,17 @@ public class ControlPanelCommand extends CommandBase {
     } 
   }
 
-  public static class TurnToColor extends CommandBase
+  public static class TurnToColor extends ControlPanelCommand
   {
-    private final ControlPanelSubsystem controlPanel;
+    private static final double COLOR_REACHED_STABLE_TIME = 0.5;
     private final ControlPanelSubsystem.PanelColor targetColor;
     private int prevSpinDir = 0;
+    private int tryIdx = 0; // How many times have we reached the target color?
+    private double lastTimeReachedColor = -10000;
     private boolean isFinished = false;
 
     public TurnToColor(ControlPanelSubsystem controlPanel, ControlPanelSubsystem.PanelColor targetColor) {
-      this.controlPanel = controlPanel;  //Sets the variable to the object
+      super(controlPanel);
       this.targetColor = targetColor;
       // Use addRequirements() here to declare subsystem dependencies.
     }
@@ -94,7 +82,15 @@ public class ControlPanelCommand extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+      if(tryLiftMechanism())
+      {
+        this.cancel();
+        return;
+      }
+      
       prevSpinDir = 0; // reset
+      tryIdx = 0;
+      lastTimeReachedColor = Timer.getFPGATimestamp();
       isFinished = false;
       SmartDashboard.putString("CtlPanCmd", "TurnToColor");
     }
@@ -102,20 +98,30 @@ public class ControlPanelCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-System.out.println("TurnToColor execute");
+      System.out.println("TurnToColor execute");
 
       if(isFinished)
         return;
 
-      int spinDir = controlPanel.seekColor(targetColor);
+      int spinDir = controlPanel.seekColor(targetColor, Math.pow(0.5, tryIdx));
+      SmartDashboard.putNumber("spinDir", spinDir);
+
+      if(spinDir==0 && prevSpinDir!=spinDir)
+        tryIdx++;
+      
       if(spinDir==0) // If no spin dir, we've reached the target color
       {
-        controlPanel.overrunInDir(prevSpinDir, 4);
-        isFinished = true;
+        controlPanel.overrunInDir(prevSpinDir, 0);
+        if(Timer.getFPGATimestamp() - lastTimeReachedColor > COLOR_REACHED_STABLE_TIME)
+          isFinished = true;
       } else // We're still seeking the color
       {
-        prevSpinDir = spinDir;
+        // This will start being in the past when spinDir starts being 0
+        lastTimeReachedColor = Timer.getFPGATimestamp();
+        //prevSpinDir = spinDir;
       }
+
+      prevSpinDir = spinDir;
     }
 
     // Called once the command ends or is interrupted.
@@ -128,6 +134,22 @@ System.out.println("TurnToColor execute");
     @Override
     public boolean isFinished() {
       return isFinished;
+    }
+  }
+
+  public static class LowerMechanism extends ControlPanelCommand{
+    public LowerMechanism(ControlPanelSubsystem controlPanel) {
+      super(controlPanel);
+    }
+
+    // Called when the command is initially scheduled.
+    @Override
+    public void initialize() {
+      controlPanel.setLiftMechanism(false);
+    }
+
+    public boolean isFinished() {
+      return true; // This command only needs to run initialize()
     }
   }
 }

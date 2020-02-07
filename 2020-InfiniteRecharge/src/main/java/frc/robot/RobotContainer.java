@@ -11,17 +11,10 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.ControlPanelCommand;
-import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.LimelightSubsystem;
-import frc.robot.subsystems.ControlPanelSubsystem;
-import frc.robot.subsystems.DriveTrainSubSystem;
-import frc.robot.subsystems.BallCollectionSubSystem;
+import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.DriveTrainCommand;
-import frc.robot.commands.BallCollectionCommand;
+import frc.robot.commands.*;
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -34,27 +27,33 @@ public class RobotContainer {
   private static Joystick secondary = new Joystick(1);
   static Double[] steering = new Double[2];
   static double steerLeft;
-  static double steerRight;
-
-  
+  static double steerRight;  
 
   //Defined Suybsystems
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final AutoSubsystem m_exampleSubsystem = new AutoSubsystem();
   public static DriveTrainSubSystem m_robotDriveSubsystem = new DriveTrainSubSystem();
   public static ControlPanelSubsystem m_controlPanelSubsystem = new ControlPanelSubsystem();
-  public static BallCollectionSubSystem m_ballCollectionSubsystem = new BallCollectionSubSystem();
   public final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem(m_robotDriveSubsystem);
+  public static BallCollectionSubSystem m_ballCollectionSubsystem = new BallCollectionSubSystem();
+  public final DumperSubsystem dumperSubsystem = new DumperSubsystem();
+  public static ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
+  public final IndexerSubsystem indexerSubsystem = new IndexerSubsystem();
 
   //Defined Commands
   public final DriveTrainCommand m_robotDriveCommand = new DriveTrainCommand(m_robotDriveSubsystem);
-  private final ControlPanelCommand m_controlPanelCommand = new ControlPanelCommand(m_controlPanelSubsystem);
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-  private final BallCollectionCommand m_ballCollectionCommand = new BallCollectionCommand(m_ballCollectionSubsystem);
+  private final AutoCommand m_autoCommand = new AutoCommand(m_exampleSubsystem);
+  private final LimelightCommand m_limelightCommand = new LimelightCommand(m_robotDriveSubsystem, m_limelightSubsystem);
+  private final BallCollectionCommand m_ballCollectionCommand = new BallCollectionCommand(m_ballCollectionSubsystem, indexerSubsystem);
+  public static ClimbCommand m_climbCommand = new ClimbCommand(m_climbSubsystem);
+
   private final ControlPanelCommand.TurnNumTimes turn4Times = new ControlPanelCommand.TurnNumTimes(m_controlPanelSubsystem, 4);
   private final ControlPanelCommand.TurnToColor turnToColorBlue = new ControlPanelCommand.TurnToColor(m_controlPanelSubsystem, ControlPanelSubsystem.PanelColor.BLUE);
   private final ControlPanelCommand.TurnToColor turnToColorGreen = new ControlPanelCommand.TurnToColor(m_controlPanelSubsystem, ControlPanelSubsystem.PanelColor.GREEN);
   private final ControlPanelCommand.TurnToColor turnToColorRed = new ControlPanelCommand.TurnToColor(m_controlPanelSubsystem, ControlPanelSubsystem.PanelColor.RED);
   private final ControlPanelCommand.TurnToColor turnToColorYellow = new ControlPanelCommand.TurnToColor(m_controlPanelSubsystem, ControlPanelSubsystem.PanelColor.YELLOW);
+  private final ControlPanelCommand.LowerMechanism lowerControlPanel = new ControlPanelCommand.LowerMechanism(m_controlPanelSubsystem);
+
+  private final DumperCommand dumperCommand = new DumperCommand(dumperSubsystem, indexerSubsystem, 2);
 
   //Joysticks
 
@@ -65,6 +64,7 @@ public class RobotContainer {
   private static final int B_RED = 3;
   private static final int B_YELLOW = 4;
   private static final int B_TURN_4_TIMES = 10;
+  private static final int B_LOWER_CTLPANEL = 9;
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -97,14 +97,24 @@ public class RobotContainer {
     JoystickButton colorRed = new JoystickButton(driver, B_RED);
     JoystickButton colorYellow = new JoystickButton(driver, B_YELLOW);
     JoystickButton turn4TimeButton = new JoystickButton(driver, B_TURN_4_TIMES);
-    triggerSpinner.toggleWhenPressed(m_controlPanelCommand);  //Whenever you push the button, the referenced command is run
     colorBlue.whenPressed(turnToColorBlue, true); // 'true'=interruptible
     colorGreen.whenPressed(turnToColorGreen, true);
     colorRed.whenPressed(turnToColorRed, true);
     colorYellow.whenPressed(turnToColorYellow, true);
     turn4TimeButton.whenPressed(turn4Times, true);
+    JoystickButton bLowerControlPanel = new JoystickButton(driver, B_LOWER_CTLPANEL);
+    bLowerControlPanel.whenPressed(lowerControlPanel);
+
+    JoystickButton dump = new JoystickButton(driver, 6);
+    dump.whenPressed(dumperCommand);
   }
   
+  //-------------------- LIMELIGHT SECTION OF JOYSTICK ---------------------
+  public static boolean driveLime(){
+    return driver.getRawButton(12); //I don't know which button to choose yet.
+  }
+
+  //-------------------- DRIVING SECTION OF JOYSTICK -----------------------
   public static double configureDriveLeft(){  //This passes in the axis steering for robot drive
     steerLeft = -driver.getRawAxis(1);  //Should be the left axis
     
@@ -120,15 +130,6 @@ public class RobotContainer {
     steerRight = scaleZone(steerRight);
 
     return steerRight;
-  }
-
-  public static boolean driveLime(){
-    return driver.getRawButton(12); //I don't know which button to choose yet.
-  }
-
-  public static boolean configureballbindings(){
-    return driver.getRawButton(5);
-
   }
 
   public static double deadZone(double dead){      
@@ -148,11 +149,31 @@ public class RobotContainer {
     return scale;
   }
 
+  //----------------- INDEXER (BALL COLLECTION) SECTION OF JOYSTICK -------------------
+  public static boolean configureballbindings(){
+    return driver.getRawButton(5);  // Possibly change this to secondary joystick
+  }
+
+  //----------------- SHOOTER SECTION OF JOYSTICK --------------------
+  public static boolean configureshootbindings(){
+    return driver.getRawButton(10); // Possibly change this to secondary joystick
+  }
+
+  //--------------- CLIMB GYRO SENSOR SECTION OF JOYSTICK ------------------ 
+  public static boolean configureclimbbindings(){
+    return driver.getRawButton(9);  //Possibly change this to secondary joystick
+  }
+
+  public static boolean configureclimbadjbindings(){
+    return driver.getRawButton(8);
+  }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
+
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     return m_autoCommand;
@@ -161,5 +182,20 @@ public class RobotContainer {
   public Command getDriveCommand() {
 
     return m_robotDriveCommand;
+  }
+
+  public Command getLimelightCommand(){
+
+    return m_limelightCommand;
+  }
+
+  public Command getBallCollectCommand(){
+
+    return m_ballCollectionCommand;
+  }
+
+  public Command getClimbCommand(){
+    
+    return m_climbCommand;
   }
 }
