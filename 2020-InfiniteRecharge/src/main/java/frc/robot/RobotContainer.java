@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -117,20 +118,70 @@ public class RobotContainer {
 
   //-------------------- DRIVING SECTION OF JOYSTICK -----------------------
   public static double configureDriveLeft(){  //This passes in the axis steering for robot drive
-    steerLeft = -driver.getRawAxis(1);  //Should be the left axis
-    
-    steerLeft = deadZone(steerLeft);
+    steerLeft = getJoystWithDead(true);  //Should be the left axis
+    double sr = getJoystWithDead(false);
+
+    steerLeft = matchZone(steerLeft, sr);
+    if(Constants.TEST_VERSION)
+      SmartDashboard.putNumber("Unscaled JoyL", steerLeft);
     steerLeft = scaleZone(steerLeft);
 
     return steerLeft;
   }
   public static double configureDriveRight(){
-    steerRight = -driver.getRawAxis(3);
-
-    steerRight = deadZone(steerRight);
+    steerRight = getJoystWithDead(false);
+    double sl = getJoystWithDead(true);
+    
+    steerRight = matchZone(steerRight, sl);
+    if(Constants.TEST_VERSION)
+      SmartDashboard.putNumber("Unscaled JoyR", steerRight);
     steerRight = scaleZone(steerRight);
 
     return steerRight;
+  }
+  /** Gets a joystick value, with dead zone applied. */
+  private static double getJoystWithDead(boolean isLeft)
+  {
+    double steer = isLeft ?-driver.getRawAxis(1) :-driver.getRawAxis(1);  //Should be the left axis
+    steer = deadZone(steerLeft);
+    return steer;
+  }
+  /** Given both left and right steering, returns the average of the two if they're really close together.
+   * <p> Useful for trying to drive in a straight line.
+   */
+  private static double matchZone(double steer1, double steer2)
+  {
+    double matchZoneRadius = 0.09;
+
+    double avgSteer = (steer1+steer2)/2.0;
+    double r = matchZoneRadius/2.0;
+
+    // TODO: smoothing
+    double lowerBound = (avgSteer<0) ?-1 :0;
+    double upperBound = (avgSteer<0) ?0 :1;
+    double upperBoundCorrector = clamp(
+      (steer1-(avgSteer+r)) * ((r) / (upperBound-(avgSteer+r))),
+      0, r
+    );
+    double lowerBoundCorrector = clamp(
+      (steer1-(avgSteer-r)) * ((r) / ((avgSteer-r)-lowerBound)),
+      -r, 0
+    );
+    double result = Math.signum(steer1-avgSteer) * Math.max(0, Math.abs(steer1-avgSteer)-r) + avgSteer
+      + ((steer1 > avgSteer+r) ?upperBoundCorrector :lowerBoundCorrector);
+
+    return result;
+    // return (Math.abs(avgSteer-steer1) <= r) ?avgSteer :steer1; Without smoothing; don't use.
+  }
+  private static double clamp(double a, double min, double max)
+  {
+    double realMin = Math.min(min, max);
+    double realMax = Math.max(min, max);
+    return Math.min(realMax, Math.max(realMin, a));
+  }
+  private static double lerp(double a, double b, double f)
+  {
+    return a + f * (b-a);
   }
 
   public static double deadZone(double dead){      

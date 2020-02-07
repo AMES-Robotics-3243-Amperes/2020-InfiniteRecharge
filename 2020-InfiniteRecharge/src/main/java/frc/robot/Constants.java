@@ -16,6 +16,8 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    public static final boolean TEST_VERSION = true; // When false, disables some troubleshooting SmartDashboard outputs
+
     public static final class DriveConstants {
         public static final int kLTID = 2;
         public static final int kLBID = 1;
