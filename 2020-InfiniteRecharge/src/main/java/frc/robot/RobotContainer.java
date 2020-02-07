@@ -27,12 +27,10 @@ public class RobotContainer {
   private static Joystick secondary = new Joystick(1);
   static Double[] steering = new Double[2];
   static double steerLeft;
-  static double steerRight;
-
-  
+  static double steerRight;  
 
   //Defined Suybsystems
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final AutoSubsystem m_exampleSubsystem = new AutoSubsystem();
   public static DriveTrainSubSystem m_robotDriveSubsystem = new DriveTrainSubSystem();
   public static ControlPanelSubsystem m_controlPanelSubsystem = new ControlPanelSubsystem();
   public final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem(m_robotDriveSubsystem);
@@ -42,7 +40,7 @@ public class RobotContainer {
 
   //Defined Commands
   public final DriveTrainCommand m_robotDriveCommand = new DriveTrainCommand(m_robotDriveSubsystem);
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  private final AutoCommand m_autoCommand = new AutoCommand(m_exampleSubsystem);
   private final LimelightCommand m_limelightCommand = new LimelightCommand(m_robotDriveSubsystem, m_limelightSubsystem);
   private final BallCollectionCommand m_ballCollectionCommand = new BallCollectionCommand(m_ballCollectionSubsystem);
   public static ClimbCommand m_climbCommand = new ClimbCommand(m_climbSubsystem);
@@ -161,8 +159,12 @@ public class RobotContainer {
   }
 
   //--------------- CLIMB GYRO SENSOR SECTION OF JOYSTICK ------------------ 
-  public static boolean configuregyrobindings(){
+  public static boolean configureclimbbindings(){
     return driver.getRawButton(9);  //Possibly change this to secondary joystick
+  }
+
+  public static boolean configureclimbadjbindings(){
+    return driver.getRawButton(8);
   }
 
   /**
