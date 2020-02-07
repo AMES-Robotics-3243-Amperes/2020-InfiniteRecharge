@@ -24,8 +24,8 @@ import frc.robot.Constants;
 
 public class BallCollectionSubSystem extends SubsystemBase {
   
-  static VictorSPX motorSpin = new VictorSPX(Constants.BallCollectConstants.kSpinID);
-  static VictorSPX motorActuate = new VictorSPX(Constants.BallCollectConstants.kActuateID);
+  static CANSparkMax motorSpin = new CANSparkMax(Constants.BallCollectConstants.kSpinID, MotorType.kBrushless);
+  static CANSparkMax motorActuate = new CANSparkMax(Constants.BallCollectConstants.kActuateID, MotorType.kBrushless);
   private double deployInitTime;
 
   public BallCollectionSubSystem() {
@@ -35,27 +35,24 @@ public class BallCollectionSubSystem extends SubsystemBase {
   public void setDeployed()
   {
     deployInitTime = Timer.getFPGATimestamp();
-    motorActuate.set(ControlMode.Velocity, 0.5);
+    motorActuate.set(0.5);
   }
   
   public void setSpin(boolean spin){ //boolean bc it's a button
     if (spin) {
-      motorSpin.set(ControlMode.Velocity, .65); // sets the motor to 65% speed
+      motorSpin.set(.65); // sets the motor to 65% speed
     }
     else {
-      motorSpin.set(ControlMode.Velocity, 0); // if the button is not pressed it sets the motor to 0% speed
+      motorSpin.set(0); // if the button is not pressed it sets the motor to 0% speed
     }
   }
 
   @Override
   public void periodic() {
-<<<<<<< HEAD
     if(Timer.getFPGATimestamp() > deployInitTime + 1); // actuator runs for 1 second
-=======
     // This method will be called once per scheduler run
     SmartDashboard.getBoolean("BallCollection: ", true);
     SmartDashboard.getNumber("CollectorCurrent: ", motorSpin.getOutputCurrent());
     SmartDashboard.getNumber("CollectorVoltage: ", motorSpin.getBusVoltage()); 
->>>>>>> 02da13210c463239fc74b9ba2ec6ac6c30dfbbfc
   }
 }
