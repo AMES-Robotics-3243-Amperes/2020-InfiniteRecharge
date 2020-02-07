@@ -104,8 +104,9 @@ public class RobotContainer {
     colorRed.whenPressed(turnToColorRed, true);
     colorYellow.whenPressed(turnToColorYellow, true);
     turn4TimeButton.whenPressed(turn4Times, true);
-    JoystickButton bLowerControlPanel = new JoystickButton(driver, B_LOWER_CTLPANEL);
-    bLowerControlPanel.whenPressed(lowerControlPanel);
+    // Control panel system is unused
+    //JoystickButton bLowerControlPanel = new JoystickButton(driver, B_LOWER_CTLPANEL);
+    //bLowerControlPanel.whenPressed(lowerControlPanel);
 
     JoystickButton dump = new JoystickButton(driver, 6);
     dump.whenPressed(dumperCommand);

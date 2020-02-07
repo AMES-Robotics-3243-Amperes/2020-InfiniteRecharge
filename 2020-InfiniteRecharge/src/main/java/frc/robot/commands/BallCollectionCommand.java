@@ -32,13 +32,13 @@ public class BallCollectionCommand extends IndexerCommand{
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    BallCollectionSubSystem.setSpin(RobotContainer.configureballbindings());
+    m_bCollect.setSpin(RobotContainer.configureballbindings());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    BallCollectionSubSystem.setSpin(false);
+    m_bCollect.setSpin(false);
   }
 
   // Returns true when the command should end.

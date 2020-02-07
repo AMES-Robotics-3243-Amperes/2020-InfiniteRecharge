@@ -41,6 +41,7 @@ public final class Constants {
     }
 
     public static final class BallCollectConstants {
-        public static final int kBallID = 7; // Don't know which CAN ID this is yet 2/4/20
+        public static final int kSpinID = 7; // Don't know which CAN ID this is yet 2/4/20
+        public static final int kActuateID = 12; // Don't know which CAN ID this is yet 2/4/20
     }
 }

@@ -29,8 +29,8 @@ import edu.wpi.first.networktables.NetworkTableInstance;
  */
 public class Robot extends TimedRobot {
   
-  Joystick testJoyst = new Joystick(0);
-  private CANSparkMax testMotor = new CANSparkMax(5, MotorType.kBrushless);
+  //Joystick testJoyst = new Joystick(0);
+  //private CANSparkMax testMotor = new CANSparkMax(5, MotorType.kBrushless);
   
   private Command m_autonomousCommand;
   private Command m_driveCommand;
@@ -86,7 +86,7 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
-    testMotor.set(0.25 * testJoyst.getRawAxis(1));
+    //testMotor.set(0.25 * testJoyst.getRawAxis(1));
   }
 
   /**
@@ -145,6 +145,8 @@ public class Robot extends TimedRobot {
     m_climbCommand.schedule();
 
     CommandScheduler.getInstance().run();
+
+    m_robotContainer.m_ballCollectionSubsystem.setDeployed(); // Deploy collector on start
   }
 
   /**

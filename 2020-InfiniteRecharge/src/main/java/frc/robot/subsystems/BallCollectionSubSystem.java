@@ -11,8 +11,11 @@
 */
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -20,23 +23,31 @@ import frc.robot.Constants;
 
 public class BallCollectionSubSystem extends SubsystemBase {
   
-  static CANSparkMax motorSpin = new CANSparkMax(Constants.BallCollectConstants.kBallID ,MotorType.kBrushless);
+  static VictorSPX motorSpin = new VictorSPX(Constants.BallCollectConstants.kSpinID);
+  static VictorSPX motorActuate = new VictorSPX(Constants.BallCollectConstants.kActuateID);
+  private double deployInitTime;
 
   public BallCollectionSubSystem() {
 
   }
+
+  public void setDeployed()
+  {
+    deployInitTime = Timer.getFPGATimestamp();
+    motorActuate.set(ControlMode.Velocity, 0.5);
+  }
   
-  public static void setSpin(boolean spin){ //boolean bc it's a button
+  public void setSpin(boolean spin){ //boolean bc it's a button
     if (spin) {
-      motorSpin.set(.65); // sets the motor to 65% speed
+      motorSpin.set(ControlMode.Velocity, .65); // sets the motor to 65% speed
     }
     else {
-      motorSpin.set(0); // if the button is not pressed it sets the motor to 0% speed
+      motorSpin.set(ControlMode.Velocity, 0); // if the button is not pressed it sets the motor to 0% speed
     }
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    if(Timer.getFPGATimestamp() > deployInitTime + 1); // actuator runs for 1 second
   }
 }
