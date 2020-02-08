@@ -11,8 +11,6 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMax;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.*;
 
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -36,7 +34,7 @@ public class DumperSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.getNumber("Dump Current: ", dumpMotors[1].getOutputCurrent());
+    SmartDashboard.getNumber("Dump Current: ", dumpMotors[0].getOutputCurrent());
     for(CANSparkMax motor : dumpMotors){
       SmartDashboard.getNumber("Dump Voltages: ", motor.getBusVoltage());
       motor.setSmartCurrentLimit(30);

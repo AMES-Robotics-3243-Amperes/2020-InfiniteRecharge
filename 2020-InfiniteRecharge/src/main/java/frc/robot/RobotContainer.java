@@ -142,8 +142,8 @@ public class RobotContainer {
   /** Gets a joystick value, with dead zone applied. */
   private static double getJoystWithDead(boolean isLeft)
   {
-    double steer = isLeft ?-driver.getRawAxis(1) :-driver.getRawAxis(1);  //Should be the left axis
-    steer = deadZone(steerLeft);
+    double steer = isLeft ?-driver.getRawAxis(1) :-driver.getRawAxis(3);  //Should be the left axis
+    steer = deadZone(steer);
     return steer;
   }
   /** Given both left and right steering, returns the average of the two if they're really close together.
@@ -154,11 +154,13 @@ public class RobotContainer {
     double matchZoneRadius = 0.09;
 
     double avgSteer = (steer1+steer2)/2.0;
+    if(Constants.TEST_VERSION)
+      SmartDashboard.putNumber("avgSteer", avgSteer);
     double r = matchZoneRadius/2.0;
 
     // TODO: smoothing
-    double lowerBound = (avgSteer<0) ?-1 :0;
-    double upperBound = (avgSteer<0) ?0 :1;
+    double lowerBound = (avgSteer-r<=0) ?-1 :0;
+    double upperBound = (avgSteer+r>=0) ?0 :1;
     double upperBoundCorrector = clamp(
       (steer1-(avgSteer+r)) * ((r) / (upperBound-(avgSteer+r))),
       0, r
@@ -167,6 +169,9 @@ public class RobotContainer {
       (steer1-(avgSteer-r)) * ((r) / ((avgSteer-r)-lowerBound)),
       -r, 0
     );
+    if(Constants.TEST_VERSION) {
+    SmartDashboard.putNumber("upperBoundConnector", upperBoundCorrector);
+    SmartDashboard.putNumber("lowerBoundConnector", lowerBoundCorrector); }
     double result = Math.signum(steer1-avgSteer) * Math.max(0, Math.abs(steer1-avgSteer)-r) + avgSteer
       + ((steer1 > avgSteer+r) ?upperBoundCorrector :lowerBoundCorrector);
 

@@ -7,8 +7,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.*;
 
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -55,7 +53,7 @@ public class ControlPanelSubsystem extends SubsystemBase {
   private static final double PANEL_CIRCUMFRENCE_INCHES = 100;
   private static final double GEARBOX_RATIO = 12/1; // motor turns PER axle turn
 
-  private VictorSPX mechanismLifter = new VictorSPX(8);
+  private CANSparkMax mechanismLifter = new CANSparkMax(8, MotorType.kBrushless);
 
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
   private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
@@ -121,7 +119,7 @@ public class ControlPanelSubsystem extends SubsystemBase {
     getSensorColor(); // Cause color data to be written to dashboard
     panelSpinnerPID.dashboardGet();
 
-    mechanismLifter.set(ControlMode.Velocity, isMechanismLifted ?0.3 :-0.3);
+    mechanismLifter.set(isMechanismLifted ?0.3 :-0.3);
   }
 
   private double inchesToRotations(double inches)
