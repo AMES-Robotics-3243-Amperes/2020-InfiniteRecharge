@@ -73,5 +73,10 @@ public class ClimbSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.getBoolean("Top hit?: ", limitTop.get());
+    SmartDashboard.getBoolean("Bottom hit?:", limitBottom.get());
+    climberR.setSmartCurrentLimit(40);
+    climberL.setSmartCurrentLimit(40);
+    climberADJ.setSmartCurrentLimit(40);
   }
 }

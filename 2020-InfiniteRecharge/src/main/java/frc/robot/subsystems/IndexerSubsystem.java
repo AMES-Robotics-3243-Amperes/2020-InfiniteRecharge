@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -42,6 +43,10 @@ public class IndexerSubsystem extends SubsystemBase {
     for(CANSparkMax motor : beltMotors)
     {
       motor.set(shouldMoveBelts ?Constants.IndexerConstants.BELT_SPEED :0);
+      motor.setSmartCurrentLimit(30);
+      SmartDashboard.getNumber("Indexer Voltage: ", motor.getBusVoltage());
+      SmartDashboard.getNumber("Indexer Current: ", motor.getOutputCurrent());
     }
+    
   }
 }

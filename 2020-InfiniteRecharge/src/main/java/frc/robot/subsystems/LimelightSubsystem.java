@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DriveTrainSubSystem;
 
 public class LimelightSubsystem extends SubsystemBase {
@@ -22,9 +22,9 @@ public class LimelightSubsystem extends SubsystemBase {
 
   static NetworkTable table = NetworkTableInstance.getDefault().getTable("Limelight");
   NetworkTableEntry camMode = table.getEntry("camMode"); // Limelight's operation mode. Always keep at 0!!
-  NetworkTableEntry pipeline = table.getEntry("pipeline"); // Sets limelight's current pipeline *see calibration IP address for more info*
+  static NetworkTableEntry pipeline = table.getEntry("pipeline"); // Sets limelight's current pipeline *see calibration IP address for more info*
   static NetworkTableEntry tx = table.getEntry("tx"); // What is the x-coordinate?
-  NetworkTableEntry ty = table.getEntry("ty");  //What is the y-coordinate?
+  NetworkTableEntry ty = table.getEntry("ty"); // What is the y-coordinate?
   static NetworkTableEntry ta = table.getEntry("ta"); // What is the area?
   static NetworkTableEntry tv = table.getEntry("tv"); // Do you see a valid target "v"?
 
@@ -32,6 +32,7 @@ public class LimelightSubsystem extends SubsystemBase {
   double y = ty.getDouble(0.0);
   static double v = tv.getDouble(0.0);
   static double area = ta.getDouble(0.0);
+  boolean target = false;
 
   //These constants haven't been tuned 1/30/20
   static float KpSteer = 0;
@@ -90,5 +91,16 @@ public class LimelightSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    if(v > 0){
+      target = true;
+    } else if (v == 0){
+      target = false;
+    }
+
+    SmartDashboard.putNumber("Lime X: ", x);
+    SmartDashboard.putNumber("Lime Y: ", y);
+    SmartDashboard.putNumber("Lime Area: ", area);
+    SmartDashboard.putNumber("Lime Pipeline: ", (double) pipeline.getNumber(-1)); // Idk what to do here yet
+    SmartDashboard.putBoolean("See target?: ", target);
   }
 }

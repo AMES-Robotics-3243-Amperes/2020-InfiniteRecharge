@@ -51,8 +51,9 @@ public class BallCollectionSubSystem extends SubsystemBase {
   public void periodic() {
     if(Timer.getFPGATimestamp() > deployInitTime + 1); // actuator runs for 1 second
     // This method will be called once per scheduler run
-    SmartDashboard.getBoolean("BallCollection: ", true);
-    SmartDashboard.getNumber("CollectorCurrent: ", motorSpin.getOutputCurrent());
-    SmartDashboard.getNumber("CollectorVoltage: ", motorSpin.getBusVoltage()); 
+    SmartDashboard.getNumber("Collector Current: ", motorSpin.getOutputCurrent());
+    SmartDashboard.getNumber("Collector Volt: ", motorSpin.getBusVoltage());
+    motorSpin.setSmartCurrentLimit(30);
+    motorActuate.setSmartCurrentLimit(30);
   }
 }

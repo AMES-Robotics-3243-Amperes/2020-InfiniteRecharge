@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkMax;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -22,27 +23,31 @@ import frc.robot.Constants;
 /*\\\     Packages and Imports      ///*/
 public class DumperSubsystem extends SubsystemBase {
   
-  VictorSPX[] dumpMotors; // Add IDs in Constants.DumperConstants to make more motors here
+  CANSparkMax[] dumpMotors; // Add IDs in Constants.DumperConstants to make more motors here
   private final double speedMulti = 1;
 
   public DumperSubsystem() {
-    dumpMotors = new VictorSPX[Constants.DumperConstants.kDumpIDs.length];
+    dumpMotors = new CANSparkMax[Constants.DumperConstants.kDumpIDs.length];
     for(int i=0; i<dumpMotors.length; i++)
     {
-      dumpMotors[i] = new VictorSPX(Constants.DumperConstants.kDumpIDs[i]);
+      dumpMotors[i] = new CANSparkMax(Constants.DumperConstants.kDumpIDs[i], MotorType.kBrushless);
     }
   }
 
   @Override
   public void periodic() {
-    
+    SmartDashboard.getNumber("Dump Current: ", dumpMotors[1].getOutputCurrent());
+    for(CANSparkMax motor : dumpMotors){
+      SmartDashboard.getNumber("Dump Voltages: ", motor.getBusVoltage());
+      motor.setSmartCurrentLimit(30);
+    }
   }
 
   public void setMotorSpeed(double speed)
   {
-    for(VictorSPX motor : dumpMotors)
+    for(CANSparkMax motor : dumpMotors)
     {
-      motor.set(ControlMode.Velocity, speed * speedMulti);
+      motor.set(speed * speedMulti);
     }
   }
 }
