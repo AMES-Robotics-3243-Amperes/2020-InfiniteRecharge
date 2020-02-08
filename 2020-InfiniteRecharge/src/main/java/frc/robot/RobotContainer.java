@@ -158,9 +158,11 @@ public class RobotContainer {
       SmartDashboard.putNumber("avgSteer", avgSteer);
     double r = matchZoneRadius/2.0;
 
-    // TODO: smoothing
+    // The steer1 values past which steer1's unadjusted value should be returned.
+    // If avgSteer is >0, steer1 will be returned at 1 and below 0. If <0, at -1 and above 0.
     double lowerBound = (avgSteer-r<=0) ?-1 :0;
     double upperBound = (avgSteer+r>=0) ?0 :1;
+    // Very slight bias functions to make sure lowerBound and upperBound are respected.
     double upperBoundCorrector = clamp(
       (steer1-(avgSteer+r)) * ((r) / (upperBound-(avgSteer+r))),
       0, r
@@ -172,6 +174,9 @@ public class RobotContainer {
     if(Constants.TEST_VERSION) {
     SmartDashboard.putNumber("upperBoundConnector", upperBoundCorrector);
     SmartDashboard.putNumber("lowerBoundConnector", lowerBoundCorrector); }
+    // A y=x function with a plateau in the middle. The plateau is at avgSteer and causes values to 'snap' to it.
+    // Either lowerBoundCorrector or upperBoundCorrector is added, depending on whether steer1 is between avgSteer
+    //     and lowerBound, or between avgSteer and upperBound.
     double result = Math.signum(steer1-avgSteer) * Math.max(0, Math.abs(steer1-avgSteer)-r) + avgSteer
       + ((steer1 > avgSteer+r) ?upperBoundCorrector :lowerBoundCorrector);
 
