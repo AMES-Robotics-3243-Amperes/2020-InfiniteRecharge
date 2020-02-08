@@ -47,6 +47,7 @@ public final class Constants {
 
     public static final class ControlPanelConstants {
         public static final int kpanelSpinnerID = 5;   //Don't know which port yet, so using random # for now 1/16/20
+        public static final int mechanismLifterID = 0; // Servo ID
     }
 
     public static final class DumperConstants {

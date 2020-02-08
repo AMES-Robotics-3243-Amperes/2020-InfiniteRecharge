@@ -9,6 +9,7 @@ import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -53,7 +54,9 @@ public class ControlPanelSubsystem extends SubsystemBase {
   private static final double PANEL_CIRCUMFRENCE_INCHES = 100;
   private static final double GEARBOX_RATIO = 12/1; // motor turns PER axle turn
 
-  private CANSparkMax mechanismLifter = new CANSparkMax(8, MotorType.kBrushless);
+  private Servo mechanismLifter = new Servo(Constants.ControlPanelConstants.mechanismLifterID);
+  private static final double LIFTER_DOWN_ANGLE = 0;
+  private static final double LIFTER_UP_ANGLE = 90;
 
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
   private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
@@ -92,6 +95,14 @@ public class ControlPanelSubsystem extends SubsystemBase {
   {
     return rotationsToInches(panelSpinnerEncoder.getPosition()) / PANEL_CIRCUMFRENCE_INCHES;
   }
+  public void resetPanelSpinnerEncoderPosition()
+  {
+    panelSpinnerEncoder.setPosition(0);
+  }
+  public void setPanelSpinnerSpeed(double speed)
+  {
+    panelSpinner.set(speed * PANEL_SPINNER_SPEED);
+  }
 
   /**
    * @param targetColor The PanelColor to seek toward
@@ -119,7 +130,7 @@ public class ControlPanelSubsystem extends SubsystemBase {
     getSensorColor(); // Cause color data to be written to dashboard
     panelSpinnerPID.dashboardGet();
 
-    mechanismLifter.set(isMechanismLifted ?0.3 :-0.3);
+    mechanismLifter.set(isMechanismLifted ?LIFTER_UP_ANGLE :LIFTER_DOWN_ANGLE);
   }
 
   private double inchesToRotations(double inches)
@@ -131,7 +142,7 @@ public class ControlPanelSubsystem extends SubsystemBase {
     return (rotations / GEARBOX_RATIO) * (Math.PI*2*SPINNER_RADIUS_INCHES);
   }
 
-  private PanelColor getSensorColor()
+  public PanelColor getSensorColor()
   {
     Color detectedColor = colorSensor.getColor();
     ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
