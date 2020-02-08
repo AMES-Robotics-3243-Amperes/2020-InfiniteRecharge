@@ -29,6 +29,7 @@ public class DumperSubsystem extends SubsystemBase {
     for(int i=0; i<dumpMotors.length; i++)
     {
       dumpMotors[i] = new CANSparkMax(Constants.DumperConstants.kDumpIDs[i], MotorType.kBrushless);
+      dumpMotors[i].setSmartCurrentLimit(30);
     }
   }
 
@@ -37,7 +38,6 @@ public class DumperSubsystem extends SubsystemBase {
     SmartDashboard.getNumber("Dump Current: ", dumpMotors[0].getOutputCurrent());
     for(CANSparkMax motor : dumpMotors){
       SmartDashboard.getNumber("Dump Voltages: ", motor.getBusVoltage());
-      motor.setSmartCurrentLimit(30);
     }
   }
 

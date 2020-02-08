@@ -113,10 +113,14 @@ public class RobotContainer {
   
   //-------------------- LIMELIGHT SECTION OF JOYSTICK ---------------------
   public static boolean driveLime(){
-    return driver.getRawButton(12); //I don't know which button to choose yet.
+    return driver.getRawButton(8); //I don't know which button to choose yet.
   }
 
   //-------------------- DRIVING SECTION OF JOYSTICK -----------------------
+  public static boolean configurePracBot(){
+    return driver.getRawButton(7);  // Don't know which button to choose yet
+  }
+
   public static double configureDriveLeft(){  //This passes in the axis steering for robot drive
     steerLeft = getJoystWithDead(true);  //Should be the left axis
     double sr = getJoystWithDead(false);

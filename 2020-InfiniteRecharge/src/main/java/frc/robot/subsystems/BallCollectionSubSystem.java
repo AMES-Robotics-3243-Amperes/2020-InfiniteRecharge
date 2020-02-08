@@ -27,6 +27,8 @@ public class BallCollectionSubSystem extends SubsystemBase {
   private double deployInitTime;
 
   public BallCollectionSubSystem() {
+    motorSpin.setSmartCurrentLimit(30);
+    motorActuate.setSmartCurrentLimit(30);
 
   }
 
@@ -51,7 +53,6 @@ public class BallCollectionSubSystem extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.getNumber("Collector Current: ", motorSpin.getOutputCurrent());
     SmartDashboard.getNumber("Collector Volt: ", motorSpin.getBusVoltage());
-    motorSpin.setSmartCurrentLimit(30);
-    motorActuate.setSmartCurrentLimit(30);
+    
   }
 }
