@@ -24,6 +24,7 @@ public class IndexerSubsystem extends SubsystemBase {
     for(int i=0; i<beltMotors.length; i++)
     {
       beltMotors[i] = new CANSparkMax(Constants.IndexerConstants.kBeltIDs[i], MotorType.kBrushless);
+      beltMotors[i].setSmartCurrentLimit(30);
     }
   }
 
@@ -43,7 +44,6 @@ public class IndexerSubsystem extends SubsystemBase {
     for(CANSparkMax motor : beltMotors)
     {
       motor.set(shouldMoveBelts ?Constants.IndexerConstants.BELT_SPEED :0);
-      motor.setSmartCurrentLimit(30);
       SmartDashboard.getNumber("Indexer Voltage: ", motor.getBusVoltage());
       SmartDashboard.getNumber("Indexer Current: ", motor.getOutputCurrent());
     }

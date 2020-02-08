@@ -27,16 +27,18 @@ public class DriveTrainCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    
       DriveTrainSubSystem.tankDrive(
         RobotContainer.configureDriveLeft(), 
-        RobotContainer.configureDriveRight()
+        RobotContainer.configureDriveRight(),
+        RobotContainer.configurePracBot() //Get rid of this later on
       );
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    DriveTrainSubSystem.tankDrive(0.0, 0.0);
+    DriveTrainSubSystem.tankDrive(0.0, 0.0, false); //Get rid of "false" later on
   }
 
   // Returns true when the command should end.

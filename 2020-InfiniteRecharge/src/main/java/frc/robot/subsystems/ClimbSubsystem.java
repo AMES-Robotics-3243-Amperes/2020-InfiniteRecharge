@@ -49,6 +49,10 @@ public class ClimbSubsystem extends SubsystemBase {
     pidControl.setI(ki);
     pidControl.setD(kd);
     pidControl.setOutputRange(min, max);
+
+    climberR.setSmartCurrentLimit(40);
+    climberL.setSmartCurrentLimit(40);
+    climberADJ.setSmartCurrentLimit(40);
   }
 
   public static void setClimb(boolean value, boolean adjust) {
@@ -75,8 +79,6 @@ public class ClimbSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.getBoolean("Top hit?: ", limitTop.get());
     SmartDashboard.getBoolean("Bottom hit?:", limitBottom.get());
-    climberR.setSmartCurrentLimit(40);
-    climberL.setSmartCurrentLimit(40);
-    climberADJ.setSmartCurrentLimit(40);
+    
   }
 }

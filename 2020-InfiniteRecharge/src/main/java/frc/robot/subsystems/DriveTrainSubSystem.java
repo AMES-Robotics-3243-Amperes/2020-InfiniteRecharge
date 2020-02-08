@@ -7,6 +7,8 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -33,23 +35,47 @@ public class DriveTrainSubSystem extends SubsystemBase {
     public final static SpeedControllerGroup m_leftmotors = new SpeedControllerGroup(motor_LT, motor_LB); // Classifying left side motors
     public final static SpeedControllerGroup m_rightmotors = new SpeedControllerGroup(motor_RT, motor_RB); // Classifying right side motors
     
-    // m_drive is a combination of both left and right motors
-    private final DifferentialDrive m_drive = new DifferentialDrive(m_leftmotors, m_rightmotors);
-    
-    // Encoder data objects
-    private final static DrivetrainPIDSubsystem m_rightSide = new DrivetrainPIDSubsystem(m_rightmotors, motor_RT.getEncoder());
-    private final static DrivetrainPIDSubsystem m_leftSide = new DrivetrainPIDSubsystem(m_leftmotors, motor_LT.getEncoder());
-    
-    // Command Based code requirement: enabling motors
-    public DriveTrainSubSystem(){
-      m_rightSide.enable();
-      m_leftSide.enable();
-    }
-    
+    private static WPI_VictorSPX drive_LT = new WPI_VictorSPX(Constants.DriveConstants.kPracLTID);
+    private static WPI_VictorSPX drive_LB = new WPI_VictorSPX(Constants.DriveConstants.kPracLBID);
+    private static WPI_VictorSPX drive_RT = new WPI_VictorSPX(Constants.DriveConstants.kPracRTID);
+    private static WPI_VictorSPX drive_RB = new WPI_VictorSPX(Constants.DriveConstants.kPracRBID);
 
-    public static void tankDrive(double varLeft, double varRight){
-      m_rightSide.setSetpoint(-varRight);
-      m_leftSide.setSetpoint(varLeft);
+    static boolean testBot = false;
+
+  // m_drive is a combination of both left and right motors
+  private final DifferentialDrive m_drive = new DifferentialDrive(m_leftmotors, m_rightmotors);
+
+  // Encoder data objects
+  private final static DrivetrainPIDSubsystem m_rightSide = new DrivetrainPIDSubsystem(m_rightmotors,
+      motor_RT.getEncoder());
+  private final static DrivetrainPIDSubsystem m_leftSide = new DrivetrainPIDSubsystem(m_leftmotors,
+      motor_LT.getEncoder());
+
+  // Command Based code requirement: enabling motors
+  public DriveTrainSubSystem() {
+    motor_LT.setSmartCurrentLimit(40);
+    motor_LB.setSmartCurrentLimit(40);
+    motor_RT.setSmartCurrentLimit(40);
+    motor_RB.setSmartCurrentLimit(40);
+
+    m_rightSide.enable();
+    m_leftSide.enable();
+
+    drive_LB.follow(drive_LT);
+    drive_RB.follow(drive_RT);
+  }
+
+  public static void tankDrive(double varLeft, double varRight, boolean pracBot) {
+    testBot = pracBot;
+      if(!pracBot){
+        //m_rightSide.setSetpoint(-varRight);
+        //m_leftSide.setSetpoint(varLeft);
+      } else if(pracBot){
+        //drive_LT.set(ControlMode.PercentOutput, varLeft);
+        //drive_RT.set(ControlMode.PercentOutput, varRight);
+        SmartDashboard.getNumber("Velocity Left: ", varLeft);
+        SmartDashboard.getNumber("Velocity Right: ", varRight);
+      }
     }
 
     @Override
@@ -70,10 +96,7 @@ public class DriveTrainSubSystem extends SubsystemBase {
       SmartDashboard.getNumber("CurrentMotorRT: ", motor_RT.getBusVoltage());
       SmartDashboard.getNumber("CurrentMotorRB: ", motor_RB.getBusVoltage());
 
-      motor_LT.setSmartCurrentLimit(40);
-      motor_LB.setSmartCurrentLimit(40);
-      motor_RT.setSmartCurrentLimit(40);
-      motor_RB.setSmartCurrentLimit(40);
+      
     }
 
 }

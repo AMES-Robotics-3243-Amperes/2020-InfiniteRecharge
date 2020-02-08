@@ -43,14 +43,15 @@ public class LimelightCommand extends CommandBase {
 
       //Right side
       LimelightSubsystem.setSteer() 
-      - LimelightSubsystem.setDist()
+      - LimelightSubsystem.setDist(),
+      RobotContainer.driveLime()  //Get rid of this later on
       );
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    DriveTrainSubSystem.tankDrive(0,0);
+    DriveTrainSubSystem.tankDrive(0,0, false);  //Get rid of "false" later on
   }
 
   // Returns true when the command should end.

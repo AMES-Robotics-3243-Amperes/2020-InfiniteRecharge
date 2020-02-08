@@ -25,6 +25,11 @@ public final class Constants {
         public static final int kLBID = 1;
         public static final int kRTID = 3;
         public static final int kRBID = 4;
+
+        public static final int kPracLTID = 9;
+        public static final int kPracLBID = 10;
+        public static final int kPracRTID = 8;
+        public static final int kPracRBID = 7;
     }
 
     public static final class IndexerConstants {
