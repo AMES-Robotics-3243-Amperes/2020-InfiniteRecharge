@@ -9,6 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -53,6 +54,8 @@ public class RobotContainer {
   private final ControlPanelCommand.TurnToColor turnToColorRed = new ControlPanelCommand.TurnToColor(m_controlPanelSubsystem, ControlPanelSubsystem.PanelColor.RED);
   private final ControlPanelCommand.TurnToColor turnToColorYellow = new ControlPanelCommand.TurnToColor(m_controlPanelSubsystem, ControlPanelSubsystem.PanelColor.YELLOW);
   private final ControlPanelCommand.LowerMechanism lowerControlPanel = new ControlPanelCommand.LowerMechanism(m_controlPanelSubsystem);
+  private final ControlPanelCommand.Manual manualPanelLeft = new ControlPanelCommand.Manual(m_controlPanelSubsystem, -0.5);
+  private final ControlPanelCommand.Manual manualPanelRight = new ControlPanelCommand.Manual(m_controlPanelSubsystem, 0.5);
 
   private final DumperCommand dumperCommand = new DumperCommand(dumperSubsystem, indexerSubsystem, 2);
 
@@ -103,9 +106,12 @@ public class RobotContainer {
     colorRed.whenPressed(turnToColorRed, true);
     colorYellow.whenPressed(turnToColorYellow, true);
     turn4TimeButton.whenPressed(turn4Times, true);
-    // Control panel system is unused
-    //JoystickButton bLowerControlPanel = new JoystickButton(driver, B_LOWER_CTLPANEL);
-    //bLowerControlPanel.whenPressed(lowerControlPanel);
+    JoystickButton blowerControlPanel = new JoystickButton(driver, B_LOWER_CTLPANEL);
+    blowerControlPanel.whenPressed(lowerControlPanel);
+    POVButton ctlPanelManualLeft = new POVButton(driver, 270);
+    POVButton ctlPanelManualRight = new POVButton(driver, 90);
+    ctlPanelManualLeft.whenHeld(manualPanelLeft, true);
+    ctlPanelManualLeft.whenHeld(manualPanelRight, true);
 
     JoystickButton dump = new JoystickButton(driver, 6);
     dump.whenPressed(dumperCommand);

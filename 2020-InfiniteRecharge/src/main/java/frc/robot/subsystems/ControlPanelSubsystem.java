@@ -48,10 +48,10 @@ public class ControlPanelSubsystem extends SubsystemBase {
   //  Changed the panelSpinner ID number to a unchangeable variable constant in Constants.java 2/5/20
   private CANSparkMax panelSpinner = new CANSparkMax(Constants.ControlPanelConstants.kpanelSpinnerID, MotorType.kBrushless);
   private PIDMotor panelSpinnerPID = new PIDMotor(panelSpinner, "Panel Spinner");
-  private static final double PANEL_SPINNER_SPEED = 0.5;
+  private static final double PANEL_SPINNER_SPEED = 0.5; // 0.25 when testing on the bucket
   private CANEncoder panelSpinnerEncoder;
   private static final double SPINNER_RADIUS_INCHES = 2;
-  private static final double PANEL_CIRCUMFRENCE_INCHES = 100;
+  private static final double PANEL_CIRCUMFRENCE_INCHES = 100; // 64 when testing on the bucket
   private static final double GEARBOX_RATIO = 12/1; // motor turns PER axle turn
 
   private Servo mechanismLifter = new Servo(Constants.ControlPanelConstants.mechanismLifterID);

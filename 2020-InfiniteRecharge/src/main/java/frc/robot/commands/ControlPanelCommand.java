@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import frc.robot.Constants;
 import frc.robot.subsystems.ControlPanelSubsystem;
 import frc.robot.subsystems.ControlPanelSubsystem.PanelColor;
 import edu.wpi.first.wpilibj.Timer;
@@ -62,7 +63,11 @@ public class ControlPanelCommand extends CommandBase {
       rotsByColor = 0;
       controlPanel.resetPanelSpinnerEncoderPosition();
       // controlPanel.spinPanel(rotations); OLD
-      SmartDashboard.putString("CtlPanCmd", "TurnNumTimes");
+      if(Constants.TEST_VERSION)
+      {
+        SmartDashboard.putNumber("TurNumTimes.rotsByColor", 0);
+        SmartDashboard.putNumber("TurNumTimes.Encoder Rots", 0);
+      }
     }
 
     @Override
@@ -73,6 +78,12 @@ public class ControlPanelCommand extends CommandBase {
       if(prevColor!=startColor && currentColor==startColor)
         rotsByColor += 0.5; // 2 wedges per revolution -> 1 wedge=0.5 revolutions
       controlPanel.setPanelSpinnerSpeed(this.isFinished() ?0 :1); // Rotate if we haven't rotated enough yet
+
+      if(Constants.TEST_VERSION)
+      {
+        SmartDashboard.putNumber("TurNumTimes.rotsByColor", rotsByColor);
+        SmartDashboard.putNumber("TurNumTimes.Encoder Rots", controlPanel.getPanelRotations());
+      }
 
       prevColor = currentColor;
     }
@@ -120,7 +131,6 @@ public class ControlPanelCommand extends CommandBase {
       tryIdx = 0;
       lastTimeReachedColor = Timer.getFPGATimestamp();
       isFinished = false;
-      SmartDashboard.putString("CtlPanCmd", "TurnToColor");
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -132,7 +142,6 @@ public class ControlPanelCommand extends CommandBase {
         return;
 
       int spinDir = controlPanel.seekColor(targetColor, Math.pow(0.5, tryIdx));
-      SmartDashboard.putNumber("spinDir", spinDir);
 
       if(spinDir==0 && prevSpinDir!=spinDir)
         tryIdx++;
@@ -178,6 +187,35 @@ public class ControlPanelCommand extends CommandBase {
 
     public boolean isFinished() {
       return true; // This command only needs to run initialize()
+    }
+  }
+
+  public static class Manual extends ControlPanelCommand
+  {
+    private final double SPEED;
+
+    public Manual(ControlPanelSubsystem controlPanel,double speed) {
+      super(controlPanel);
+      addRequirements(controlPanel);
+      SPEED = speed;
+    }
+
+    // Called when the command is initially scheduled.
+    @Override
+    public void initialize() {
+      if(tryLiftMechanism())
+      {
+        this.cancel();
+        return;
+      }
+      
+      controlPanel.setPanelSpinnerSpeed(SPEED);
+    }
+
+    // Called once the command ends or is interrupted.
+    @Override
+    public void end(boolean interrupted) {
+      controlPanel.setPanelSpinnerSpeed(0);
     }
   }
 }
