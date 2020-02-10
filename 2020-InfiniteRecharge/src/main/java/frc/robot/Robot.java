@@ -64,6 +64,7 @@ public class Robot extends TimedRobot {
     Yleft.getEntry("Yleft").setDouble(23.2); //Joystick Value. I'm not sure where it's held
    
     Yright.getEntry("Yright").setDouble(22.4);
+
     
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
