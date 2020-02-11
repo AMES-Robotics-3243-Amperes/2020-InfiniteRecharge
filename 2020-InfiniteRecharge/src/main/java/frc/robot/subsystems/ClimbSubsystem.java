@@ -80,5 +80,13 @@ public class ClimbSubsystem extends SubsystemBase {
     SmartDashboard.getBoolean("Top hit?: ", limitTop.get());
     SmartDashboard.getBoolean("Bottom hit?:", limitBottom.get());
     
+    // Done by Alejandro. Not sure if its right or needed
+    SmartDashboard.getNumber("ClimberADJ Current: ", climberADJ.getOutputCurrent()); // Prints current in amps
+    SmartDashboard.getNumber("ClimberR Current: ", climberR.getOutputCurrent());
+    SmartDashboard.getNumber("ClimberL Current: ", climberL.getOutputCurrent());
+
+    SmartDashboard.getNumber("ClimberADJ Volt: ", climberADJ.getBusVoltage()); // Prints the voltage going into the motor controller
+    SmartDashboard.getNumber("ClimberR Volt: ", climberR.getBusVoltage());
+    SmartDashboard.getNumber("ClimberL Volt: ", climberL.getBusVoltage());
   }
 }

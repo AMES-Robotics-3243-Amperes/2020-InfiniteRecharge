@@ -44,11 +44,9 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
-  NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
   NetworkTable Yleft = NetworkTableInstance.getDefault().getTable("Yleft");
   NetworkTable Yright = NetworkTableInstance.getDefault().getTable("Yright");
-  NetworkTableEntry camMode;
-  NetworkTableEntry pipeline;
+
 
   private RobotContainer m_robotContainer;
 
@@ -58,12 +56,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() { 
-    camMode = table.getEntry("camMode");
-    pipeline = table.getEntry("pipeline");
 
     Yleft.getEntry("Yleft").setDouble(23.2); //Joystick Value. I'm not sure where it's held
    
     Yright.getEntry("Yright").setDouble(22.4);
+
     
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
@@ -135,14 +132,16 @@ public class Robot extends TimedRobot {
     m_ballCollectCommand = m_robotContainer.getBallCollectCommand();
     m_climbCommand = m_robotContainer.getClimbCommand();
 
-    if(RobotContainer.driveLime()){
-      m_limelightCommand.schedule();
-    } else if(!RobotContainer.driveLime()){
-      m_driveCommand.schedule();
-    }
+
 
     m_ballCollectCommand.schedule();
     m_climbCommand.schedule();
+
+
+
+    //m_limelightCommand.schedule();
+    //m_driveCommand.schedule();
+    
 
     CommandScheduler.getInstance().run();
 
@@ -154,6 +153,15 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    
+    if(RobotContainer.driveLime()){
+      m_limelightCommand.schedule();
+      m_driveCommand.cancel();
+    } else if(!RobotContainer.driveLime()){
+      m_driveCommand.schedule();
+      m_limelightCommand.cancel();
+    }
+
     CommandScheduler.getInstance().run();
   }
 

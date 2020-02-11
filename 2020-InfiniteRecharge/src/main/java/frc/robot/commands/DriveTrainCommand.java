@@ -28,17 +28,16 @@ public class DriveTrainCommand extends CommandBase {
   @Override
   public void execute() {
     
-      DriveTrainSubSystem.tankDrive(
+      DriveTrainSubSystem.tankDrive( 
         RobotContainer.configureDriveLeft(), 
-        RobotContainer.configureDriveRight(),
-        RobotContainer.configurePracBot() //Get rid of this later on
+        RobotContainer.configureDriveRight()
       );
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    DriveTrainSubSystem.tankDrive(0.0, 0.0, false); //Get rid of "false" later on
+    DriveTrainSubSystem.tankDrive(0.0, 0.0); //Get rid of "false" later on
   }
 
   // Returns true when the command should end.
