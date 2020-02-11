@@ -1,6 +1,11 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -62,10 +67,30 @@ public class ControlPanelSubsystem extends SubsystemBase {
   private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
   private final ColorMatch colorMatcher = new ColorMatch();
   //TUNE THESE COLORS BEFORE MATCHES DURING COMPETITION
-  private static final Color CTARGET_BLUE = ColorMatch.makeColor(0.285, 0.48, 0.22); // (0.143, 0.427, 0.429);
-  private static final Color CTARGET_GREEN = ColorMatch.makeColor(0.325, 0.515, 0.15); // (0.197, 0.561, 0.240);
-  private static final Color CTARGET_RED = ColorMatch.makeColor(0.585, 0.375, 0.085); // (0.561, 0.232, 0.114);
-  private static final Color CTARGET_YELLOW = ColorMatch.makeColor(0.43, 0.48, 0.095); // (0.361, 0.524, 0.113);
+  private static final List<Color> CTARGETS_BLUE = new ArrayList<Color>(Arrays.asList(new Color[]{
+    ColorMatch.makeColor(0.285, 0.48, 0.22), // Underside, light off, in lab // (0.143, 0.427, 0.429);
+    ColorMatch.makeColor(0.17, 0.44, 0.39), // Sideways, light on, thru plexiglass (perpendicular), in lab
+    ColorMatch.makeColor(0.12, 0.42, 0.45), // Sideways, light on, thru plexiglass (45* angle), in lab
+    ColorMatch.makeColor(0.12, 0.42, 0.46) // Sideways, light on, in lab
+  }));
+  private static final List<Color> CTARGETS_GREEN = new ArrayList<Color>(Arrays.asList(new Color[]{
+    ColorMatch.makeColor(0.325, 0.515, 0.15), // (0.197, 0.561, 0.240);
+    ColorMatch.makeColor(0.21, 0.53, 0.26),
+    ColorMatch.makeColor(0.16, 0.58, 0.25),
+    ColorMatch.makeColor(0.16, 0.59, 0.26)
+  }));
+  private static final List<Color> CTARGETS_RED = new ArrayList<Color>(Arrays.asList(new Color[]{
+    ColorMatch.makeColor(0.585, 0.375, 0.085), // (0.561, 0.232, 0.114);
+    ColorMatch.makeColor(0.38, 0.41, 0.21),
+    ColorMatch.makeColor(0.50, 0.36, 0.14),
+    ColorMatch.makeColor(0.52, 0.34, 0.13)
+  }));
+  private static final List<Color> CTARGETS_YELLOW = new ArrayList<Color>(Arrays.asList(new Color[]{
+    ColorMatch.makeColor(0.43, 0.48, 0.095), // (0.361, 0.524, 0.113);
+    ColorMatch.makeColor(0.30, 0.54, 0.16),
+    ColorMatch.makeColor(0.32, 0.56, 0.12),
+    ColorMatch.makeColor(0.31, 0.56, 0.12)
+  }));
 
   private boolean isMechanismLifted = false;
 
@@ -76,10 +101,14 @@ public class ControlPanelSubsystem extends SubsystemBase {
     panelSpinnerPID.dashboardPut();
 
     // Set up color matcher
-    colorMatcher.addColorMatch(CTARGET_BLUE);
-    colorMatcher.addColorMatch(CTARGET_GREEN);
-    colorMatcher.addColorMatch(CTARGET_RED);
-    colorMatcher.addColorMatch(CTARGET_YELLOW);
+    for(Color cTargetBlue : CTARGETS_BLUE)
+      colorMatcher.addColorMatch(cTargetBlue);
+    for(Color cTargetGreen : CTARGETS_GREEN)
+      colorMatcher.addColorMatch(cTargetGreen);
+    for(Color cTargetRed : CTARGETS_RED)
+      colorMatcher.addColorMatch(cTargetRed);
+    for(Color cTargetYellow : CTARGETS_YELLOW)
+      colorMatcher.addColorMatch(cTargetYellow);
   }
 
   /**
@@ -148,13 +177,13 @@ public class ControlPanelSubsystem extends SubsystemBase {
     ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
 
     PanelColor panelCol = null;
-    if(match.color == CTARGET_BLUE)
+    if(CTARGETS_BLUE.contains(match.color))
         panelCol = PanelColor.BLUE;
-    else if(match.color == CTARGET_GREEN)
+    else if(CTARGETS_GREEN.contains(match.color))
       panelCol = PanelColor.GREEN;
-    else if(match.color == CTARGET_RED)
+    else if(CTARGETS_RED.contains(match.color))
       panelCol = PanelColor.RED;
-    else if(match.color == CTARGET_YELLOW)
+    else if(CTARGETS_YELLOW.contains(match.color))
       panelCol = PanelColor.YELLOW;
 /// SmartDashboard Outputs \\\
     SmartDashboard.putNumber("Red", detectedColor.red);
