@@ -12,7 +12,10 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,11 +23,17 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 //import frc.robot.RobotContainer;
 import frc.robot.subsystems.DrivetrainPIDSubsystem;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 
 /**
  * Add your docs here.
  */
 public class DriveTrainSubSystem extends SubsystemBase {
+
+  SpeedController motor1;
+
+  Encoder encode1;
+
   // New Encoder Objects \\
     private static CANSparkMax motor_LT = new CANSparkMax(Constants.DriveConstants.kLTID, MotorType.kBrushless);
     private static CANSparkMax motor_LB = new CANSparkMax(Constants.DriveConstants.kLBID, MotorType.kBrushless);
@@ -40,7 +49,10 @@ public class DriveTrainSubSystem extends SubsystemBase {
     private static WPI_VictorSPX drive_RT = new WPI_VictorSPX(Constants.DriveConstants.kPracRTID);
     private static WPI_VictorSPX drive_RB = new WPI_VictorSPX(Constants.DriveConstants.kPracRBID);
 
+
     static boolean testBot = false;
+    static double leftVector = 0.0;
+    static double rightVector = 0.0;
 
   // m_drive is a combination of both left and right motors
   private final DifferentialDrive m_drive = new DifferentialDrive(m_leftmotors, m_rightmotors);
@@ -63,38 +75,55 @@ public class DriveTrainSubSystem extends SubsystemBase {
 
     drive_LB.follow(drive_LT);
     drive_RB.follow(drive_RT);
+
+    if(RobotContainer.isPractice){
+      motor1 = new WPI_VictorSPX(100);
+      encode1 = new Encoder(3, 4, false, EncodingType.k4X);
+    } else{
+      motor1 = new CANSparkMax(Constants.DriveConstants.kLBID, MotorType.kBrushless);
+      //encode1 = ((CANSparkMax) motor1).getEncoder();    //I no work :(
+    }
   }
 
-  public static void tankDrive(double varLeft, double varRight, boolean pracBot) {
-    testBot = pracBot;
-      if(!pracBot){
+  public static void tankDrive(double varLeft, double varRight) {
+    leftVector = varLeft;
+    rightVector = varRight;
+
+
         //m_rightSide.setSetpoint(-varRight);
         //m_leftSide.setSetpoint(varLeft);
-      } else if(pracBot){
+
         //drive_LT.set(ControlMode.PercentOutput, varLeft);
         //drive_RT.set(ControlMode.PercentOutput, varRight);
-        SmartDashboard.getNumber("Velocity Left: ", varLeft);
-        SmartDashboard.getNumber("Velocity Right: ", varRight);
-      }
+        
+      
     }
 
     @Override
     public void periodic() {
+
+        SmartDashboard.putNumber("Vector Left: ", leftVector);
+        SmartDashboard.putNumber("Vector Right: ", rightVector);
+
+
+
+        SmartDashboard.getNumber("VelocityMotorLT: ", motor_LT.getEncoder().getVelocity()); // Prints speed of encoder
+        SmartDashboard.getNumber("VelocityMotorLB: ", motor_LB.getEncoder().getVelocity());
+        SmartDashboard.getNumber("VelocityMotorRT: ", motor_RT.getEncoder().getVelocity());
+        SmartDashboard.getNumber("VelocityMotorRB: ", motor_RB.getEncoder().getVelocity());
+  
+        SmartDashboard.getNumber("CurrentMotorLT: ", motor_LT.getOutputCurrent());  // Prints current in amps
+        SmartDashboard.getNumber("CurrentMotorLB: ", motor_LB.getOutputCurrent());
+        SmartDashboard.getNumber("CurrentMotorRT: ", motor_RT.getOutputCurrent());
+        SmartDashboard.getNumber("CurrentMotorRB: ", motor_RB.getOutputCurrent());
+  
+        SmartDashboard.getNumber("CurrentMotorLT: ", motor_LT.getBusVoltage()); // Prints the voltage going into the motor controller
+        SmartDashboard.getNumber("CurrentMotorLB: ", motor_LB.getBusVoltage());
+        SmartDashboard.getNumber("CurrentMotorRT: ", motor_RT.getBusVoltage());
+        SmartDashboard.getNumber("CurrentMotorRB: ", motor_RB.getBusVoltage());
+      
       // This method will be called once per scheduler run
-      SmartDashboard.getNumber("VelocityMotorLT: ", motor_LT.getEncoder().getVelocity()); // Prints speed of encoder
-      SmartDashboard.getNumber("VelocityMotorLB: ", motor_LB.getEncoder().getVelocity());
-      SmartDashboard.getNumber("VelocityMotorRT: ", motor_RT.getEncoder().getVelocity());
-      SmartDashboard.getNumber("VelocityMotorRB: ", motor_RB.getEncoder().getVelocity());
-
-      SmartDashboard.getNumber("CurrentMotorLT: ", motor_LT.getOutputCurrent());  // Prints current in amps
-      SmartDashboard.getNumber("CurrentMotorLB: ", motor_LB.getOutputCurrent());
-      SmartDashboard.getNumber("CurrentMotorRT: ", motor_RT.getOutputCurrent());
-      SmartDashboard.getNumber("CurrentMotorRB: ", motor_RB.getOutputCurrent());
-
-      SmartDashboard.getNumber("CurrentMotorLT: ", motor_LT.getBusVoltage()); // Prints the voltage going into the motor controller
-      SmartDashboard.getNumber("CurrentMotorLB: ", motor_LB.getBusVoltage());
-      SmartDashboard.getNumber("CurrentMotorRT: ", motor_RT.getBusVoltage());
-      SmartDashboard.getNumber("CurrentMotorRB: ", motor_RB.getBusVoltage());
+      
 
       
     }

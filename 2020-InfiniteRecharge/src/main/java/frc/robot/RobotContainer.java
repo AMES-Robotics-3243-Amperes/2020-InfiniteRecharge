@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Preferences;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -28,13 +29,15 @@ public class RobotContainer {
   private static Joystick secondary = new Joystick(1);
   static Double[] steering = new Double[2];
   static double steerLeft;
-  static double steerRight;  
+  static double steerRight;
+
+  public static boolean isPractice = false;
 
   //Defined Suybsystems
   private final AutoSubsystem m_exampleSubsystem = new AutoSubsystem();
   public static DriveTrainSubSystem m_robotDriveSubsystem = new DriveTrainSubSystem();
   public static ControlPanelSubsystem m_controlPanelSubsystem = new ControlPanelSubsystem();
-  public final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem(m_robotDriveSubsystem);
+  public final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
   public static BallCollectionSubSystem m_ballCollectionSubsystem = new BallCollectionSubSystem();
   public final DumperSubsystem dumperSubsystem = new DumperSubsystem();
   public static ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
@@ -58,7 +61,7 @@ public class RobotContainer {
 
   //Joysticks
 
-  //Other variables
+  //Color Wheel variables
 
   private static final int B_BLUE = 1;
   private static final int B_GREEN = 2;
@@ -71,6 +74,10 @@ public class RobotContainer {
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+
+    //Preferences.getInstance().putBoolean("Is Practice?", true); //This sets the practice robot you're on to true
+    isPractice = Preferences.getInstance().getBoolean("Is Practice?", false);
+
     // Setup Commands
     turnToColorBlue.addRequirements(m_controlPanelSubsystem); // Keep panel rotation cmds from running simultaneously
     turnToColorGreen.addRequirements(m_controlPanelSubsystem);
