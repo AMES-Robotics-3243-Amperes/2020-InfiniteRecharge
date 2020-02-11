@@ -6,13 +6,16 @@
 /*----------------------------------------------------------------------------*/
 // This is the autonomous class
 package frc.robot.commands;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj.command.command;
 import frc.robot.subsystems.DriveTrainSubSystem;
-import frc.robot.command.DriveTrain; 
+import frc.robot.subsystems.SentientSubsystem;
+import frc.robot.commands.DriveTrainCommand; 
 public class Sentience extends CommandBase {
+  private final SentientSubsystem sentientSubsystem;
   double m_time;
-  public Sentience(double time) { // Scope has the amount of time we want it to run
+  public Sentience(SentientSubsystem sentientSubsystem, double time) { // Scope has the amount of time we want it to run
+    this.sentientSubsystem = sentientSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     m_time = time; 
     
