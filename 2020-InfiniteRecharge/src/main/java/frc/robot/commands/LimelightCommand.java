@@ -26,6 +26,7 @@ public class LimelightCommand extends CommandBase {
     m_drive = drive;
     m_adjust = adjust;
 
+
   }
 
   // Called when the command is initially scheduled.
@@ -37,15 +38,32 @@ public class LimelightCommand extends CommandBase {
   @Override
   public void execute() {
 
-    DriveTrainSubSystem.tankDrive(
-      //Left side
-      LimelightSubsystem.setSteer() 
-      + LimelightSubsystem.setDist(),
+    double var =  0;
+    double var2 = 0.0;
 
+      //Left side
+
+      if (LimelightSubsystem.setSteer() + LimelightSubsystem.setDist() > 1) {
+        var = 1.0;
+      }
+      else if(LimelightSubsystem.setSteer() + LimelightSubsystem.setDist() < -1) {
+        var = -1.0;
+      }
+      else {
+        var = LimelightSubsystem.setSteer() - LimelightSubsystem.setDist();
+      }
       //Right side
-      LimelightSubsystem.setSteer() 
-      - LimelightSubsystem.setDist()
-      );
+      if (LimelightSubsystem.setSteer() - LimelightSubsystem.setDist() > 1) {
+        var2 = 1.0;
+      }
+      else if(LimelightSubsystem.setSteer() - LimelightSubsystem.setDist() <-1) {
+        var2 = -1.0;
+      }
+      else {
+        var2 = LimelightSubsystem.setSteer() - LimelightSubsystem.setDist();
+      }
+
+      DriveTrainSubSystem.tankDrive(var, var2);
   }
 
   // Called once the command ends or is interrupted.

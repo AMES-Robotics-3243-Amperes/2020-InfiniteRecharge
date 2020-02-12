@@ -40,7 +40,7 @@ public class LimelightSubsystem extends SubsystemBase {
   static float KpDist = 0.01f;
   static float KpDist2 = 0.2f;
   static float min_command = 0;
-  static float refArea = 2.25f;
+  static float refArea = 63.5f;
 
   public LimelightSubsystem() {
     //this class's object "drive" is equal to the DriveTrainSubSystem's object "drive"
