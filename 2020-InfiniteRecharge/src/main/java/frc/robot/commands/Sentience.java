@@ -5,12 +5,20 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 // This is the autonomous class
-package frc.robot.commands;
+/*
+What is needed:
+Drivetrain subsystem class: robot.DriveTrainSubSystem
+  left motors: 
 
+
+*/
+package frc.robot.commands;
+// Imports
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrainSubSystem;
 import frc.robot.subsystems.SentientSubsystem;
 import frc.robot.commands.DriveTrainCommand; 
+
 public class Sentience extends CommandBase {
   private final SentientSubsystem sentientSubsystem;
   double m_time;
@@ -18,13 +26,14 @@ public class Sentience extends CommandBase {
     this.sentientSubsystem = sentientSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     m_time = time; 
-    
+    requires(robot.DriveTrainSubSystem);
   }
 
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    robot.DriveTrainSubSystem.m_rightmotors(1.0);
     
   }
 

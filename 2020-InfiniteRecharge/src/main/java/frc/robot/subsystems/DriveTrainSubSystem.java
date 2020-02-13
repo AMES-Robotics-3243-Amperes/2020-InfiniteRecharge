@@ -96,7 +96,7 @@ public class DriveTrainSubSystem extends SubsystemBase {
     m_rightmotors = new SpeedControllerGroup(motorRT, motorRB); // Classifying right side motors
 
     m_rightSide.enable(); // Enables the PID loop
-    m_leftSide.enable(); // Enables the PID loop
+    m_leftSide.enable(); // Enables the PID loop  
 
   }
 
