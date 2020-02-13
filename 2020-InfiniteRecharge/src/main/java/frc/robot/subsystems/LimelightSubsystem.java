@@ -40,7 +40,7 @@ public class LimelightSubsystem extends SubsystemBase {
   static float KpDist = 0.01f;
   static float KpDist2 = 0.2f;
   static float min_command = 0;
-  static float refArea = 63.5f;
+  static float refArea = 6;
 
   public LimelightSubsystem() {
     //this class's object "drive" is equal to the DriveTrainSubSystem's object "drive"
@@ -67,7 +67,7 @@ public class LimelightSubsystem extends SubsystemBase {
         dist_error = refArea - dist_error;
         dist_adjust = KpDist * Math.pow(dist_error, 3) + KpDist2 * dist_error;
       }
-    
+
     return dist_adjust;
   }
 
@@ -90,7 +90,7 @@ public class LimelightSubsystem extends SubsystemBase {
       }
 
       steer_adjust = Math.tanh(steer_adjust) * maxAngAdjust;
-    
+
     return steer_adjust;
   }
 
