@@ -26,7 +26,7 @@ public class Sentience extends CommandBase {
     this.sentientSubsystem = sentientSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     m_time = time; 
-    requires(robot.DriveTrainSubSystem);
+    //requires(robot.DriveTrainSubSystem);
   }
 
 
