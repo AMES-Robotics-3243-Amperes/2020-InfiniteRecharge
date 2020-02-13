@@ -30,6 +30,10 @@ public final class Constants {
         public static final int kPracLBID = 10;
         public static final int kPracRTID = 8;
         public static final int kPracRBID = 7;
+        public static final int kPracLEncode3 = 3;
+        public static final int kPracLEncode4 = 4;
+        public static final int kPracREncode0 = 0;
+        public static final int kPracREncode1 = 1;
     }
 
     public static final class IndexerConstants {
@@ -38,11 +42,11 @@ public final class Constants {
     }
 
     public static final class ClimbingConstant {
-        public static final int kClimbAdjID = 8;   // Don't know ID yet
+        public static final int kClimbAdjID = 14;   // Don't know ID yet
         public static final int kClimbRID = 12;
         public static final int kClimbLID = 13;
-        public static final int kLimitTopID = 1;
-        public static final int kLimitBottomID = 2;
+        public static final int kLimitTopID = 1;  // Changed from 1 to 7
+        public static final int kLimitBottomID = 2; // Changed from 2 to 6
     }
 
     public static final class ControlPanelConstants {
@@ -51,11 +55,11 @@ public final class Constants {
     }
 
     public static final class DumperConstants {
-        public static final int[] kDumpIDs = { 9 }; 
+        public static final int[] kDumpIDs = { 9 }; // Changed from 9 to 111
     }
 
     public static final class BallCollectConstants {
-        public static final int kSpinID = 7; // Don't know which CAN ID this is yet 2/4/20
-        public static final int kActuateID = 12; // Don't know which CAN ID this is yet 2/4/20
+        public static final int kSpinID = 15; // Don't know which CAN ID this is yet 2/4/20
+        public static final int kActuateID = 16; // Don't know which CAN ID this is yet 2/4/20
     }
 }

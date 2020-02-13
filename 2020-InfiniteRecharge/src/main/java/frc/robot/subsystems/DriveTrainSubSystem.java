@@ -31,10 +31,10 @@ public class DriveTrainSubSystem extends SubsystemBase {
   static SpeedController motorRT;
   static SpeedController motorRB;
 
-  Encoder leftVictorEncode;
-  Encoder rightVictorEncode;
-  CANEncoder leftSparkEncode;
-  CANEncoder rightSparkEncode;
+  static Encoder leftVictorEncode;
+  static Encoder rightVictorEncode;
+  static CANEncoder leftSparkEncode;
+  static CANEncoder rightSparkEncode;
 
   // New Encoder Objects \\
 
@@ -47,7 +47,7 @@ public class DriveTrainSubSystem extends SubsystemBase {
   static double rightVector = 0.0;
 
   // m_drive is a combination of both left and right motors
-  private final DifferentialDrive m_drive = new DifferentialDrive(m_leftmotors, m_rightmotors);
+  private DifferentialDrive m_drive;
 
   // Encoder data objects
   private static DrivetrainPIDSubsystem m_rightSide;
@@ -64,8 +64,11 @@ public class DriveTrainSubSystem extends SubsystemBase {
       motorRT = new WPI_VictorSPX(Constants.DriveConstants.kPracRTID);
       motorRB = new WPI_VictorSPX(Constants.DriveConstants.kPracRBID);
 
-      leftVictorEncode = new Encoder(3, 4, false, EncodingType.k4X); // The external encoder on the practice robot
-      rightVictorEncode = new Encoder(0, 1, false, EncodingType.k4X);
+      leftVictorEncode = new Encoder(Constants.DriveConstants.kPracLEncode3, Constants.DriveConstants.kPracLEncode4, false, EncodingType.k4X); // The external encoder on the practice robot
+      rightVictorEncode = new Encoder(Constants.DriveConstants.kPracREncode0, Constants.DriveConstants.kPracREncode1, false, EncodingType.k4X);
+
+      m_leftmotors = new SpeedControllerGroup(motorLT, motorLB); // Classifying left side motors
+      m_rightmotors = new SpeedControllerGroup(motorRT, motorRB); // Classifying right side motors
 
       m_rightSide = new DrivetrainPIDSubsystem(m_rightmotors, null, rightVictorEncode);
       m_leftSide = new DrivetrainPIDSubsystem(m_leftmotors, null, leftVictorEncode);
@@ -82,6 +85,9 @@ public class DriveTrainSubSystem extends SubsystemBase {
       leftSparkEncode = ((CANSparkMax) motorLT).getEncoder(); // The built in encoder on the competition robot
       rightSparkEncode = ((CANSparkMax) motorRT).getEncoder();
 
+      m_leftmotors = new SpeedControllerGroup(motorLT, motorLB); // Classifying left side motors
+      m_rightmotors = new SpeedControllerGroup(motorRT, motorRB); // Classifying right side motors
+
       m_rightSide = new DrivetrainPIDSubsystem(m_rightmotors, rightSparkEncode, null);
       m_leftSide = new DrivetrainPIDSubsystem(m_leftmotors, leftSparkEncode, null);
 
@@ -92,8 +98,7 @@ public class DriveTrainSubSystem extends SubsystemBase {
 
     }
 
-    m_leftmotors = new SpeedControllerGroup(motorLT, motorLB); // Classifying left side motors
-    m_rightmotors = new SpeedControllerGroup(motorRT, motorRB); // Classifying right side motors
+    m_drive = new DifferentialDrive(m_leftmotors, m_rightmotors);
 
     m_rightSide.enable(); // Enables the PID loop
     m_leftSide.enable(); // Enables the PID loop  
@@ -133,6 +138,7 @@ public class DriveTrainSubSystem extends SubsystemBase {
       SmartDashboard.getNumber("CurrentMotorLB: ", ((CANSparkMax) motorLB).getBusVoltage());
       SmartDashboard.getNumber("CurrentMotorRT: ", ((CANSparkMax) motorRT).getBusVoltage());
       SmartDashboard.getNumber("CurrentMotorRB: ", ((CANSparkMax) motorRB).getBusVoltage());
+  
     }
 
     // This method will be called once per scheduler run

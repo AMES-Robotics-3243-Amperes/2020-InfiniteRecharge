@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Preferences;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.*;
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -26,13 +25,14 @@ import frc.robot.commands.*;
  */
 public class RobotContainer {
 
+  //Joysticks
   private static Joystick driver = new Joystick(0);
   private static Joystick secondary = new Joystick(1);
-  static Double[] steering = new Double[2];
   static double steerLeft;
   static double steerRight;
 
-  public static boolean isPractice = false;
+  // This helps the code know if we're using the practice robot or the competition robot
+  public static boolean   isPractice = Preferences.getInstance().getBoolean("Is Practice", false);
 
   //Defined Suybsystems
   private final AutoSubsystem m_exampleSubsystem = new AutoSubsystem();
@@ -64,10 +64,8 @@ public class RobotContainer {
 
   private final DumperCommand dumperCommand = new DumperCommand(dumperSubsystem, indexerSubsystem, 2);
 
-  //Joysticks
 
-  //Color Wheel variables
-
+  //Color Wheel variables. ALSO, YOU CAN PUT THIS INTO CONSTANTS TO MAKE THIS PLACE A LITTLE MORE NEAT?
   private static final int B_BLUE = 1;
   private static final int B_GREEN = 2;
   private static final int B_RED = 3;
@@ -80,8 +78,11 @@ public class RobotContainer {
    */
   public RobotContainer() {
 
-    //Preferences.getInstance().putBoolean("Is Practice?", true); //This sets the practice robot you're on to true
-    isPractice = Preferences.getInstance().getBoolean("Is Practice?", false);
+    // This sets the practice robot you're on to true
+    //Preferences.getInstance().putBoolean("Is Practice", true);
+
+    // This says that the robot that we're on will pass in true (if it's the prac robot) and falst (if it's the comp robot)
+  
 
     // Setup Commands
     turnToColorBlue.addRequirements(m_controlPanelSubsystem); // Keep panel rotation cmds from running simultaneously
@@ -110,13 +111,16 @@ public class RobotContainer {
     JoystickButton colorRed = new JoystickButton(driver, B_RED);
     JoystickButton colorYellow = new JoystickButton(driver, B_YELLOW);
     JoystickButton turn4TimeButton = new JoystickButton(driver, B_TURN_4_TIMES);
+
     colorBlue.whenPressed(turnToColorBlue, true); // 'true'=interruptible
     colorGreen.whenPressed(turnToColorGreen, true);
     colorRed.whenPressed(turnToColorRed, true);
     colorYellow.whenPressed(turnToColorYellow, true);
     turn4TimeButton.whenPressed(turn4Times, true);
+
     JoystickButton blowerControlPanel = new JoystickButton(driver, B_LOWER_CTLPANEL);
     blowerControlPanel.whenPressed(lowerControlPanel);
+
     POVButton ctlPanelManualLeft = new POVButton(driver, 270);
     POVButton ctlPanelManualRight = new POVButton(driver, 90);
     ctlPanelManualLeft.whenHeld(manualPanelLeft, true);
@@ -158,6 +162,7 @@ public class RobotContainer {
 
     return steerRight;
   }
+
   /** Gets a joystick value, with dead zone applied. */
   private static double getJoystWithDead(boolean isLeft)
   {
@@ -165,6 +170,7 @@ public class RobotContainer {
     steer = deadZone(steer);
     return steer;
   }
+
   /** Given both left and right steering, returns the average of the two if they're really close together.
    * <p> Useful for trying to drive in a straight line.
    */
@@ -190,9 +196,11 @@ public class RobotContainer {
       (steer1-(avgSteer-r)) * ((r) / ((avgSteer-r)-lowerBound)),
       -r, 0
     );
+
     if(Constants.TEST_VERSION) {
     SmartDashboard.putNumber("upperBoundConnector", upperBoundCorrector);
     SmartDashboard.putNumber("lowerBoundConnector", lowerBoundCorrector); }
+
     // A y=x function with a plateau in the middle. The plateau is at avgSteer and causes values to 'snap' to it.
     // Either lowerBoundCorrector or upperBoundCorrector is added, depending on whether steer1 is between avgSteer
     //     and lowerBound, or between avgSteer and upperBound.
@@ -202,12 +210,14 @@ public class RobotContainer {
     return result;
     // return (Math.abs(avgSteer-steer1) <= r) ?avgSteer :steer1; Without smoothing; don't use.
   }
+
   private static double clamp(double a, double min, double max)
   {
     double realMin = Math.min(min, max);
     double realMax = Math.max(min, max);
     return Math.min(realMax, Math.max(realMin, a));
   }
+  
   private static double lerp(double a, double b, double f)
   {
     return a + f * (b-a);

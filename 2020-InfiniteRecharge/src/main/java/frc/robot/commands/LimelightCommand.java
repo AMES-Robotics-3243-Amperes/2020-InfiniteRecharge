@@ -41,6 +41,9 @@ public class LimelightCommand extends CommandBase {
     double var =  0;
     double var2 = 0.0;
 
+    double steer = LimelightSubsystem.setSteer();
+    double dist = LimelightSubsystem.setDist();
+
       //Left side
 
       if (LimelightSubsystem.setSteer() + LimelightSubsystem.setDist() > 1) {
@@ -52,6 +55,7 @@ public class LimelightCommand extends CommandBase {
       else {
         var = LimelightSubsystem.setSteer() - LimelightSubsystem.setDist();
       }
+
       //Right side
       if (LimelightSubsystem.setSteer() - LimelightSubsystem.setDist() > 1) {
         var2 = 1.0;
@@ -64,6 +68,8 @@ public class LimelightCommand extends CommandBase {
       }
 
       DriveTrainSubSystem.tankDrive(var, var2);
+      SmartDashboard.putNumber("Steer: ", steer);
+      SmartDashboard.putNumber("Distance: ", dist);
   }
 
   // Called once the command ends or is interrupted.
