@@ -66,31 +66,52 @@ public class ControlPanelSubsystem extends SubsystemBase {
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
   private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
   private final ColorMatch colorMatcher = new ColorMatch();
-  //TUNE THESE COLORS BEFORE MATCHES DURING COMPETITION
+  // NEW MATCH COLORS USE calibratedWhite TO DECIDE
   private static final List<Color> CTARGETS_BLUE = new ArrayList<Color>(Arrays.asList(new Color[]{
-    ColorMatch.makeColor(0.285, 0.48, 0.22), // Underside, light off, in lab // (0.143, 0.427, 0.429);
-    ColorMatch.makeColor(0.17, 0.44, 0.39), // Sideways, light on, thru plexiglass (perpendicular), in lab
-    ColorMatch.makeColor(0.12, 0.42, 0.45), // Sideways, light on, thru plexiglass (45* angle), in lab
-    ColorMatch.makeColor(0.12, 0.42, 0.46) // Sideways, light on, in lab
+    ColorMatch.makeColor(0.16, 0.48, 1.0), // Dark side of bucket with dimmed lights
+    ColorMatch.makeColor(0.28, 0.42, 1.0), // Dark side of bucket with dimmed lights
+    ColorMatch.makeColor(0.26, 0.48, 0.87), // Light side of bucket with lights on
+    ColorMatch.makeColor(0.26, 0.48, 0.87) // Dark side of bucket with lights on
+    //ColorMatch.makeColor(0.285, 0.48, 0.22), // Underside, light off, in lab // (0.143, 0.427, 0.429);
+    //ColorMatch.makeColor(0.17, 0.44, 0.39), // Sideways, light on, thru plexiglass (perpendicular), in lab
+    //ColorMatch.makeColor(0.12, 0.42, 0.45), // Sideways, light on, thru plexiglass (45* angle), in lab
+    //ColorMatch.makeColor(0.12, 0.42, 0.46), // Sideways, light on, in lab
+    //ColorMatch.makeColor(0.22, 0.48, 0.31) // Bucket in lab
   }));
   private static final List<Color> CTARGETS_GREEN = new ArrayList<Color>(Arrays.asList(new Color[]{
-    ColorMatch.makeColor(0.325, 0.515, 0.15), // (0.197, 0.561, 0.240);
-    ColorMatch.makeColor(0.21, 0.53, 0.26),
-    ColorMatch.makeColor(0.16, 0.58, 0.25),
-    ColorMatch.makeColor(0.16, 0.59, 0.26)
+    ColorMatch.makeColor(0.20, 0.60, 0.80), // Dark side of bucket with dimmed lights
+    ColorMatch.makeColor(0.33, 0.50, 0.66), // Dark side of bucket with dimmed lights
+    ColorMatch.makeColor(0.30, 0.57, 0.49), // Light side of bucket with lights on
+    ColorMatch.makeColor(0.26, 0.48, 0.87) // Dark side of bucket with lights on
+    //ColorMatch.makeColor(0.325, 0.515, 0.15), // (0.197, 0.561, 0.240);
+    //ColorMatch.makeColor(0.21, 0.53, 0.26),
+    //ColorMatch.makeColor(0.16, 0.58, 0.25),
+    //ColorMatch.makeColor(0.16, 0.59, 0.26),
+    //ColorMatch.makeColor(0.24, 0.59, 0.18) // Bucket in lab
   }));
   private static final List<Color> CTARGETS_RED = new ArrayList<Color>(Arrays.asList(new Color[]{
-    ColorMatch.makeColor(0.585, 0.375, 0.085), // (0.561, 0.232, 0.114);
-    ColorMatch.makeColor(0.38, 0.41, 0.21),
-    ColorMatch.makeColor(0.50, 0.36, 0.14),
-    ColorMatch.makeColor(0.52, 0.34, 0.13)
+    ColorMatch.makeColor(0.73, 0.27, 0.0), // Dark side of bucket with dimmed lights
+    ColorMatch.makeColor(0.64, 0.27, 0.27), // Dark side of bucket with dimmed lights
+    ColorMatch.makeColor(0.74, 0.31, 0.17), // Light side of bucket with lights on
+    ColorMatch.makeColor(0.26, 0.48, 0.87) // Dark side of bucket with lights on
+    //ColorMatch.makeColor(0.585, 0.375, 0.085), // (0.561, 0.232, 0.114);
+    //ColorMatch.makeColor(0.38, 0.41, 0.21),
+    //ColorMatch.makeColor(0.50, 0.36, 0.14),
+    //ColorMatch.makeColor(0.52, 0.34, 0.13),
+    //ColorMatch.makeColor(0.63, 0.31, 0.06)
   }));
   private static final List<Color> CTARGETS_YELLOW = new ArrayList<Color>(Arrays.asList(new Color[]{
-    ColorMatch.makeColor(0.43, 0.48, 0.095), // (0.361, 0.524, 0.113);
-    ColorMatch.makeColor(0.30, 0.54, 0.16),
-    ColorMatch.makeColor(0.32, 0.56, 0.12),
-    ColorMatch.makeColor(0.31, 0.56, 0.12)
+    ColorMatch.makeColor(0.50, 0.45, 0.18), // Dark side of bucket with dimmed lights
+    ColorMatch.makeColor(0.46, 0.46, 0.31), // Dark side of bucket with dimmed lights
+    ColorMatch.makeColor(0.52, 0.48, 0.22), // Light side of bucket with lights on
+    ColorMatch.makeColor(0.26, 0.48, 0.87) // Dark side of bucket with lights on
+    //ColorMatch.makeColor(0.43, 0.48, 0.095), // (0.361, 0.524, 0.113);
+    //ColorMatch.makeColor(0.30, 0.54, 0.16),
+    //ColorMatch.makeColor(0.32, 0.56, 0.12),
+    //ColorMatch.makeColor(0.31, 0.56, 0.12),
+    //ColorMatch.makeColor(0.45, 0.48, 0.07)
   }));
+  private Color calibratedWhite = ColorMatch.makeColor(1f, 1f, 1f);
 
   private boolean isMechanismLifted = false;
 
@@ -159,6 +180,19 @@ public class ControlPanelSubsystem extends SubsystemBase {
     getSensorColor(); // Cause color data to be written to dashboard
     panelSpinnerPID.dashboardGet();
 
+    if(SmartDashboard.getNumber("Calibrate color sensor", 0) == 1)
+    {
+      Color sensedColor = colorSensor.getColor();
+      double maxChannel = Math.max(sensedColor.red, Math.max(sensedColor.green, sensedColor.blue));
+      calibratedWhite = ColorMatch.makeColor(//sensedColor.red*3, sensedColor.green*3, sensedColor.blue*3);
+        sensedColor.red/maxChannel,
+        sensedColor.green/maxChannel,
+        sensedColor.blue/maxChannel
+      );
+    }
+    SmartDashboard.putNumber("Calibrate color sensor", 0);
+    SmartDashboard.putNumber("R", calibratedWhite.red);
+
     mechanismLifter.set(isMechanismLifted ?LIFTER_UP_ANGLE :LIFTER_DOWN_ANGLE);
   }
 
@@ -174,6 +208,11 @@ public class ControlPanelSubsystem extends SubsystemBase {
   public PanelColor getSensorColor()
   {
     Color detectedColor = colorSensor.getColor();
+    // 'Normalize' detected color based on sampled white
+    detectedColor = ColorMatch.makeColor(detectedColor.red / calibratedWhite.red,
+      detectedColor.green / calibratedWhite.green,
+      detectedColor.blue / calibratedWhite.blue
+    );
     ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
 
     PanelColor panelCol = null;
