@@ -105,6 +105,20 @@ public class DriveTrainSubSystem extends SubsystemBase {
 
   }
 
+  public static Encoder getVictorLeft(){
+    return leftVictorEncode;
+  }
+
+  public static Encoder getVictorRight(){
+    return rightVictorEncode;
+  }
+  public static CANEncoder getSparkLeft(){
+    return leftSparkEncode;
+  }
+  public static CANEncoder getSparkRight(){
+    return rightSparkEncode;
+  } 
+
   public static void tankDrive(double varLeft, double varRight) {
     leftVector = varLeft;
     rightVector = varRight;

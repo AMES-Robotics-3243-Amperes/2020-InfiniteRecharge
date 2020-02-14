@@ -32,6 +32,7 @@ public class Robot extends TimedRobot {
   private Command m_limelightCommand;
   private Command m_ballCollectCommand;
   private Command m_climbCommand;
+  private Command m_driveForwardCommand;
 
   private static final String kDefaultAuto = "No Auto";
   private static final String kCustomAuto = "Auto Line";
@@ -45,13 +46,8 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
 
   /**
-<<<<<<< HEAD
-   * This function is run when the robot is first started up and should be used for any
-   * initialization code. 
-=======
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
->>>>>>> 043529ac888ddaff155a591b5c9aeb4b6d1074a0
    */
   @Override
   public void robotInit() {
@@ -108,7 +104,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
@@ -120,6 +115,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
+    m_driveForwardCommand = m_robotContainer.getDriveForwardCommand();
+
   }
 
   @Override

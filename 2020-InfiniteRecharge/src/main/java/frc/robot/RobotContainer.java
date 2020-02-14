@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import frc.robot.autonomous.*;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj.Joystick;
@@ -16,6 +17,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Preferences;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.autonomous.Sentience;
+import frc.robot.autonomous.SentientSubsystem;
 import frc.robot.commands.*;
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -44,7 +47,7 @@ public class RobotContainer {
   public static ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
   public final IndexerSubsystem indexerSubsystem = new IndexerSubsystem();
   public final SentientSubsystem m_SentienceSubsystem = new SentientSubsystem();
-
+  public static DriveForward m_driveForward = new DriveForward(m_robotDriveSubsystem, DriveTrainSubSystem.getSparkLeft(), DriveTrainSubSystem.getSparkRight(), DriveTrainSubSystem.getVictorLeft(), DriveTrainSubSystem.getVictorRight()  );
   //Defined Commands
   public final DriveTrainCommand m_robotDriveCommand = new DriveTrainCommand(m_robotDriveSubsystem);
   private final AutoCommand m_autoCommand = new AutoCommand(m_exampleSubsystem);
@@ -271,6 +274,9 @@ public class RobotContainer {
   public Command getLimelightCommand(){
 
     return m_limelightCommand;
+  }
+  public Command getDriveForwardCommand(){
+    return m_driveForward;
   }
 
   public Command getBallCollectCommand(){

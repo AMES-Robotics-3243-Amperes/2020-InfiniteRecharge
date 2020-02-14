@@ -12,28 +12,32 @@ Drivetrain subsystem class: robot.DriveTrainSubSystem
 
 
 */
-package frc.robot.commands;
+package frc.robot.autonomous;
 // Imports
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrainSubSystem;
-import frc.robot.subsystems.SentientSubsystem;
+import frc.robot.autonomous.SentientSubsystem;
 import frc.robot.commands.DriveTrainCommand; 
 
 public class Sentience extends CommandBase {
+
   private final SentientSubsystem sentientSubsystem;
   double m_time;
+
   public Sentience(SentientSubsystem sentientSubsystem, double time) { // Scope has the amount of time we want it to run
+
     this.sentientSubsystem = sentientSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     m_time = time; 
     //requires(robot.DriveTrainSubSystem);
+
   }
 
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    robot.DriveTrainSubSystem.m_rightmotors(1.0);
+    
     
   }
 

@@ -45,8 +45,8 @@ public final class Constants {
         public static final int kClimbAdjID = 14;   // Don't know ID yet
         public static final int kClimbRID = 12;
         public static final int kClimbLID = 13;
-        public static final int kLimitTopID = 1;  // Changed from 1 to 7
-        public static final int kLimitBottomID = 2; // Changed from 2 to 6
+        public static final int kLimitTopID = 7;  // Changed from 1 to 7
+        public static final int kLimitBottomID = 6; // Changed from 2 to 6
     }
 
     public static final class ControlPanelConstants {
@@ -55,7 +55,7 @@ public final class Constants {
     }
 
     public static final class DumperConstants {
-        public static final int[] kDumpIDs = { 9 }; // Changed from 9 to 111
+        public static final int[] kDumpIDs = { 111 }; // Changed from 9 to 111
     }
 
     public static final class BallCollectConstants {
