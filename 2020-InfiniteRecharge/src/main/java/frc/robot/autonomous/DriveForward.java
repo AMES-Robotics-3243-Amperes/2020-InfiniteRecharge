@@ -43,11 +43,21 @@ public class DriveForward extends CommandBase {
     if(m_encodeSparkLeft != null && m_encodeSparkRight != null){
       m_encodeSparkLeft.setPosition(0);
       m_encodeSparkRight.setPosition(0);
-      DriveTrainSubSystem.tankDrive(0.5, 0.5);  
+
+      if(m_encodeSparkLeft.getPosition() < 35 && m_encodeSparkRight.getPosition() < 35)
+        DriveTrainSubSystem.tankDrive(0.55, 0.55);
+      else if(m_encodeSparkLeft.getPosition() > 35 && m_encodeSparkRight.getPosition() > 35)
+        DriveTrainSubSystem.tankDrive(-0.55, -0.55);
+      
     } else if(m_encodeVictorLeft != null && m_encodeVictorRight != null){
       m_encodeVictorLeft.reset();
       m_encodeVictorRight.reset();
-      DriveTrainSubSystem.tankDrive(0.5, 0.5);
+
+      if(m_encodeVictorLeft.getDistance() < 35 && m_encodeVictorRight.getDistance() < 35)
+        DriveTrainSubSystem.tankDrive(0.55, 0.55);
+      else if(m_encodeVictorLeft.getDistance() > 35 && m_encodeVictorRight.getDistance() > 35)
+        DriveTrainSubSystem.tankDrive(-0.55, -0.55);
+      
     }
 
   }
@@ -55,34 +65,7 @@ public class DriveForward extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
-    // We want to move 5 feet forward, so that 35 should be changed later 2/13/20
-    // SparkMax Encoder code
-    if(m_encodeSparkRight != null && m_encodeSparkLeft != null && m_encodeSparkRight.getPosition() <= 35 && m_encodeSparkLeft.getPosition() <= 35){
-      DriveTrainSubSystem.tankDrive(0.5, 0.5);
-
-    } else if(m_encodeSparkRight != null && m_encodeSparkLeft != null && m_encodeSparkRight.getPosition() >= 35 && m_encodeSparkLeft.getPosition() >= 35){
-      DriveTrainSubSystem.tankDrive(-0.5, -0.5);
-
-    } else if(m_encodeSparkRight != null && m_encodeSparkLeft != null && m_encodeSparkRight.getPosition() == 35 && m_encodeSparkLeft.getPosition() == 35){
-      // HOW DO WE MAKE A PERFECT 90 DEGREE TURN W/0 A GYRO THEN STOP?
-      DriveTrainSubSystem.tankDrive(0.25, -0.25); // Turn 90 degrees
-
-    }
-
-    // Victor Encoder code
-    if(m_encodeVictorRight != null && m_encodeVictorLeft != null && m_encodeVictorRight.getDistance() <= 35 && m_encodeVictorLeft.getDistance() <= 35){
-      DriveTrainSubSystem.tankDrive(0.5, 0.5);
-
-    } else if(m_encodeVictorRight != null && m_encodeVictorLeft != null && m_encodeVictorRight.getDistance() >= 35 && m_encodeVictorLeft.getDistance() >= 35){
-      DriveTrainSubSystem.tankDrive(-0.5, -0.5);
-
-    } else if(m_encodeVictorRight != null && m_encodeVictorLeft != null && m_encodeVictorRight.getDistance() == 35 && m_encodeVictorLeft.getDistance() == 35){
-      // SAME DEAL HERE FOR THE 90 DEGREE TURN :(((
-      DriveTrainSubSystem.tankDrive(0.25, -0.25);
-
-    }
-
+    // We probably don't need this method
   }
 
   // Called once the command ends or is interrupted.
@@ -94,7 +77,30 @@ public class DriveForward extends CommandBase {
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() {
+  public boolean isFinished() { // Want to move 5 ft fwd, but don't know how many rotations, so used "35" as place holder
+
+    // SparkMax encoder
+    if(m_encodeSparkRight != null && m_encodeSparkLeft != null && m_encodeSparkRight.getPosition() <= 35 && m_encodeSparkLeft.getPosition() <= 35){
+      return m_encodeSparkLeft.getPosition() > 35 && m_encodeSparkRight.getPosition() > 35;
+
+    } else if(m_encodeSparkRight != null && m_encodeSparkLeft != null && m_encodeSparkRight.getPosition() >= 35 && m_encodeSparkLeft.getPosition() >= 35){
+      return m_encodeSparkLeft.getPosition() < 35 && m_encodeSparkRight.getPosition() < 35;
+
+    } else if(m_encodeSparkRight != null && m_encodeSparkLeft != null && m_encodeSparkRight.getPosition() == 35 && m_encodeSparkLeft.getPosition() == 35){
+      return m_encodeSparkLeft.getPosition() == 35 && m_encodeSparkRight.getPosition() == 35;
+    }
+
+    // Victor encoder
+    if(m_encodeVictorRight != null && m_encodeVictorLeft != null && m_encodeVictorRight.getDistance() <= 35 && m_encodeVictorLeft.getDistance() <= 35){
+      return m_encodeVictorLeft.getDistance() > 35 && m_encodeVictorRight.getDistance() > 35;
+
+    } else if(m_encodeVictorRight != null && m_encodeVictorLeft != null && m_encodeVictorRight.getDistance() >= 35 && m_encodeVictorLeft.getDistance() >= 35){
+      return m_encodeVictorLeft.getDistance() < 35 && m_encodeVictorRight.getDistance() < 35;
+
+    } else if(m_encodeVictorRight != null && m_encodeVictorLeft != null && m_encodeVictorRight.getDistance() == 35 && m_encodeVictorLeft.getDistance() == 35){
+      return m_encodeVictorLeft.getDistance() == 35 && m_encodeVictorRight.getDistance() == 35;
+    }
+
     return false;
   }
 }

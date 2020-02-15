@@ -21,8 +21,8 @@ import frc.robot.Constants;
 /*\\\     Packages and Imports      ///*/
 public class DumperSubsystem extends SubsystemBase {
   
-  CANSparkMax[] dumpMotors; // Add IDs in Constants.DumperConstants to make more motors here
-  private final double speedMulti = 1;
+  static CANSparkMax[] dumpMotors; // Add IDs in Constants.DumperConstants to make more motors here
+  private static final double speedMulti = 1;
 
   public DumperSubsystem() {
     dumpMotors = new CANSparkMax[Constants.DumperConstants.kDumpIDs.length];
@@ -41,7 +41,7 @@ public class DumperSubsystem extends SubsystemBase {
     }
   }
 
-  public void setMotorSpeed(double speed)
+  public static void setMotorSpeed(double speed)
   {
     for(CANSparkMax motor : dumpMotors)
     {

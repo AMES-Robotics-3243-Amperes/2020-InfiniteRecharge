@@ -62,4 +62,5 @@ public final class Constants {
         public static final int kSpinID = 15; // Don't know which CAN ID this is yet 2/4/20
         public static final int kActuateID = 16; // Don't know which CAN ID this is yet 2/4/20
     }
+
 }

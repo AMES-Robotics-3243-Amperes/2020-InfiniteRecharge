@@ -108,7 +108,6 @@ public class DriveTrainSubSystem extends SubsystemBase {
   public static Encoder getVictorLeft(){
     return leftVictorEncode;
   }
-
   public static Encoder getVictorRight(){
     return rightVictorEncode;
   }
