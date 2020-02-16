@@ -143,6 +143,11 @@ public class RobotContainer {
     return driver.getRawButton(7);  // Don't know which button to choose yet
   }
 
+  public static boolean getTurbo(){
+    return driver.getRawButton(4);
+  }
+
+
   public static double configureDriveLeft(){  //This passes in the axis steering for robot drive
     steerLeft = getJoystWithDead(true);  //Should be the left axis
     double sr = getJoystWithDead(false);
