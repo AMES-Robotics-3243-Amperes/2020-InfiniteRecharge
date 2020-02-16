@@ -29,7 +29,8 @@ public class AssimilatorSubsystem extends SubsystemBase {
   static CANSparkMax polyLoop;
   static CANEncoder indexEncoder;
   static boolean currentExtended = false;
-  static boolean currentRetracted = false;
+  static boolean currentRetracted = true;
+  static final int CURRENT_CONST = 20;
 
   public AssimilatorSubsystem() {
     intakeShaft = new CANSparkMax(Constants.BallCollectConstants.kSpinID, MotorType.kBrushless);
@@ -49,12 +50,9 @@ public class AssimilatorSubsystem extends SubsystemBase {
 
   }
   public static void setIndexCollectSpeed(boolean index) {
-    double min = 5; // fix RPM later
-    double max = 10;
-
 
     if (index) {
-      if (intakeActuator.getOutputCurrent() < 30 && !currentExtended) {
+      if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentExtended) {
         currentRetracted = false; 
         intakeActuator.set(0.5);
         intakeShaft.set(0.5);
@@ -63,7 +61,7 @@ public class AssimilatorSubsystem extends SubsystemBase {
         currentExtended = true;
       }
     } else {
-      if (intakeActuator.getOutputCurrent() < 30 && !currentRetracted) {
+      if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentRetracted) {
         currentExtended = false;
         intakeActuator.set(-0.5);
         intakeShaft.set(0.0);
