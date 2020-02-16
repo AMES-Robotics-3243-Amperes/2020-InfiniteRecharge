@@ -30,14 +30,16 @@ public class AssimilatorCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    AssimilatorSubsystem.setMotorSpeed(RobotContainer.configureballbindings());
+    AssimilatorSubsystem.setIndexCollectSpeed(RobotContainer.configureballbindings());
+    AssimilatorSubsystem.ballIndex(RobotContainer.configureIndexShaft());
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    AssimilatorSubsystem.setMotorSpeed(false);
+    AssimilatorSubsystem.setIndexCollectSpeed(false);
+    AssimilatorSubsystem.ballIndex(false);
   }
 
   // Returns true when the command should end.

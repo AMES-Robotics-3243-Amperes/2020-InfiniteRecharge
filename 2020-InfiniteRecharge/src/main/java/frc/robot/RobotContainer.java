@@ -37,6 +37,7 @@ public class RobotContainer {
   public static boolean   isPractice = Preferences.getInstance().getBoolean("Is Practice", false);
 
   //Defined Suybsystems
+  private static AssimilatorSubsystem m_AssimilatorSubsystem = new AssimilatorSubsystem();
   private final AutoSubsystem m_exampleSubsystem = new AutoSubsystem();
   public static DriveTrainSubSystem m_robotDriveSubsystem = new DriveTrainSubSystem();
   public static ControlPanelSubsystem m_controlPanelSubsystem = new ControlPanelSubsystem();
@@ -54,6 +55,7 @@ public class RobotContainer {
   private final LimelightCommand m_limelightCommand = new LimelightCommand(m_robotDriveSubsystem, m_limelightSubsystem);
   private final BallCollectionCommand m_ballCollectionCommand = new BallCollectionCommand(m_ballCollectionSubsystem, indexerSubsystem);
   public static ClimbCommand m_climbCommand = new ClimbCommand(m_climbSubsystem);
+  public static AssimilatorCommand m_AssimilatorCommand = new AssimilatorCommand(m_AssimilatorSubsystem);
 
   private final ControlPanelCommand.TurnNumTimes turn4Times = new ControlPanelCommand.TurnNumTimes(m_controlPanelSubsystem, 3.5, 4);
   private final ControlPanelCommand.TurnToColor turnToColorBlue = new ControlPanelCommand.TurnToColor(m_controlPanelSubsystem, ControlPanelSubsystem.PanelColor.BLUE);
@@ -250,7 +252,10 @@ public class RobotContainer {
   public static double configureclimbleftbindings(){
     return secondary.getRawAxis(1);
   }
- 
+ //----------------- INTAKE SECTION OF JOYSTICK -------------
+ public static boolean configureIndexShaft(){
+   return secondary.getRawButton(3);
+ }
 
   public static double configureclimbrightbindings(){
     return secondary.getRawAxis(3);
@@ -292,5 +297,9 @@ public class RobotContainer {
   public Command getClimbCommand(){
     
     return m_climbCommand;
+  }
+  public Command getAssimilatorCommand(){
+
+    return m_AssimilatorCommand;
   }
 }

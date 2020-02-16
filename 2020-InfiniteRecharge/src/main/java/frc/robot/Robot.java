@@ -33,6 +33,7 @@ public class Robot extends TimedRobot {
   private Command m_ballCollectCommand;
   private Command m_climbCommand;
   private Command m_driveForwardCommand;
+  private Command m_AssimilatorCommand;
 
   private static final String kDefaultAuto = "No Auto";
   private static final String kCustomAuto = "Auto Line";
@@ -133,9 +134,11 @@ public class Robot extends TimedRobot {
     m_limelightCommand = m_robotContainer.getLimelightCommand();
     m_ballCollectCommand = m_robotContainer.getBallCollectCommand();
     m_climbCommand = m_robotContainer.getClimbCommand();
+    m_AssimilatorCommand = m_robotContainer.getAssimilatorCommand();
 
     m_ballCollectCommand.schedule();
     m_climbCommand.schedule();
+    m_AssimilatorCommand.schedule();
 
     CommandScheduler.getInstance().run();
 

@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+
+import com.revrobotics.CANEncoder;
 // SparkMAX imports
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -22,21 +24,55 @@ public class AssimilatorSubsystem extends SubsystemBase {
   /**
    * Creates a new AssimilatorSubsystem.
    */
-  static CANSparkMax ballIndex;
-  static CANSparkMax ballCollect;
+  static CANSparkMax intakeShaft;
+  static CANSparkMax intakeActuator;
+  static CANSparkMax polyLoop;
+  static CANEncoder indexEncoder;
+  static boolean currentExtended = false;
+  static boolean currentRetracted = false;
+
   public AssimilatorSubsystem() {
-    ballIndex = new CANSparkMax(Constants.BallCollectConstants.kSpinID, MotorType.kBrushless);
-    ballCollect = new CANSparkMax(Constants.BallCollectConstants.kActuateID, MotorType.kBrushed);
-    ballIndex.setSmartCurrentLimit(30);
-    ballCollect.setSmartCurrentLimit(30);
+    intakeShaft = new CANSparkMax(Constants.BallCollectConstants.kSpinID, MotorType.kBrushless);
+    intakeActuator = new CANSparkMax(Constants.BallCollectConstants.kActuateID, MotorType.kBrushed);
+    intakeShaft.setSmartCurrentLimit(25);
+    intakeActuator.setSmartCurrentLimit(28); // Test for limit
+    // indexEncoder = intakeActuator.getOutputCurrent();
   }
-  public static void setMotorSpeed(boolean index){
-    if(index){
-      ballIndex.set(0.0);
-      ballCollect.set(0.0);
-    } else{
-      ballIndex.stopMotor();
-      ballCollect.stopMotor();
+
+  public static void ballIndex(boolean ballIndex){
+    
+    if(ballIndex){
+      intakeShaft.set(0.45);
+    } else {
+      intakeShaft.stopMotor();
+    }
+
+  }
+  public static void setIndexCollectSpeed(boolean index) {
+    double min = 5; // fix RPM later
+    double max = 10;
+
+
+    if (index) {
+      if (intakeActuator.getOutputCurrent() < 30 && !currentExtended) {
+        currentRetracted = false; 
+        intakeActuator.set(0.5);
+        intakeShaft.set(0.5);
+      } else {
+        intakeActuator.set(0.0);
+        currentExtended = true;
+      }
+    } else {
+      if (intakeActuator.getOutputCurrent() < 30 && !currentRetracted) {
+        currentExtended = false;
+        intakeActuator.set(-0.5);
+        intakeShaft.set(0.0);
+      } else{
+        currentRetracted = true;
+        intakeActuator.stopMotor();
+        intakeShaft.stopMotor();
+
+      }
     }
   }
 
