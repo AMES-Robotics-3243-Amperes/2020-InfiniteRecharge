@@ -45,8 +45,6 @@ public class DriveTrainSubSystem extends SubsystemBase {
   static boolean testBot = false;
   static double leftVector = 0.0; // deci multiple of 0.11111 - 0.99999
   static double rightVector = 0.0;
-  static boolean m_leftBumper = false;
-  // static boolean m_rightBumper = false;
 
   // m_drive is a combination of both left and right motors
   private DifferentialDrive m_drive;
@@ -123,9 +121,8 @@ public class DriveTrainSubSystem extends SubsystemBase {
   public static void tankDrive(double varLeft, double varRight, boolean bumperLeft) {
     leftVector = varLeft;
     rightVector = varRight;
-    m_leftBumper = leftBumper;
     //m_rightBumper = rightBumper;
-    if(leftBumper){
+    if(bumperLeft){
       m_rightSide.setSetpoint(-varRight * 2);
       m_leftSide.setSetpoint(varLeft * 2);
     } else {

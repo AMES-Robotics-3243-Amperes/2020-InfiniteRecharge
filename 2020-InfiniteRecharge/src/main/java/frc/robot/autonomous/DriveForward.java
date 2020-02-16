@@ -45,18 +45,18 @@ public class DriveForward extends CommandBase {
       m_encodeSparkRight.setPosition(0);
 
       if(m_encodeSparkLeft.getPosition() < 35 && m_encodeSparkRight.getPosition() < 35)
-        DriveTrainSubSystem.tankDrive(0.55, 0.55);
+        DriveTrainSubSystem.tankDrive(0.55, 0.55, false);
       else if(m_encodeSparkLeft.getPosition() > 35 && m_encodeSparkRight.getPosition() > 35)
-        DriveTrainSubSystem.tankDrive(-0.55, -0.55);
+        DriveTrainSubSystem.tankDrive(-0.55, -0.55, false);
       
     } else if(m_encodeVictorLeft != null && m_encodeVictorRight != null){
       m_encodeVictorLeft.reset();
       m_encodeVictorRight.reset();
 
       if(m_encodeVictorLeft.getDistance() < 35 && m_encodeVictorRight.getDistance() < 35)
-        DriveTrainSubSystem.tankDrive(0.55, 0.55);
+        DriveTrainSubSystem.tankDrive(0.55, 0.55, false);
       else if(m_encodeVictorLeft.getDistance() > 35 && m_encodeVictorRight.getDistance() > 35)
-        DriveTrainSubSystem.tankDrive(-0.55, -0.55);
+        DriveTrainSubSystem.tankDrive(-0.55, -0.55, false);
       
     }
 
@@ -71,7 +71,7 @@ public class DriveForward extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    DriveTrainSubSystem.tankDrive(0.0, 0.0);
+    DriveTrainSubSystem.tankDrive(0.0, 0.0, false);
 
   }
 

@@ -25,7 +25,7 @@ public class AssimilatorSubsystem extends SubsystemBase {
   static CANSparkMax beltMotor1;
   static CANSparkMax beltMotor2;
   public AssimilatorSubsystem() {
-    beltMotor1 = new CANSparkMax(Constants.IndexerConstants.)
+    beltMotor1 = new CANSparkMax(Constants.IndexerConstants.kIndexShootID, MotorType.kBrushless);
 
   }
 
