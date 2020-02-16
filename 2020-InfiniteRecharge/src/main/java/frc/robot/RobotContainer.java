@@ -213,6 +213,7 @@ public class RobotContainer {
     // return (Math.abs(avgSteer-steer1) <= r) ?avgSteer :steer1; Without smoothing; don't use.
   }
 
+
   private static double clamp(double a, double min, double max)
   {
     double realMin = Math.min(min, max);
@@ -249,6 +250,7 @@ public class RobotContainer {
   public static double configureclimbleftbindings(){
     return secondary.getRawAxis(1);
   }
+ 
 
   public static double configureclimbrightbindings(){
     return secondary.getRawAxis(3);

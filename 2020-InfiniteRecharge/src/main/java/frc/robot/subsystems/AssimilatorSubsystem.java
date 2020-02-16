@@ -27,6 +27,17 @@ public class AssimilatorSubsystem extends SubsystemBase {
   public AssimilatorSubsystem() {
     ballIndex = new CANSparkMax(Constants.BallCollectConstants.kSpinID, MotorType.kBrushless);
     ballCollect = new CANSparkMax(Constants.BallCollectConstants.kActuateID, MotorType.kBrushed);
+    ballIndex.setSmartCurrentLimit(30);
+    ballCollect.setSmartCurrentLimit(30);
+  }
+  public static void setMotorSpeed(boolean index){
+    if(index){
+      ballIndex.set(0.0);
+      ballCollect.set(0.0);
+    } else{
+      ballIndex.stopMotor();
+      ballCollect.stopMotor();
+    }
   }
 
   @Override
