@@ -44,7 +44,7 @@ public class DrivetrainPIDSubsystem extends PIDSubsystem {
   @Override
   public void useOutput(double output, double setpoint) {
     // Use the output here
-    m_group.pidWrite(output);
+    m_group.pidWrite(output); 
   }
 
   @Override
