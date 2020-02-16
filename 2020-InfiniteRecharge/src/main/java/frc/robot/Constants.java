@@ -21,10 +21,10 @@ public final class Constants {
     public static final boolean TEST_VERSION = false; // When false, disables some troubleshooting SmartDashboard outputs
 
     public static final class DriveConstants {
-        public static final int kLTID = 2;
-        public static final int kLBID = 1;
-        public static final int kRTID = 3;
-        public static final int kRBID = 4;
+        public static final int kLTID = 4;
+        public static final int kLBID = 3;
+        public static final int kRTID = 2;
+        public static final int kRBID = 1;
 
         public static final int kPracLTID = 9;
         public static final int kPracLBID = 10;

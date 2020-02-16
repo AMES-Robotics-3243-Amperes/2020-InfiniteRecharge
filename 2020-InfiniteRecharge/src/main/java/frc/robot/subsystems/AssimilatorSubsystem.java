@@ -22,11 +22,11 @@ public class AssimilatorSubsystem extends SubsystemBase {
   /**
    * Creates a new AssimilatorSubsystem.
    */
-  static CANSparkMax beltMotor1;
-  static CANSparkMax beltMotor2;
+  static CANSparkMax ballIndex;
+  static CANSparkMax ballCollect;
   public AssimilatorSubsystem() {
-    beltMotor1 = new CANSparkMax(Constants.IndexerConstants.kIndexShootID, MotorType.kBrushless);
-
+    ballIndex = new CANSparkMax(Constants.BallCollectConstants.kSpinID, MotorType.kBrushless);
+    ballCollect = new CANSparkMax(Constants.BallCollectConstants.kActuateID, MotorType.kBrushed);
   }
 
   @Override

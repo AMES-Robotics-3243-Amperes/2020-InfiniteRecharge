@@ -8,18 +8,17 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import frc.robot.autonomous.*;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Preferences;
-import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.autonomous.Sentience;
-import frc.robot.autonomous.SentientSubsystem;
+
+import frc.robot.subsystems.*;
 import frc.robot.commands.*;
+import frc.robot.autonomous.*;
+
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -84,7 +83,7 @@ public class RobotContainer {
     // This sets the practice robot you're on to true
     //Preferences.getInstance().putBoolean("Is Practice", true);
 
-    // This says that the robot that we're on will pass in true (if it's the prac robot) and falst (if it's the comp robot)
+    // This says that the robot we're on will pass in true (if it's the prac robot) and falst (if it's the comp robot)
   
 
     // Setup Commands
@@ -139,14 +138,9 @@ public class RobotContainer {
   }
 
   //-------------------- DRIVING SECTION OF JOYSTICK -----------------------
-  public static boolean configurePracBot(){
-    return driver.getRawButton(7);  // Don't know which button to choose yet
-  }
-
   public static boolean getTurbo(){
-    return driver.getRawButton(4);
+    return driver.getRawButton(5);
   }
-
 
   public static double configureDriveLeft(){  //This passes in the axis steering for robot drive
     steerLeft = getJoystWithDead(true);  //Should be the left axis
@@ -243,7 +237,7 @@ public class RobotContainer {
 
   //----------------- BALL COLLECTION SECTION OF JOYSTICK -------------------
   public static boolean configureballbindings(){
-    return secondary.getRawButton(4);
+    return secondary.getRawButton(2);
   }
 
   //----------------- SHOOTER SECTION OF JOYSTICK --------------------

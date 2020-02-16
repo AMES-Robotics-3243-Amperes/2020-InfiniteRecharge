@@ -47,7 +47,7 @@ public class DriveTrainSubSystem extends SubsystemBase {
   static double rightVector = 0.0;
 
   // m_drive is a combination of both left and right motors
-  private DifferentialDrive m_drive;
+  //private DifferentialDrive m_drive;
 
   // Encoder data objects
   private static DrivetrainPIDSubsystem m_rightSide;
@@ -98,7 +98,7 @@ public class DriveTrainSubSystem extends SubsystemBase {
 
     }
 
-    m_drive = new DifferentialDrive(m_leftmotors, m_rightmotors);
+    //m_drive = new DifferentialDrive(m_leftmotors, m_rightmotors);
 
     m_rightSide.enable(); // Enables the PID loop
     m_leftSide.enable(); // Enables the PID loop  
@@ -123,8 +123,8 @@ public class DriveTrainSubSystem extends SubsystemBase {
     rightVector = varRight;
     //m_rightBumper = rightBumper;
     if(bumperLeft){
-      m_rightSide.setSetpoint(-varRight * 2);
-      m_leftSide.setSetpoint(varLeft * 2);
+      m_rightSide.setSetpoint(-varRight * 1.5);
+      m_leftSide.setSetpoint(varLeft * 1.5);
     } else {
       m_rightSide.setSetpoint(-varRight);
       m_leftSide.setSetpoint(varLeft);
