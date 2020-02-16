@@ -30,15 +30,16 @@ public class ClimbCommand extends CommandBase {
   @Override
   public void execute() {
     ClimbSubsystem.setClimb(
-      RobotContainer.configureclimbbindings(),
-      RobotContainer.configureclimbadjbindings()
+      RobotContainer.configureclimbleftbindings(),
+      RobotContainer.configureclimbrightbindings(),
+      RobotContainer.configureClimbActuate()
     );
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    ClimbSubsystem.setClimb(false, false);
+    ClimbSubsystem.setClimb(0.0, 0.0, false);
   }
 
   // Returns true when the command should end.

@@ -27,7 +27,7 @@ public class AutoDump extends CommandBase {
   @Override
   public void initialize() {
     timeNow = Timer.getFPGATimestamp();
-    DumperSubsystem.setMotorSpeed(0.85);
+    DumperSubsystem.setMotorSpeed(0.9);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -45,7 +45,7 @@ public class AutoDump extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // Once this has run for 3 minutes, then stop the program
+    // Once this has run for 3 seconds, then stop the program
     return Timer.getFPGATimestamp() >= timeNow + startTime;
   }
 }

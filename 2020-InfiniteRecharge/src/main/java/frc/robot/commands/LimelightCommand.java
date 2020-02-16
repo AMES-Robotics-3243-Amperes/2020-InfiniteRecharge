@@ -46,25 +46,25 @@ public class LimelightCommand extends CommandBase {
 
       //Left side
 
-      if (LimelightSubsystem.setSteer() + LimelightSubsystem.setDist() > 1) {
+      if (steer + dist > 1) {
         var = 1.0;
       }
-      else if(LimelightSubsystem.setSteer() + LimelightSubsystem.setDist() < -1) {
+      else if(steer + dist < -1) {
         var = -1.0;
       }
       else {
-        var = LimelightSubsystem.setSteer() - LimelightSubsystem.setDist();
+        var = steer + dist;
       }
 
       //Right side
-      if (LimelightSubsystem.setSteer() - LimelightSubsystem.setDist() > 1) {
+      if (steer - dist > 1) {
         var2 = 1.0;
       }
-      else if(LimelightSubsystem.setSteer() - LimelightSubsystem.setDist() <-1) {
+      else if(steer - dist <-1) {
         var2 = -1.0;
       }
       else {
-        var2 = LimelightSubsystem.setSteer() - LimelightSubsystem.setDist();
+        var2 = steer - dist;
       }
 
       DriveTrainSubSystem.tankDrive(var, var2);
@@ -81,6 +81,10 @@ public class LimelightCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if(Math.abs(LimelightSubsystem.setSteer()) - Math.abs(LimelightSubsystem.setDist()) == 0){
+      return true;
+    }
+    
     return false;
   }
 }

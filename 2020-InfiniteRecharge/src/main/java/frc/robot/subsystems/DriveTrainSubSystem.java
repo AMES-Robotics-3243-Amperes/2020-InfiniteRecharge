@@ -91,10 +91,10 @@ public class DriveTrainSubSystem extends SubsystemBase {
       m_rightSide = new DrivetrainPIDSubsystem(m_rightmotors, rightSparkEncode, null);
       m_leftSide = new DrivetrainPIDSubsystem(m_leftmotors, leftSparkEncode, null);
 
-      ((CANSparkMax) motorLT).setSmartCurrentLimit(40); // Limits the maximum amps
-      ((CANSparkMax) motorLB).setSmartCurrentLimit(40);
-      ((CANSparkMax) motorRT).setSmartCurrentLimit(40);
-      ((CANSparkMax) motorRB).setSmartCurrentLimit(40);
+      ((CANSparkMax) motorLT).setSmartCurrentLimit(39); // Limits the maximum amps
+      ((CANSparkMax) motorLB).setSmartCurrentLimit(39);
+      ((CANSparkMax) motorRT).setSmartCurrentLimit(39);
+      ((CANSparkMax) motorRB).setSmartCurrentLimit(39);
 
     }
 

@@ -37,30 +37,25 @@ public final class Constants {
     }
 
     public static final class IndexerConstants {
-        public static final int[] kBeltIDs = { 0 };   // Don't know ID yet
+        public static final int kIndexCollectID = 7;
+        public static final int kIndexShootID = 8;
         public static final double BELT_SPEED = 1;
     }
 
     public static final class ClimbingConstant {
-        public static final int kClimbAdjID = 14;   // Don't know ID yet
-        public static final int kClimbRID = 12;
-        public static final int kClimbLID = 13;
-        public static final int kLimitTopID = 7;  // Changed from 1 to 7
-        public static final int kLimitBottomID = 6; // Changed from 2 to 6
+        public static final int kClimbAdjID = 10;
+        public static final int kClimbRID = 9;
+        public static final int kClimbLID = 12;
     }
 
     public static final class ControlPanelConstants {
-        public static final int kpanelSpinnerID = 5;   //Don't know which port yet, so using random # for now 1/16/20
-        public static final int mechanismLifterID = 0; // Servo ID
-    }
-
-    public static final class DumperConstants {
-        public static final int[] kDumpIDs = { 111 }; // Changed from 9 to 111
+        public static final int kpanelSpinnerID = 11;
+        public static final int mechanismLifterID = 0; // Servo ID Don't know yet
     }
 
     public static final class BallCollectConstants {
-        public static final int kSpinID = 15; // Don't know which CAN ID this is yet 2/4/20
-        public static final int kActuateID = 16; // Don't know which CAN ID this is yet 2/4/20
+        public static final int kSpinID = 5;
+        public static final int kActuateID = 6;
     }
 
 }

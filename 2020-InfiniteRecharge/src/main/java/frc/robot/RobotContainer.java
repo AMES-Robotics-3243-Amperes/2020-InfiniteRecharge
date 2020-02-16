@@ -129,13 +129,13 @@ public class RobotContainer {
     ctlPanelManualLeft.whenHeld(manualPanelLeft, true);
     ctlPanelManualLeft.whenHeld(manualPanelRight, true);
 
-    JoystickButton dump = new JoystickButton(driver, 6);
+    JoystickButton dump = new JoystickButton(secondary, 6);
     dump.whenPressed(dumperCommand);
   }
   
   //-------------------- LIMELIGHT SECTION OF JOYSTICK ---------------------
   public static boolean driveLime(){
-    return driver.getRawButton(8); //I don't know which button to choose yet.
+    return driver.getRawButton(6);
   }
 
   //-------------------- DRIVING SECTION OF JOYSTICK -----------------------
@@ -236,23 +236,27 @@ public class RobotContainer {
     return Math.pow(scale, 3);
   }
 
-  //----------------- INDEXER (BALL COLLECTION) SECTION OF JOYSTICK -------------------
+  //----------------- BALL COLLECTION SECTION OF JOYSTICK -------------------
   public static boolean configureballbindings(){
-    return driver.getRawButton(5);  // Possibly change this to secondary joystick
+    return secondary.getRawButton(4);
   }
 
   //----------------- SHOOTER SECTION OF JOYSTICK --------------------
   public static boolean configureshootbindings(){
-    return driver.getRawButton(10); // Possibly change this to secondary joystick
+    return secondary.getRawButton(5);
   }
 
-  //--------------- CLIMB GYRO SENSOR SECTION OF JOYSTICK ------------------ 
-  public static boolean configureclimbbindings(){
-    return driver.getRawButton(9);  //Possibly change this to secondary joystick
+  //--------------- CLIMB SECTION OF JOYSTICK ------------------ 
+  public static double configureclimbleftbindings(){
+    return secondary.getRawAxis(1);
   }
 
-  public static boolean configureclimbadjbindings(){
-    return driver.getRawButton(8);
+  public static double configureclimbrightbindings(){
+    return secondary.getRawAxis(3);
+  }
+
+  public static boolean configureClimbActuate(){
+    return secondary.getRawButton(4);
   }
 
   /**

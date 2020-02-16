@@ -21,31 +21,22 @@ import frc.robot.Constants;
 /*\\\     Packages and Imports      ///*/
 public class DumperSubsystem extends SubsystemBase {
   
-  static CANSparkMax[] dumpMotors; // Add IDs in Constants.DumperConstants to make more motors here
+  static CANSparkMax dumpMotors; // Add IDs in Constants.DumperConstants to make more motors here
   private static final double speedMulti = 1;
 
   public DumperSubsystem() {
-    dumpMotors = new CANSparkMax[Constants.DumperConstants.kDumpIDs.length];
-    for(int i=0; i<dumpMotors.length; i++)
-    {
-      dumpMotors[i] = new CANSparkMax(Constants.DumperConstants.kDumpIDs[i], MotorType.kBrushless);
-      dumpMotors[i].setSmartCurrentLimit(30);
-    }
+    dumpMotors = new CANSparkMax(Constants.IndexerConstants.kIndexCollectID, MotorType.kBrushless);
+    
   }
 
   @Override
   public void periodic() {
-    SmartDashboard.getNumber("Dump Current: ", dumpMotors[0].getOutputCurrent());
-    for(CANSparkMax motor : dumpMotors){
-      SmartDashboard.getNumber("Dump Voltages: ", motor.getBusVoltage());
-    }
+    SmartDashboard.getNumber("Dump Current: ", dumpMotors.getOutputCurrent());
+    SmartDashboard.getNumber("Dump Voltages: ", dumpMotors.getBusVoltage());
   }
 
   public static void setMotorSpeed(double speed)
   {
-    for(CANSparkMax motor : dumpMotors)
-    {
-      motor.set(speed * speedMulti);
-    }
+    dumpMotors.set(speed * speedMulti);
   }
 }
