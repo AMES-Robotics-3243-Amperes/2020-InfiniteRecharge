@@ -46,17 +46,16 @@ public class RobotContainer {
   public final DumperSubsystem dumperSubsystem = new DumperSubsystem();
   public static ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
   public final IndexerSubsystem indexerSubsystem = new IndexerSubsystem();
-  public final SentientSubsystem m_SentienceSubsystem = new SentientSubsystem();
-  public static DriveForward m_driveForward = new DriveForward(m_robotDriveSubsystem, DriveTrainSubSystem.getSparkLeft(), DriveTrainSubSystem.getSparkRight(), DriveTrainSubSystem.getVictorLeft(), DriveTrainSubSystem.getVictorRight()  );
+  
   //Defined Commands
   public final DriveTrainCommand m_robotDriveCommand = new DriveTrainCommand(m_robotDriveSubsystem);
   private final AutoCommand m_autoCommand = new AutoCommand(m_exampleSubsystem);
-  private final Sentience m_sentient = new Sentience(m_SentienceSubsystem, 0); // TODO: set '0' to the correct value
   private final LimelightCommand m_limelightCommand = new LimelightCommand(m_robotDriveSubsystem, m_limelightSubsystem);
   private final BallCollectionCommand m_ballCollectionCommand = new BallCollectionCommand(m_ballCollectionSubsystem, indexerSubsystem);
   public static ClimbCommand m_climbCommand = new ClimbCommand(m_climbSubsystem);
   public static AssimilatorCommand m_AssimilatorCommand = new AssimilatorCommand(m_AssimilatorSubsystem);
 
+// Control Panel
   private final ControlPanelCommand.TurnNumTimes turn4Times = new ControlPanelCommand.TurnNumTimes(m_controlPanelSubsystem, 3.5, 4);
   private final ControlPanelCommand.TurnToColor turnToColorBlue = new ControlPanelCommand.TurnToColor(m_controlPanelSubsystem, ControlPanelSubsystem.PanelColor.BLUE);
   private final ControlPanelCommand.TurnToColor turnToColorGreen = new ControlPanelCommand.TurnToColor(m_controlPanelSubsystem, ControlPanelSubsystem.PanelColor.GREEN);
@@ -67,6 +66,9 @@ public class RobotContainer {
   private final ControlPanelCommand.Manual manualPanelRight = new ControlPanelCommand.Manual(m_controlPanelSubsystem, 0.5);
 
   private final DumperCommand dumperCommand = new DumperCommand(dumperSubsystem, indexerSubsystem, 2);
+// Autonomous
+  public static DriveForward m_driveForward = new DriveForward(m_robotDriveSubsystem, DriveTrainSubSystem.getSparkLeft(), DriveTrainSubSystem.getSparkRight(), DriveTrainSubSystem.getVictorLeft(), DriveTrainSubSystem.getVictorRight()  );
+  public static AutoDump m_AutoDump = new AutoDump();
 
 
   //Color Wheel variables. ALSO, YOU CAN PUT THIS INTO CONSTANTS TO MAKE THIS PLACE A LITTLE MORE NEAT?
@@ -271,35 +273,48 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
 
+
+
+
+  
+
+  //----------------------------- AUTONOMOUS COMMANDS ----------------------------
+  public Command getDriveForwardCommand(){
+    return m_driveForward;
+  }
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     return m_autoCommand;
   }
+  public Command getAutoDumpCommand(){
 
-  public Command getDriveCommand() {
-
-    return m_robotDriveCommand;
+    return m_AutoDump;
   }
+//--------------------------------------------------------------------------------
 
-  public Command getLimelightCommand(){
+public Command getDriveCommand() { // Drive Train
 
-    return m_limelightCommand;
-  }
-  public Command getDriveForwardCommand(){
-    return m_driveForward;
-  }
+  return m_robotDriveCommand;
+}
 
-  public Command getBallCollectCommand(){
+public Command getLimelightCommand(){ // Limelight
+
+  return m_limelightCommand;
+}
+public Command getClimbCommand(){
+    
+  return m_climbCommand;
+}
+//-------------- BALL COLLECTION / SHOOTER / SECONDARY FUNCTIONS -----------------
+  public Command getBallCollectCommand(){ 
 
     return m_ballCollectionCommand;
   }
 
-  public Command getClimbCommand(){
-    
-    return m_climbCommand;
-  }
+ 
   public Command getAssimilatorCommand(){
 
     return m_AssimilatorCommand;
   }
 }
+//--------------------------------------------------------------------------------
