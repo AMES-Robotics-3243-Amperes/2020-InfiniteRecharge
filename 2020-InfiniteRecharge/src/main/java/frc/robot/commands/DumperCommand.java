@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -15,33 +16,33 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 /**
  * Spins the dumper mototr for a set amount of time
  */
-public class DumperCommand extends IndexerCommand {
+public class DumperCommand extends CommandBase {
   private final DumperSubsystem dumper;
   private double startTime;
-  private double runTime;
 
-  public DumperCommand(DumperSubsystem dumper, IndexerSubsystem indexer, double runTime) {  // Changed DumperSubsystem variable from "controlPanel" to "dumper"
-    super(indexer);
+  public DumperCommand(DumperSubsystem dumper) {  // Changed DumperSubsystem variable from "controlPanel" to "dumper"
     this.dumper = dumper;  //Sets the variable to the object
-    this.runTime = runTime;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-	startTime = Timer.getFPGATimestamp();
-	DumperSubsystem.setMotorSpeed(1);
+  }
+
+  @Override
+  public void execute(){
+    DumperSubsystem.setDumpCollectSpeed(RobotContainer.configureshootbindings());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    DumperSubsystem.setMotorSpeed(0);
+    DumperSubsystem.setDumpCollectSpeed(false);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Timer.getFPGATimestamp() >= startTime + runTime;
+    return false;
   }
 }

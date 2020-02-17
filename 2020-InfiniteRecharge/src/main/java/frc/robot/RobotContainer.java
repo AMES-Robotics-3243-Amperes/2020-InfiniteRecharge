@@ -43,7 +43,7 @@ public class RobotContainer {
   public static ControlPanelSubsystem m_controlPanelSubsystem = new ControlPanelSubsystem();
   public final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
   public static BallCollectionSubSystem m_ballCollectionSubsystem = new BallCollectionSubSystem();
-  public final DumperSubsystem dumperSubsystem = new DumperSubsystem();
+  public static DumperSubsystem dumperSubsystem = new DumperSubsystem();
   public static ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
   public final IndexerSubsystem indexerSubsystem = new IndexerSubsystem();
   public final SentientSubsystem m_SentienceSubsystem = new SentientSubsystem();
@@ -66,8 +66,8 @@ public class RobotContainer {
   private final ControlPanelCommand.Manual manualPanelLeft = new ControlPanelCommand.Manual(m_controlPanelSubsystem, -0.5);
   private final ControlPanelCommand.Manual manualPanelRight = new ControlPanelCommand.Manual(m_controlPanelSubsystem, 0.5);
 
-  private final DumperCommand dumperCommand = new DumperCommand(dumperSubsystem, indexerSubsystem, 2);
-
+  private final DumperCommand m_dumperCommand = new DumperCommand(dumperSubsystem);
+  private static ShootCommand m_shootCommand = new ShootCommand(dumperSubsystem);
 
   //Color Wheel variables. ALSO, YOU CAN PUT THIS INTO CONSTANTS TO MAKE THIS PLACE A LITTLE MORE NEAT?
   private static final int B_BLUE = 1;
@@ -131,7 +131,7 @@ public class RobotContainer {
     ctlPanelManualLeft.whenHeld(manualPanelRight, true);
 
     JoystickButton dump = new JoystickButton(secondary, 6);
-    dump.whenPressed(dumperCommand);
+    dump.whenPressed(m_dumperCommand);
   }
   
   //-------------------- LIMELIGHT SECTION OF JOYSTICK ---------------------
@@ -243,6 +243,11 @@ public class RobotContainer {
     return secondary.getRawButton(2);
   }
 
+   //----------------- INTAKE SECTION OF JOYSTICK -------------
+  public static boolean configureIndexShaft(){
+    return secondary.getRawButton(3);
+  }
+
   //----------------- SHOOTER SECTION OF JOYSTICK --------------------
   public static boolean configureshootbindings(){
     return secondary.getRawButton(5);
@@ -252,10 +257,6 @@ public class RobotContainer {
   public static double configureclimbleftbindings(){
     return secondary.getRawAxis(1);
   }
- //----------------- INTAKE SECTION OF JOYSTICK -------------
- public static boolean configureIndexShaft(){
-   return secondary.getRawButton(3);
- }
 
   public static double configureclimbrightbindings(){
     return secondary.getRawAxis(3);
@@ -294,10 +295,19 @@ public class RobotContainer {
     return m_ballCollectionCommand;
   }
 
+  public Command getShootCommand(){
+    return m_shootCommand;
+  }
+
   public Command getClimbCommand(){
     
     return m_climbCommand;
   }
+
+  public Command getDumperCommand(){
+    return m_dumperCommand;
+  }
+
   public Command getAssimilatorCommand(){
 
     return m_AssimilatorCommand;

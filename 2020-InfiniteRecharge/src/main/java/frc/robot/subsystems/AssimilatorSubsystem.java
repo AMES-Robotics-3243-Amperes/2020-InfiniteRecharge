@@ -30,7 +30,7 @@ public class AssimilatorSubsystem extends SubsystemBase {
   static CANEncoder indexEncoder;
   static boolean currentExtended = false;
   static boolean currentRetracted = true;
-  static final int CURRENT_CONST = 20;
+  static final double CURRENT_CONST = 5.5;
 
   public AssimilatorSubsystem() {
     intakeShaft = new CANSparkMax(Constants.BallCollectConstants.kSpinID, MotorType.kBrushless);
