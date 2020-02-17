@@ -6,7 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
-
+// WPILib Imports ----------------------------------------
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
@@ -14,11 +14,12 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj2.command.Command;
-
+//--------------------------------------------------------
+//Class Imports ------------------------------------------
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 import frc.robot.autonomous.*;
-
+//--------------------------------------------------------
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -36,7 +37,7 @@ public class RobotContainer {
   // This helps the code know if we're using the practice robot or the competition robot
   public static boolean   isPractice = Preferences.getInstance().getBoolean("Is Practice", false);
 
-  //Defined Suybsystems
+  //-------------------------------------- SUBSYSTEMS --------------------------------------------
   private static AssimilatorSubsystem m_AssimilatorSubsystem = new AssimilatorSubsystem();
   private final AutoSubsystem m_exampleSubsystem = new AutoSubsystem();
   public static DriveTrainSubSystem m_robotDriveSubsystem = new DriveTrainSubSystem();
@@ -46,17 +47,16 @@ public class RobotContainer {
   public static DumperSubsystem dumperSubsystem = new DumperSubsystem();
   public static ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
   public final IndexerSubsystem indexerSubsystem = new IndexerSubsystem();
-  public final SentientSubsystem m_SentienceSubsystem = new SentientSubsystem();
-  public static DriveForward m_driveForward = new DriveForward(m_robotDriveSubsystem, DriveTrainSubSystem.getSparkLeft(), DriveTrainSubSystem.getSparkRight(), DriveTrainSubSystem.getVictorLeft(), DriveTrainSubSystem.getVictorRight()  );
-  //Defined Commands
+  //----------------------------------------------------------------------------------------------
+  //----------------------------------------------------------- COMMANDS --------------------------------------------------------------
   public final DriveTrainCommand m_robotDriveCommand = new DriveTrainCommand(m_robotDriveSubsystem);
   private final AutoCommand m_autoCommand = new AutoCommand(m_exampleSubsystem);
-  private final Sentience m_sentient = new Sentience(m_SentienceSubsystem, 0); // TODO: set '0' to the correct value
   private final LimelightCommand m_limelightCommand = new LimelightCommand(m_robotDriveSubsystem, m_limelightSubsystem);
   private final BallCollectionCommand m_ballCollectionCommand = new BallCollectionCommand(m_ballCollectionSubsystem, indexerSubsystem);
   public static ClimbCommand m_climbCommand = new ClimbCommand(m_climbSubsystem);
   public static AssimilatorCommand m_AssimilatorCommand = new AssimilatorCommand(m_AssimilatorSubsystem);
-
+//-------------------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------- CONTROL PANEL ------------------------------------------------------------------------------------------------------
   private final ControlPanelCommand.TurnNumTimes turn4Times = new ControlPanelCommand.TurnNumTimes(m_controlPanelSubsystem, 3.5, 4);
   private final ControlPanelCommand.TurnToColor turnToColorBlue = new ControlPanelCommand.TurnToColor(m_controlPanelSubsystem, ControlPanelSubsystem.PanelColor.BLUE);
   private final ControlPanelCommand.TurnToColor turnToColorGreen = new ControlPanelCommand.TurnToColor(m_controlPanelSubsystem, ControlPanelSubsystem.PanelColor.GREEN);
@@ -68,6 +68,12 @@ public class RobotContainer {
 
   private final DumperCommand m_dumperCommand = new DumperCommand(dumperSubsystem);
   private static ShootCommand m_shootCommand = new ShootCommand(dumperSubsystem);
+  
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------- AUTONOMOUS ---------------------------------------------------------------------------------------------------------------------------------------------------------------
+  public static DriveForward m_driveForward = new DriveForward(m_robotDriveSubsystem, DriveTrainSubSystem.getSparkLeft(), DriveTrainSubSystem.getSparkRight(), DriveTrainSubSystem.getVictorLeft(), DriveTrainSubSystem.getVictorRight()  );
+  public static AutoDump m_AutoDump = new AutoDump();
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
   //Color Wheel variables. ALSO, YOU CAN PUT THIS INTO CONSTANTS TO MAKE THIS PLACE A LITTLE MORE NEAT?
   private static final int B_BLUE = 1;
@@ -76,7 +82,7 @@ public class RobotContainer {
   private static final int B_YELLOW = 4;
   private static final int B_TURN_4_TIMES = 10;
   private static final int B_LOWER_CTLPANEL = 9;
-
+//------------------------------------------------------------------------------------------------------
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -272,25 +278,37 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
 
+
+
+
+  
+
+  //----------------------------- AUTONOMOUS COMMANDS ----------------------------
+  public Command getDriveForwardCommand(){
+    return m_driveForward;
+  }
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     return m_autoCommand;
   }
+  public Command getAutoDumpCommand(){
 
-  public Command getDriveCommand() {
-
-    return m_robotDriveCommand;
+    return m_AutoDump;
   }
+//--------------------------------------------------------------------------------
 
-  public Command getLimelightCommand(){
+public Command getDriveCommand() { // Drive Train
 
-    return m_limelightCommand;
-  }
-  public Command getDriveForwardCommand(){
-    return m_driveForward;
-  }
+  return m_robotDriveCommand;
+}
 
-  public Command getBallCollectCommand(){
+public Command getLimelightCommand(){ // Limelight
+
+  return m_limelightCommand;
+}
+
+//-------------- BALL COLLECTION / SHOOTER / SECONDARY FUNCTIONS -----------------
+  public Command getBallCollectCommand(){ 
 
     return m_ballCollectionCommand;
   }
@@ -308,8 +326,10 @@ public class RobotContainer {
     return m_dumperCommand;
   }
 
+ 
   public Command getAssimilatorCommand(){
 
     return m_AssimilatorCommand;
   }
 }
+//--------------------------------------------------------------------------------
