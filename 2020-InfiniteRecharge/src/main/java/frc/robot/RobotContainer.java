@@ -6,7 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
-
+// WPILib Imports ----------------------------------------
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
@@ -14,11 +14,12 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj2.command.Command;
-
+//--------------------------------------------------------
+//Class Imports ------------------------------------------
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 import frc.robot.autonomous.*;
-
+//--------------------------------------------------------
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -78,7 +79,7 @@ public class RobotContainer {
   private static final int B_YELLOW = 4;
   private static final int B_TURN_4_TIMES = 10;
   private static final int B_LOWER_CTLPANEL = 9;
-
+//------------------------------------------------------------------------------------------------------
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
