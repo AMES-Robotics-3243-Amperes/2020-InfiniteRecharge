@@ -36,7 +36,7 @@ public class RobotContainer {
   // This helps the code know if we're using the practice robot or the competition robot
   public static boolean   isPractice = Preferences.getInstance().getBoolean("Is Practice", false);
 
-  //Defined Suybsystems
+  //-------------------------------------- SUBSYSTEMS --------------------------------------------
   private static AssimilatorSubsystem m_AssimilatorSubsystem = new AssimilatorSubsystem();
   private final AutoSubsystem m_exampleSubsystem = new AutoSubsystem();
   public static DriveTrainSubSystem m_robotDriveSubsystem = new DriveTrainSubSystem();
@@ -46,16 +46,16 @@ public class RobotContainer {
   public final DumperSubsystem dumperSubsystem = new DumperSubsystem();
   public static ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
   public final IndexerSubsystem indexerSubsystem = new IndexerSubsystem();
-  
-  //Defined Commands
+  //----------------------------------------------------------------------------------------------
+  //----------------------------------------------------------- COMMANDS --------------------------------------------------------------
   public final DriveTrainCommand m_robotDriveCommand = new DriveTrainCommand(m_robotDriveSubsystem);
   private final AutoCommand m_autoCommand = new AutoCommand(m_exampleSubsystem);
   private final LimelightCommand m_limelightCommand = new LimelightCommand(m_robotDriveSubsystem, m_limelightSubsystem);
   private final BallCollectionCommand m_ballCollectionCommand = new BallCollectionCommand(m_ballCollectionSubsystem, indexerSubsystem);
   public static ClimbCommand m_climbCommand = new ClimbCommand(m_climbSubsystem);
   public static AssimilatorCommand m_AssimilatorCommand = new AssimilatorCommand(m_AssimilatorSubsystem);
-
-// Control Panel
+//-------------------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------- CONTROL PANEL ------------------------------------------------------------------------------------------------------
   private final ControlPanelCommand.TurnNumTimes turn4Times = new ControlPanelCommand.TurnNumTimes(m_controlPanelSubsystem, 3.5, 4);
   private final ControlPanelCommand.TurnToColor turnToColorBlue = new ControlPanelCommand.TurnToColor(m_controlPanelSubsystem, ControlPanelSubsystem.PanelColor.BLUE);
   private final ControlPanelCommand.TurnToColor turnToColorGreen = new ControlPanelCommand.TurnToColor(m_controlPanelSubsystem, ControlPanelSubsystem.PanelColor.GREEN);
@@ -64,12 +64,12 @@ public class RobotContainer {
   private final ControlPanelCommand.LowerMechanism lowerControlPanel = new ControlPanelCommand.LowerMechanism(m_controlPanelSubsystem);
   private final ControlPanelCommand.Manual manualPanelLeft = new ControlPanelCommand.Manual(m_controlPanelSubsystem, -0.5);
   private final ControlPanelCommand.Manual manualPanelRight = new ControlPanelCommand.Manual(m_controlPanelSubsystem, 0.5);
-
   private final DumperCommand dumperCommand = new DumperCommand(dumperSubsystem, indexerSubsystem, 2);
-// Autonomous
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------- AUTONOMOUS ---------------------------------------------------------------------------------------------------------------------------------------------------------------
   public static DriveForward m_driveForward = new DriveForward(m_robotDriveSubsystem, DriveTrainSubSystem.getSparkLeft(), DriveTrainSubSystem.getSparkRight(), DriveTrainSubSystem.getVictorLeft(), DriveTrainSubSystem.getVictorRight()  );
   public static AutoDump m_AutoDump = new AutoDump();
-
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
   //Color Wheel variables. ALSO, YOU CAN PUT THIS INTO CONSTANTS TO MAKE THIS PLACE A LITTLE MORE NEAT?
   private static final int B_BLUE = 1;
