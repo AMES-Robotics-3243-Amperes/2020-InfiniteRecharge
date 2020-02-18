@@ -24,23 +24,23 @@ public class LimelightSubsystem extends SubsystemBase {
   NetworkTableEntry camMode = table.getEntry("camMode"); // Limelight's operation mode. Always keep at 0!!
   static NetworkTableEntry pipeline = table.getEntry("pipeline"); // Sets limelight's current pipeline *see calibration IP address for more info*
   static NetworkTableEntry tx = table.getEntry("tx"); // What is the x-coordinate?
-  NetworkTableEntry ty = table.getEntry("ty"); // What is the y-coordinate?
+  static NetworkTableEntry ty = table.getEntry("ty"); // What is the y-coordinate?
   static NetworkTableEntry ta = table.getEntry("ta"); // What is the area?
   static NetworkTableEntry tv = table.getEntry("tv"); // Do you see a valid target "v"?
 
   static double x = tx.getDouble(0.0);
-  double y = ty.getDouble(0.0);
+  static double y = ty.getDouble(0.0);
   static double v = tv.getDouble(0.0);
   static double area = ta.getDouble(0.0);
   boolean target = false;
 
   //These constants haven't been tuned 1/30/20
-  static float KpSteer = 0;
-  static float KpSteer2 = 0;
-  static float KpDist = 0;
-  static float KpDist2 = 0;
-  static float min_command = 0;
-  static float refArea = 0;
+  static float KpSteer = 0.000009f;
+  static float KpSteer2 = 0.02f;
+  static float KpDist = 0.01f;
+  static float KpDist2 = 0.2f;
+  static float min_command = 0.05f;
+  static float refArea = 2.25f;
 
   public LimelightSubsystem(DriveTrainSubSystem drive) {
     //this class's object "drive" is equal to the DriveTrainSubSystem's object "drive"
@@ -51,7 +51,7 @@ public class LimelightSubsystem extends SubsystemBase {
     double heading_error = x;
     double dist_error = area;
     double dist_adjust = 0.0;
-    double maxDistAdjust = 0.0;
+    double maxDistAdjust = 0.8;
     double maxAngAdjust = 1.0;
       if (v == 0.0) {
         dist_adjust = 0.0;
