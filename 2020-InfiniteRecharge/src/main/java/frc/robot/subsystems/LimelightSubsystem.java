@@ -18,9 +18,8 @@ public class LimelightSubsystem extends SubsystemBase {
   /**
    * Creates a new LimelightSubsystem.
    */
-  DriveTrainSubSystem m_drive;
 
-  static NetworkTable table = NetworkTableInstance.getDefault().getTable("Limelight");
+  static NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
   NetworkTableEntry camMode = table.getEntry("camMode"); // Limelight's operation mode. Always keep at 0!!
   static NetworkTableEntry pipeline = table.getEntry("pipeline"); // Sets limelight's current pipeline *see calibration IP address for more info*
   static NetworkTableEntry tx = table.getEntry("tx"); // What is the x-coordinate?
@@ -28,10 +27,11 @@ public class LimelightSubsystem extends SubsystemBase {
   static NetworkTableEntry ta = table.getEntry("ta"); // What is the area?
   static NetworkTableEntry tv = table.getEntry("tv"); // Do you see a valid target "v"?
 
-  static double x = tx.getDouble(0.0);
-  static double y = ty.getDouble(0.0);
-  static double v = tv.getDouble(0.0);
-  static double area = ta.getDouble(0.0);
+  static double x;
+  static double y;
+  static double v;
+  static double area;
+
   boolean target = false;
 
   //These constants haven't been tuned 1/30/20
@@ -39,12 +39,18 @@ public class LimelightSubsystem extends SubsystemBase {
   static float KpSteer2 = 0.02f;
   static float KpDist = 0.01f;
   static float KpDist2 = 0.2f;
-  static float min_command = 0.05f;
-  static float refArea = 2.25f;
+  static float min_command = 0;
+  static float refArea = 6;
 
-  public LimelightSubsystem(DriveTrainSubSystem drive) {
+  public LimelightSubsystem() {
     //this class's object "drive" is equal to the DriveTrainSubSystem's object "drive"
-    m_drive = drive;
+  }
+
+  public static void getLimeValues() {
+    x = tx.getDouble(0.0);
+    y = ty.getDouble(0.0);
+    v = tv.getDouble(0.0);
+    area = ta.getDouble(0.0);
   }
 
   public static double setDist(){
@@ -61,6 +67,7 @@ public class LimelightSubsystem extends SubsystemBase {
         dist_error = refArea - dist_error;
         dist_adjust = KpDist * Math.pow(dist_error, 3) + KpDist2 * dist_error;
       }
+
     return dist_adjust;
   }
 
@@ -69,7 +76,6 @@ public class LimelightSubsystem extends SubsystemBase {
     double heading_error = x;
     double steer_adjust = 0.0;
     double maxAngAdjust = 1.0;
-
 
       if (-.25 < heading_error && heading_error < .25) {
         heading_error = 0.0;
@@ -90,7 +96,10 @@ public class LimelightSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+
     // This method will be called once per scheduler run
+    getLimeValues();
+
     if(v > 0){
       target = true;
     } else if (v == 0){
@@ -100,7 +109,7 @@ public class LimelightSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Lime X: ", x);
     SmartDashboard.putNumber("Lime Y: ", y);
     SmartDashboard.putNumber("Lime Area: ", area);
-    SmartDashboard.putNumber("Lime Pipeline: ", (double) pipeline.getNumber(-1)); // Idk what to do here yet
+    SmartDashboard.putNumber("Lime Pipeline: ", (double) pipeline.getNumber(0)); // Idk what to do here yet
     SmartDashboard.putBoolean("See target?: ", target);
   }
 }

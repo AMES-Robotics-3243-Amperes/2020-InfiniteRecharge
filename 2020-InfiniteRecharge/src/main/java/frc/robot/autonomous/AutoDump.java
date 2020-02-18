@@ -5,33 +5,35 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.autonomous;
 
-import frc.robot.RobotContainer;
-import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-/**
- * Spins the dumper mototr for a set amount of time
- */
-public class DumperCommand extends CommandBase {
-  private final DumperSubsystem dumper;
-  private double startTime;
+import frc.robot.subsystems.DumperSubsystem;
 
-  public DumperCommand(DumperSubsystem dumper) {  // Changed DumperSubsystem variable from "controlPanel" to "dumper"
-    this.dumper = dumper;  //Sets the variable to the object
+public class AutoDump extends CommandBase {
+  /**
+   * Creates a new AutoDump.
+   */
+  double startTime = 3;
+  double timeNow;
+
+  public AutoDump() {
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    timeNow = Timer.getFPGATimestamp();
+    DumperSubsystem.setDumpCollectSpeed(true);
   }
 
+  // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute(){
-    DumperSubsystem.setDumpCollectSpeed(RobotContainer.configureshootbindings());
+  public void execute() {
+    
   }
 
   // Called once the command ends or is interrupted.
@@ -43,6 +45,7 @@ public class DumperCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    // Once this has run for 3 seconds, then stop the program
+    return Timer.getFPGATimestamp() >= timeNow + startTime;
   }
 }

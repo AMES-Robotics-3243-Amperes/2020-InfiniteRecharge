@@ -7,37 +7,39 @@
 
 package frc.robot.commands;
 
-import frc.robot.RobotContainer;
-import frc.robot.subsystems.*;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
+import frc.robot.subsystems.AssimilatorSubsystem;
+public class AssimilatorCommand extends CommandBase {
+  /**
+   * Creates a new AssimilatorCommand.
+   */
+  AssimilatorSubsystem index = new AssimilatorSubsystem();
 
-/**
- * Spins the dumper mototr for a set amount of time
- */
-public class DumperCommand extends CommandBase {
-  private final DumperSubsystem dumper;
-  private double startTime;
-
-  public DumperCommand(DumperSubsystem dumper) {  // Changed DumperSubsystem variable from "controlPanel" to "dumper"
-    this.dumper = dumper;  //Sets the variable to the object
+  public AssimilatorCommand(AssimilatorSubsystem index) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    this.index = index;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+
   }
 
+  // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute(){
-    DumperSubsystem.setDumpCollectSpeed(RobotContainer.configureshootbindings());
+  public void execute() {
+    AssimilatorSubsystem.setIndexCollectSpeed(RobotContainer.configureballbindings());
+    AssimilatorSubsystem.ballIndex(RobotContainer.configureIndexShaft());
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    DumperSubsystem.setDumpCollectSpeed(false);
+    AssimilatorSubsystem.setIndexCollectSpeed(false);
+    AssimilatorSubsystem.ballIndex(false);
   }
 
   // Returns true when the command should end.

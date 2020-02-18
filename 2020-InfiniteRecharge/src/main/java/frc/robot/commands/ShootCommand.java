@@ -7,21 +7,20 @@
 
 package frc.robot.commands;
 
-import frc.robot.RobotContainer;
-import frc.robot.subsystems.*;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
+import frc.robot.subsystems.DumperSubsystem;
 
-/**
- * Spins the dumper mototr for a set amount of time
- */
-public class DumperCommand extends CommandBase {
-  private final DumperSubsystem dumper;
-  private double startTime;
+public class ShootCommand extends CommandBase {
+  /**
+   * Creates a new ShootCommand.
+   */
 
-  public DumperCommand(DumperSubsystem dumper) {  // Changed DumperSubsystem variable from "controlPanel" to "dumper"
-    this.dumper = dumper;  //Sets the variable to the object
+  DumperSubsystem m_dump = new DumperSubsystem();
+
+  public ShootCommand(DumperSubsystem dump) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    m_dump = dump;
   }
 
   // Called when the command is initially scheduled.
@@ -29,15 +28,16 @@ public class DumperCommand extends CommandBase {
   public void initialize() {
   }
 
+  // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute(){
-    DumperSubsystem.setDumpCollectSpeed(RobotContainer.configureshootbindings());
+  public void execute() {
+    DumperSubsystem.setDumpShootSpeed(RobotContainer.configureshootbindings());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    DumperSubsystem.setDumpCollectSpeed(false);
+    DumperSubsystem.setDumpShootSpeed(false);
   }
 
   // Returns true when the command should end.

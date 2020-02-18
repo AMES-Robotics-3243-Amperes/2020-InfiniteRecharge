@@ -14,29 +14,28 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
 /**
- * The VM is configured to automatically run this class, and to call the functions corresponding to
- * each mode, as described in the TimedRobot documentation. If you change the name of this class or
- * the package after creating this project, you must also update the build.gradle file in the
+ * The VM is configured to automatically run this class, and to call the
+ * functions corresponding to each mode, as described in the TimedRobot
+ * documentation. If you change the name of this class or the package after
+ * creating this project, you must also update the build.gradle file in the
  * project.
  */
 public class Robot extends TimedRobot {
-  
-  //Joystick testJoyst = new Joystick(0);
-  //private CANSparkMax testMotor = new CANSparkMax(5, MotorType.kBrushless);
-  
+
   private Command m_autonomousCommand;
   private Command m_driveCommand;
   private Command m_limelightCommand;
   private Command m_ballCollectCommand;
   private Command m_climbCommand;
+  private Command m_driveForwardCommand;
+  private Command m_AssimilatorCommand;
+  private Command m_dumperCommand;
+  private Command m_shootCommand;
 
   private static final String kDefaultAuto = "No Auto";
   private static final String kCustomAuto = "Auto Line";
@@ -44,49 +43,50 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
-  NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
   NetworkTable Yleft = NetworkTableInstance.getDefault().getTable("Yleft");
   NetworkTable Yright = NetworkTableInstance.getDefault().getTable("Yright");
-  NetworkTableEntry camMode;
-  NetworkTableEntry pipeline;
 
   private RobotContainer m_robotContainer;
 
   /**
-   * This function is run when the robot is first started up and should be used for any
-   * initialization code.
+   * This function is run when the robot is first started up and should be used
+   * for any initialization code.
    */
   @Override
-  public void robotInit() { 
-    camMode = table.getEntry("camMode");
-    pipeline = table.getEntry("pipeline");
+  public void robotInit() {
 
-    Yleft.getEntry("Yleft").setDouble(23.2); //Joystick Value. I'm not sure where it's held
-   
+    Yleft.getEntry("Yleft").setDouble(23.2); // Joystick Value. I'm not sure where it's held
+
     Yright.getEntry("Yright").setDouble(22.4);
-    
-    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
+
+    // Instantiate our RobotContainer. This will perform all our button bindings,
+    // and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
   }
 
   /**
-   * This function is called every robot packet, no matter the mode. Use this for items like
-   * diagnostics that you want ran during disabled, autonomous, teleoperated and test.
+   * This function is called every robot packet, no matter the mode. Use this for
+   * items like diagnostics that you want ran during disabled, autonomous,
+   * teleoperated and test.
    *
-   * <p>This runs after the mode specific periodic functions, but before
-   * LiveWindow and SmartDashboard integrated updating.
+   * <p>
+   * This runs after the mode specific periodic functions, but before LiveWindow
+   * and SmartDashboard integrated updating.
    */
   @Override
   public void robotPeriodic() {
-    // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
-    // commands, running already-scheduled commands, removing finished or interrupted commands,
-    // and running subsystem periodic() methods.  This must be called from the robot's periodic
+    // Runs the Scheduler. This is responsible for polling buttons, adding
+    // newly-scheduled
+    // commands, running already-scheduled commands, removing finished or
+    // interrupted commands,
+    // and running subsystem periodic() methods. This must be called from the
+    // robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
-    //testMotor.set(0.25 * testJoyst.getRawAxis(1));
+    // testMotor.set(0.25 * testJoyst.getRawAxis(1));
   }
 
   /**
@@ -101,12 +101,12 @@ public class Robot extends TimedRobot {
   }
 
   /**
-   * This autonomous runs the autonomous command selected by your {@link RobotContainer} class.
+   * This autonomous runs the autonomous command selected by your
+   * {@link RobotContainer} class.
    */
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
@@ -118,6 +118,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
+    m_driveForwardCommand = m_robotContainer.getDriveForwardCommand();
+    
   }
 
   @Override
@@ -129,24 +131,24 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    
+
     m_driveCommand = m_robotContainer.getDriveCommand();
     m_limelightCommand = m_robotContainer.getLimelightCommand();
     m_ballCollectCommand = m_robotContainer.getBallCollectCommand();
     m_climbCommand = m_robotContainer.getClimbCommand();
-
-    if(RobotContainer.driveLime()){
-      m_limelightCommand.schedule();
-    } else if(!RobotContainer.driveLime()){
-      m_driveCommand.schedule();
-    }
+    m_AssimilatorCommand = m_robotContainer.getAssimilatorCommand();
+    m_dumperCommand = m_robotContainer.getDumperCommand();
+    m_shootCommand = m_robotContainer.getShootCommand();
 
     m_ballCollectCommand.schedule();
     m_climbCommand.schedule();
+    m_AssimilatorCommand.schedule();
+    m_dumperCommand.schedule();
+    m_shootCommand.schedule();
 
     CommandScheduler.getInstance().run();
 
-    m_robotContainer.m_ballCollectionSubsystem.setDeployed(); // Deploy collector on start
+    RobotContainer.m_ballCollectionSubsystem.setDeployed(); // Deploy collector on start
   }
 
   /**
@@ -154,6 +156,16 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+
+    // Makes sure that when the limelight code runs, the driving code doesn't run
+    if (RobotContainer.driveLime()) {
+      m_limelightCommand.schedule();
+      m_driveCommand.cancel();
+    } else if (!RobotContainer.driveLime()) {
+      m_driveCommand.schedule();
+      m_limelightCommand.cancel();
+    }
+
     CommandScheduler.getInstance().run();
   }
 

@@ -14,18 +14,13 @@ import frc.robot.Constants;
 
 public class IndexerSubsystem extends SubsystemBase {
 
-  static CANSparkMax[] beltMotors;
+  static CANSparkMax beltMotors;
   
   // DumperCommands or BallCollectionCommands that need to move the conveyor belts
   private List<CommandBase> activeBallCommands = new ArrayList<CommandBase>();
 
   public IndexerSubsystem() {
-    beltMotors = new CANSparkMax[Constants.IndexerConstants.kBeltIDs.length];
-    for(int i=0; i<beltMotors.length; i++)
-    {
-      beltMotors[i] = new CANSparkMax(Constants.IndexerConstants.kBeltIDs[i], MotorType.kBrushless);
-      beltMotors[i].setSmartCurrentLimit(30);
-    }
+    beltMotors = new CANSparkMax(Constants.IndexerConstants.kIndexShootID, MotorType.kBrushless);
   }
 
   public void addActiveBallCommand(CommandBase command)
@@ -41,12 +36,10 @@ public class IndexerSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     boolean shouldMoveBelts = activeBallCommands.size() > 0;
-    for(CANSparkMax motor : beltMotors)
-    {
-      motor.set(shouldMoveBelts ?Constants.IndexerConstants.BELT_SPEED :0);
-      SmartDashboard.getNumber("Indexer Voltage: ", motor.getBusVoltage());
-      SmartDashboard.getNumber("Indexer Current: ", motor.getOutputCurrent());
-    }
+
+    beltMotors.set(shouldMoveBelts ?Constants.IndexerConstants.BELT_SPEED :0);
+    SmartDashboard.getNumber("Indexer Voltage: ", beltMotors.getBusVoltage());
+    SmartDashboard.getNumber("Indexer Current: ", beltMotors.getOutputCurrent());
     
   }
 }

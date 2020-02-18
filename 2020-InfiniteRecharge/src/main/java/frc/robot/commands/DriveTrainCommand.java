@@ -28,10 +28,10 @@ public class DriveTrainCommand extends CommandBase {
   @Override
   public void execute() {
     
-      DriveTrainSubSystem.tankDrive(
+      DriveTrainSubSystem.tankDrive( 
         RobotContainer.configureDriveLeft(), 
         RobotContainer.configureDriveRight(),
-        RobotContainer.configurePracBot() //Get rid of this later on
+        RobotContainer.getTurbo()
       );
   }
 

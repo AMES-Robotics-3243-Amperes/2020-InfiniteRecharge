@@ -21,40 +21,41 @@ public final class Constants {
     public static final boolean TEST_VERSION = false; // When false, disables some troubleshooting SmartDashboard outputs
 
     public static final class DriveConstants {
-        public static final int kLTID = 2;
-        public static final int kLBID = 1;
-        public static final int kRTID = 3;
-        public static final int kRBID = 4;
+        public static final int kLTID = 4;
+        public static final int kLBID = 3;
+        public static final int kRTID = 2;
+        public static final int kRBID = 1;
 
         public static final int kPracLTID = 9;
         public static final int kPracLBID = 10;
         public static final int kPracRTID = 8;
         public static final int kPracRBID = 7;
+        public static final int kPracLEncode3 = 3;
+        public static final int kPracLEncode4 = 4;
+        public static final int kPracREncode0 = 0;
+        public static final int kPracREncode1 = 1;
     }
 
     public static final class IndexerConstants {
-        public static final int[] kBeltIDs = { 0 };   // Don't know ID yet
+        public static final int kIndexCollectID = 7;
+        public static final int kIndexShootID = 8;
         public static final double BELT_SPEED = 1;
     }
 
     public static final class ClimbingConstant {
-        public static final int kClimbAdjID = 8;   // Don't know ID yet
-        public static final int kClimbRID = 12;
-        public static final int kClimbLID = 13;
-        public static final int kLimitTopID = 1;
-        public static final int kLimitBottomID = 2;
+        public static final int kClimbAdjID = 10;
+        public static final int kClimbRID = 9;
+        public static final int kClimbLID = 12;
     }
 
     public static final class ControlPanelConstants {
-        public static final int kpanelSpinnerID = 5;   //Don't know which port yet, so using random # for now 1/16/20
-    }
-
-    public static final class DumperConstants {
-        public static final int[] kDumpIDs = { 9 }; 
+        public static final int kpanelSpinnerID = 11;
+        public static final int mechanismLifterID = 0; // Servo ID Don't know yet
     }
 
     public static final class BallCollectConstants {
-        public static final int kSpinID = 7; // Don't know which CAN ID this is yet 2/4/20
-        public static final int kActuateID = 12; // Don't know which CAN ID this is yet 2/4/20
+        public static final int kSpinID = 5;
+        public static final int kActuateID = 6;
     }
+
 }

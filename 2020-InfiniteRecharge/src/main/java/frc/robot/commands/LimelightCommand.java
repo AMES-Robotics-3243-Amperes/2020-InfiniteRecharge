@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.subsystems.LimelightSubsystem;
@@ -25,6 +26,7 @@ public class LimelightCommand extends CommandBase {
     m_drive = drive;
     m_adjust = adjust;
 
+
   }
 
   // Called when the command is initially scheduled.
@@ -36,27 +38,53 @@ public class LimelightCommand extends CommandBase {
   @Override
   public void execute() {
 
-    DriveTrainSubSystem.tankDrive(
+    double var =  0;
+    double var2 = 0.0;
+
+    double steer = LimelightSubsystem.setSteer();
+    double dist = LimelightSubsystem.setDist();
+
       //Left side
-      LimelightSubsystem.setSteer() 
-      + LimelightSubsystem.setDist(),
+
+      if (steer + dist > 1) {
+        var = 1.0;
+      }
+      else if(steer + dist < -1) {
+        var = -1.0;
+      }
+      else {
+        var = steer + dist;
+      }
 
       //Right side
-      LimelightSubsystem.setSteer() 
-      - LimelightSubsystem.setDist(),
-      RobotContainer.driveLime()  //Get rid of this later on
-      );
+      if (steer - dist > 1) {
+        var2 = 1.0;
+      }
+      else if(steer - dist <-1) {
+        var2 = -1.0;
+      }
+      else {
+        var2 = steer - dist;
+      }
+
+      DriveTrainSubSystem.tankDrive(var, var2, false);
+      SmartDashboard.putNumber("Steer: ", steer);
+      SmartDashboard.putNumber("Distance: ", dist);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    DriveTrainSubSystem.tankDrive(0,0, false);  //Get rid of "false" later on
+    DriveTrainSubSystem.tankDrive(0, 0, false);  //Get rid of "false" later on
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if(Math.abs(LimelightSubsystem.setSteer()) - Math.abs(LimelightSubsystem.setDist()) == 0){
+      return true;
+    }
+    
     return false;
   }
 }
