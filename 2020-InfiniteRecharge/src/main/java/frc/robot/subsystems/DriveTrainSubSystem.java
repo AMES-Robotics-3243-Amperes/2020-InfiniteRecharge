@@ -99,7 +99,6 @@ public class DriveTrainSubSystem extends SubsystemBase {
       ((CANSparkMax) motorRT).setSmartCurrentLimit(39);
       ((CANSparkMax) motorRB).setSmartCurrentLimit(39);
 
-
       
     }
 
@@ -136,18 +135,25 @@ public class DriveTrainSubSystem extends SubsystemBase {
   
     }
 
-
-
-
   }
 
-  public static void PIDSet(double leftSet, double rightSet){
+  public static void setPosition(double leftSet, double rightSet){
     double motorSpeedLeft; 
     double motorSpeedRight;
-    motorSpeedLeft = m_PIDleft.calculate(leftSparkEncode.getPosition() , leftSet);
-    motorSpeedRight = m_PIDright.calculate(rightSparkEncode.getPosition(), rightSet);
+
+    if(leftSparkEncode != null && rightSparkEncode != null){
+      motorSpeedLeft = m_PIDleft.calculate(leftSparkEncode.getPosition() , leftSet);
+      motorSpeedRight = m_PIDright.calculate(rightSparkEncode.getPosition(), rightSet);
+    } else if(leftVictorEncode != null && rightVictorEncode != null){
+      motorSpeedLeft = m_PIDleft.calculate(leftVictorEncode.getDistance(), leftSet);
+      motorSpeedRight = m_PIDright.calculate(rightVictorEncode.getDistance(), rightSet);
+    } else{
+      motorSpeedLeft = 0;
+      motorSpeedRight = 0;
+    }
     m_leftSide.setSetpoint(motorSpeedLeft);
     m_leftSide.setSetpoint(motorSpeedRight);
+    
   }
 
 

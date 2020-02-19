@@ -20,19 +20,19 @@ public class DriveForward extends CommandBase {
    * Creates a new DriveForward.
    */
 
-   private static DriveTrainSubSystem m_driver;
+   /*private static DriveTrainSubSystem m_driver;
    private static CANEncoder m_encodeSparkLeft;
    private static CANEncoder m_encodeSparkRight;
    private static Encoder m_encodeVictorRight;
-   private static Encoder m_encodeVictorLeft; 
+   private static Encoder m_encodeVictorLeft; */
 
-  public DriveForward(DriveTrainSubSystem driver, CANEncoder encodeSparkLeft, CANEncoder encodeSparkRight, Encoder encodeVictorLeft, Encoder encodeVictorRight) {
+  public DriveForward(/*DriveTrainSubSystem driver, CANEncoder encodeSparkLeft, CANEncoder encodeSparkRight, Encoder encodeVictorLeft, Encoder encodeVictorRight*/) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_driver = driver;
+    /*m_driver = driver;
     m_encodeSparkLeft = encodeSparkLeft;
     m_encodeVictorLeft = encodeVictorLeft;
     m_encodeSparkRight = encodeSparkRight;
-    m_encodeVictorRight = encodeVictorRight; 
+    m_encodeVictorRight = encodeVictorRight; */
 
   }
 
@@ -66,7 +66,7 @@ public class DriveForward extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    DriveTrainSubSystem.PIDSet(35, 35);
+    DriveTrainSubSystem.setPosition(35, 35);
 
   }
 
@@ -80,28 +80,6 @@ public class DriveForward extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() { // Want to move 5 ft fwd, but don't know how many rotations, so used "35" as place holder
-
-    // SparkMax encoder
-    if(m_encodeSparkRight != null && m_encodeSparkLeft != null && m_encodeSparkRight.getPosition() <= 35 && m_encodeSparkLeft.getPosition() <= 35){
-      return m_encodeSparkLeft.getPosition() > 35 && m_encodeSparkRight.getPosition() > 35;
-
-    } else if(m_encodeSparkRight != null && m_encodeSparkLeft != null && m_encodeSparkRight.getPosition() >= 35 && m_encodeSparkLeft.getPosition() >= 35){
-      return m_encodeSparkLeft.getPosition() < 35 && m_encodeSparkRight.getPosition() < 35;
-
-    } else if(m_encodeSparkRight != null && m_encodeSparkLeft != null && m_encodeSparkRight.getPosition() == 35 && m_encodeSparkLeft.getPosition() == 35){
-      return m_encodeSparkLeft.getPosition() == 35 && m_encodeSparkRight.getPosition() == 35;
-    }
-
-    // Victor encoder
-    if(m_encodeVictorRight != null && m_encodeVictorLeft != null && m_encodeVictorRight.getDistance() <= 35 && m_encodeVictorLeft.getDistance() <= 35){
-      return m_encodeVictorLeft.getDistance() > 35 && m_encodeVictorRight.getDistance() > 35;
-
-    } else if(m_encodeVictorRight != null && m_encodeVictorLeft != null && m_encodeVictorRight.getDistance() >= 35 && m_encodeVictorLeft.getDistance() >= 35){
-      return m_encodeVictorLeft.getDistance() < 35 && m_encodeVictorRight.getDistance() < 35;
-
-    } else if(m_encodeVictorRight != null && m_encodeVictorLeft != null && m_encodeVictorRight.getDistance() == 35 && m_encodeVictorLeft.getDistance() == 35){
-      return m_encodeVictorLeft.getDistance() == 35 && m_encodeVictorRight.getDistance() == 35;
-    }
 
     return false;
   }
