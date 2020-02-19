@@ -17,6 +17,7 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 
 import frc.robot.Constants;
+import frc.robot.util.PIDMotor;
 
 /* Two NEOs are going to push both elevator-like beams up to grab the bar.
    Both elevator ends have limit switches to stop the elevator from moving too far.
@@ -28,10 +29,14 @@ public class ClimbSubsystem extends SubsystemBase {
   private static CANSparkMax climberADJ = new CANSparkMax(Constants.ClimbingConstant.kClimbAdjID, MotorType.kBrushless);
   private static CANSparkMax climberR = new CANSparkMax(Constants.ClimbingConstant.kClimbRID, MotorType.kBrushless);
   private static CANSparkMax climberL = new CANSparkMax(Constants.ClimbingConstant.kClimbLID, MotorType.kBrushless);
-  private static CANPIDController pidControlRight;
-  private static CANPIDController pidControlLeft;
+  private static PIDMotor pidControlRight = new PIDMotor(climberR);
+  private static PIDMotor pidControlLeft = new PIDMotor(climberL);
   private static CANEncoder encodeLeft;
   private static CANEncoder encodeRight;
+
+  private final double ARM_EXTENDED_ROTS = 10;
+  private final double ARM_CONTROL_PANEL_POSITION_ROTS = 5;
+  private final double ARM_TARGET_MARGIN_ROTS = 0.5;
 
   // NOT YET TUNED TO THE ROBOT! 2/5/20
   double kp = 0.0;
@@ -44,9 +49,6 @@ public class ClimbSubsystem extends SubsystemBase {
   static double rightPosition = 0.0;
 
   public ClimbSubsystem() {
-    pidControlRight = climberR.getPIDController();
-    pidControlLeft = climberL.getPIDController();
-
     pidControlRight.setP(kp);
     pidControlRight.setI(ki);
     pidControlRight.setD(kd);
@@ -82,30 +84,54 @@ public class ClimbSubsystem extends SubsystemBase {
 
     // Left climber side
     if(encodeLeft.getPosition() <= maxRotations){ // Move position if not hit max position
-      pidControlLeft.setReference(leftPosition, ControlType.kPosition);
+      pidControlLeft.setPIDPosition(leftPosition);
     } else if(encodeLeft.getPosition() > maxRotations){
       if(leftPosition > encodeLeft.getPosition()){
         // if we force motor to go past max position, then stop motor
         climberL.stopMotor();
       } else if(leftPosition < encodeLeft.getPosition()){
         // if we want motor to lower position, then let it move
-        pidControlLeft.setReference(leftPosition, ControlType.kPosition);
+        pidControlLeft.setPIDPosition(leftPosition);
       }
     }
 
     // Right climber side
     if(encodeRight.getPosition() <= maxRotations){  // Move position if not hit max position
-      pidControlRight.setReference(rightPosition, ControlType.kPosition);
+      pidControlRight.setPIDPosition(rightPosition);
     } else if(encodeRight.getPosition() > maxRotations){
       if(rightPosition > encodeRight.getPosition()){
         // if we force motor to go past max position, then stop motor
         climberR.stopMotor();
       } else if(rightPosition < encodeRight.getPosition()){
         // if we want motor to lower position, then let it move
-        pidControlRight.setReference(rightPosition, ControlType.kPosition);
+        pidControlRight.setPIDPosition(rightPosition);
       }
     }
 
+  }
+
+  public void extendArmsForClimbing()
+  {
+    setLeftExtendTarget(ARM_EXTENDED_ROTS);
+    setRightExtendTarget(ARM_EXTENDED_ROTS);
+  }
+  public void retractArms()
+  {
+    setLeftExtendTarget(0);
+    setRightExtendTarget(0);
+  }
+  public void extendArmControlPanelMechanism()
+  {
+    setRightExtendTarget(ARM_CONTROL_PANEL_POSITION_ROTS);
+  }
+
+  public void setLeftExtendTarget(double rotations)
+  {
+    pidControlLeft.setPIDPosition(rotations);
+  }
+  public void setRightExtendTarget(double rotations)
+  {
+    pidControlRight.setPIDPosition(rotations);
   }
 
   @Override
@@ -120,5 +146,21 @@ public class ClimbSubsystem extends SubsystemBase {
     SmartDashboard.getNumber("ClimberADJ Volt: ", climberADJ.getBusVoltage()); // Prints the voltage going into the motor controller
     SmartDashboard.getNumber("ClimberR Volt: ", climberR.getBusVoltage());
     SmartDashboard.getNumber("ClimberL Volt: ", climberL.getBusVoltage());
+  }
+
+  public boolean isControlPanelLifted()
+  {
+    return Math.abs(pidControlRight.encoder.getPosition() - ARM_CONTROL_PANEL_POSITION_ROTS) <= ARM_TARGET_MARGIN_ROTS;
+  }
+
+  public boolean isClimberArmExtended()
+  {
+    return Math.abs(pidControlRight.encoder.getPosition() - ARM_EXTENDED_ROTS) <= ARM_TARGET_MARGIN_ROTS
+      && Math.abs(pidControlLeft.encoder.getPosition() - ARM_EXTENDED_ROTS) <= ARM_TARGET_MARGIN_ROTS;
+  }
+  public boolean isClimberArmRetracted()
+  {
+    return Math.abs(pidControlRight.encoder.getPosition() - 0) <= ARM_TARGET_MARGIN_ROTS
+      && Math.abs(pidControlLeft.encoder.getPosition() - 0) <= ARM_TARGET_MARGIN_ROTS;
   }
 }

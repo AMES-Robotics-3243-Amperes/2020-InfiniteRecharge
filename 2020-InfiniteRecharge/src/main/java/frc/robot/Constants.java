@@ -37,20 +37,20 @@ public final class Constants {
     }
 
     public static final class IndexerConstants {
-        public static final int kIndexCollectID = 7;
-        public static final int kIndexShootID = 8;
+        public static final int kIndexCollectID = 15;    // Changed from 7 to 15
+        public static final int kIndexShootID = 16;  // Changed from 8 to 16
         public static final double BELT_SPEED = 1;
     }
 
     public static final class ClimbingConstant {
-        public static final int kClimbAdjID = 10;
-        public static final int kClimbRID = 9;
+        public static final int kClimbAdjID = 18;   // Change from 10 to 18
+        public static final int kClimbRID = 17;  // Change from 9 to 17
         public static final int kClimbLID = 12;
     }
 
     public static final class ControlPanelConstants {
         public static final int kpanelSpinnerID = 11;
-        public static final int mechanismLifterID = 0; // Servo ID Don't know yet
+        public static final int mechanismLifterID = 5; // Servo ID Don't know yet
     }
 
     public static final class BallCollectConstants {
