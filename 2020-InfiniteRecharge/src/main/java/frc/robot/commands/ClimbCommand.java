@@ -8,22 +8,25 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
+import frc.robot.subsystems.BallCollectionSubSystem;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.RobotContainer;
 
 public class ClimbCommand extends CommandBase {
   
   private final ClimbSubsystem m_elevator;
+  private final BallCollectionSubSystem collect_ball;
 
-  public ClimbCommand(ClimbSubsystem elevator) {
+  public ClimbCommand(ClimbSubsystem elevator, BallCollectionSubSystem collect) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_elevator = elevator;  // Set variable to the object
+    collect_ball = collect;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    collect_ball.setRetract();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

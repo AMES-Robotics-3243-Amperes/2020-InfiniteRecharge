@@ -13,6 +13,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
@@ -52,7 +53,8 @@ public class DriveTrainSubSystem extends SubsystemBase {
   // Encoder data objects
   private static DrivetrainPIDSubsystem m_rightSide;
   private static DrivetrainPIDSubsystem m_leftSide;
-
+  static PIDController m_PIDleft = new PIDController(1, 0, 0);
+  static PIDController m_PIDright = new PIDController(1, 0, 0);
   // Command Based code requirement: enabling motors
   public DriveTrainSubSystem() {
 
@@ -91,11 +93,13 @@ public class DriveTrainSubSystem extends SubsystemBase {
       m_rightSide = new DrivetrainPIDSubsystem(m_rightmotors, rightSparkEncode, null);
       m_leftSide = new DrivetrainPIDSubsystem(m_leftmotors, leftSparkEncode, null);
 
+      
       ((CANSparkMax) motorLT).setSmartCurrentLimit(39); // Limits the maximum amps
       ((CANSparkMax) motorLB).setSmartCurrentLimit(39);
       ((CANSparkMax) motorRT).setSmartCurrentLimit(39);
       ((CANSparkMax) motorRB).setSmartCurrentLimit(39);
 
+      
     }
 
     //m_drive = new DifferentialDrive(m_leftmotors, m_rightmotors);
@@ -132,6 +136,26 @@ public class DriveTrainSubSystem extends SubsystemBase {
     }
 
   }
+
+  public static void setPosition(double leftSet, double rightSet){
+    double motorSpeedLeft; 
+    double motorSpeedRight;
+
+    if(leftSparkEncode != null && rightSparkEncode != null){
+      motorSpeedLeft = m_PIDleft.calculate(leftSparkEncode.getPosition() , leftSet);
+      motorSpeedRight = m_PIDright.calculate(rightSparkEncode.getPosition(), rightSet);
+    } else if(leftVictorEncode != null && rightVictorEncode != null){
+      motorSpeedLeft = m_PIDleft.calculate(leftVictorEncode.getDistance(), leftSet);
+      motorSpeedRight = m_PIDright.calculate(rightVictorEncode.getDistance(), rightSet);
+    } else{
+      motorSpeedLeft = 0;
+      motorSpeedRight = 0;
+    }
+    m_leftSide.setSetpoint(motorSpeedLeft);
+    m_leftSide.setSetpoint(motorSpeedRight);
+    
+  }
+
 
   @Override
   public void periodic() {

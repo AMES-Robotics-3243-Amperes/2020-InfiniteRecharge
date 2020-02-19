@@ -21,10 +21,10 @@ public final class Constants {
     public static final boolean TEST_VERSION = false; // When false, disables some troubleshooting SmartDashboard outputs
 
     public static final class DriveConstants {
-        public static final int kLTID = 4;
-        public static final int kLBID = 3;
-        public static final int kRTID = 2;
-        public static final int kRBID = 1;
+        public static final int kLTID = 2;
+        public static final int kLBID = 1;
+        public static final int kRTID = 3;
+        public static final int kRBID = 4;
 
         public static final int kPracLTID = 9;
         public static final int kPracLBID = 10;
@@ -37,6 +37,7 @@ public final class Constants {
     }
 
     public static final class IndexerConstants {
+<<<<<<< HEAD
         public static final int kIndexCollectID = 15;    // Changed from 7 to 15
         public static final int kIndexShootID = 16;  // Changed from 8 to 16
         public static final double BELT_SPEED = 1;
@@ -51,10 +52,26 @@ public final class Constants {
     public static final class ControlPanelConstants {
         public static final int kpanelSpinnerID = 11;
         public static final int mechanismLifterID = 5; // Servo ID Don't know yet
+=======
+        public static final int kIndexCollectID = 11;
+        public static final int kIndexShootID = 8;
+        public static final double BELT_SPEED = 0.75;
+    }
+
+    public static final class ClimbingConstant {
+        public static final int kClimbAdjID = 12;
+        public static final int kClimbRID = 9;
+        public static final int kClimbLID = 10;
+    }
+
+    public static final class ControlPanelConstants {
+        public static final int kpanelSpinnerID = 5;
+        public static final int mechanismLifterID = 0; // Servo ID Don't know yet
+>>>>>>> 9028b6a34f00db30dbe9a4912d4a6bdbceaa59f1
     }
 
     public static final class BallCollectConstants {
-        public static final int kSpinID = 5;
+        public static final int kSpinID = 7;
         public static final int kActuateID = 6;
     }
 

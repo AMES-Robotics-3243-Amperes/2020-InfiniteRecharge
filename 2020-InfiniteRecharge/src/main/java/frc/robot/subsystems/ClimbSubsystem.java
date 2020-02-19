@@ -29,6 +29,7 @@ public class ClimbSubsystem extends SubsystemBase {
   private static CANSparkMax climberADJ = new CANSparkMax(Constants.ClimbingConstant.kClimbAdjID, MotorType.kBrushless);
   private static CANSparkMax climberR = new CANSparkMax(Constants.ClimbingConstant.kClimbRID, MotorType.kBrushless);
   private static CANSparkMax climberL = new CANSparkMax(Constants.ClimbingConstant.kClimbLID, MotorType.kBrushless);
+  private static PIDMotor climberADJPID = new PIDMotor(climberADJ);
   private static PIDMotor pidControlRight = new PIDMotor(climberR);
   private static PIDMotor pidControlLeft = new PIDMotor(climberL);
   private static CANEncoder encodeLeft;
@@ -77,9 +78,9 @@ public class ClimbSubsystem extends SubsystemBase {
 
     // Moves the climbing system up
     if(actuateUp){
-      climberADJ.set(0.75);
+      climberADJPID.setPIDPosition(5);
     } else if(!actuateUp){
-      climberADJ.stopMotor();
+      climberADJPID.setPIDPosition(0);
     }
 
     // Left climber side

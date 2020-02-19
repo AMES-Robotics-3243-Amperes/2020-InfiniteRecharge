@@ -5,23 +5,18 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.autonomous;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.BallCollectionSubSystem;
-import frc.robot.subsystems.IndexerSubsystem;
-import frc.robot.RobotContainer;
 
-public class BallCollectionCommand extends IndexerCommand{
+import frc.robot.subsystems.DriveTrainSubSystem;
+
+public class DriveTurn extends CommandBase {
   /**
-   * Creates a new BallCollectionCommand.
+   * Creates a new DriveTurn.
    */
-  private final BallCollectionSubSystem m_bCollect;
-
-  public BallCollectionCommand(BallCollectionSubSystem bCollect, IndexerSubsystem indexer) {
-    super(indexer);
+  public DriveTurn() {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_bCollect = bCollect;
   }
 
   // Called when the command is initially scheduled.
@@ -32,13 +27,11 @@ public class BallCollectionCommand extends IndexerCommand{
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //m_bCollect.setSpin(RobotContainer.configureballbindings());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    //m_bCollect.setSpin(false);
   }
 
   // Returns true when the command should end.

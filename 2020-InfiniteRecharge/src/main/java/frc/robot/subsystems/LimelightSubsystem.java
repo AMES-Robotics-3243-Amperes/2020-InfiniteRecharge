@@ -32,6 +32,7 @@ public class LimelightSubsystem extends SubsystemBase {
   static double v;
   static double area;
 
+  
   boolean target = false;
 
   //These constants haven't been tuned 1/30/20
@@ -57,7 +58,7 @@ public class LimelightSubsystem extends SubsystemBase {
     double heading_error = x;
     double dist_error = area;
     double dist_adjust = 0.0;
-    double maxDistAdjust = 0.0;
+    double maxDistAdjust = 0.8;
     double maxAngAdjust = 1.0;
       if (v == 0.0) {
         dist_adjust = 0.0;

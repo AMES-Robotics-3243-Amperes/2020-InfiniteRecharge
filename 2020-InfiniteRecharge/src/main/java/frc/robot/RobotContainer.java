@@ -53,7 +53,7 @@ public class RobotContainer {
   private final AutoCommand m_autoCommand = new AutoCommand(m_exampleSubsystem);
   private final LimelightCommand m_limelightCommand = new LimelightCommand(m_robotDriveSubsystem, m_limelightSubsystem);
   private final BallCollectionCommand m_ballCollectionCommand = new BallCollectionCommand(m_ballCollectionSubsystem, indexerSubsystem);
-  public static ClimbCommand m_climbCommand = new ClimbCommand(m_climbSubsystem);
+  public static ClimbCommand m_climbCommand = new ClimbCommand(m_climbSubsystem, m_ballCollectionSubsystem);
   public static AssimilatorCommand m_AssimilatorCommand = new AssimilatorCommand(m_AssimilatorSubsystem);
 //-------------------------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------- CONTROL PANEL ------------------------------------------------------------------------------------------------------
@@ -71,7 +71,7 @@ public class RobotContainer {
   
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------- AUTONOMOUS ---------------------------------------------------------------------------------------------------------------------------------------------------------------
-  public static DriveForward m_driveForward = new DriveForward(m_robotDriveSubsystem, DriveTrainSubSystem.getSparkLeft(), DriveTrainSubSystem.getSparkRight(), DriveTrainSubSystem.getVictorLeft(), DriveTrainSubSystem.getVictorRight()  );
+  public static DriveForward m_driveForward = new DriveForward(/*m_robotDriveSubsystem, DriveTrainSubSystem.getSparkLeft(), DriveTrainSubSystem.getSparkRight(), DriveTrainSubSystem.getVictorLeft(), DriveTrainSubSystem.getVictorRight()*/  );
   public static AutoDump m_AutoDump = new AutoDump();
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -89,7 +89,7 @@ public class RobotContainer {
   public RobotContainer() {
 
     // This sets the practice robot you're on to true
-    //Preferences.getInstance().putBoolean("Is Practice", true);
+    Preferences.getInstance().putBoolean("Is Practice", false);
 
     // This says that the robot we're on will pass in true (if it's the prac robot) and falst (if it's the comp robot)
   

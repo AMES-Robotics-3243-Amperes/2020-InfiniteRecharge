@@ -47,9 +47,19 @@ public class BallCollectionSubSystem extends SubsystemBase {
     }
   }
 
+  public void setRetract()
+  {
+    deployInitTime = Timer.getFPGATimestamp();
+    motorActuate.set(-0.5);
+  }
+
   @Override
-  public void periodic() {
-    if(Timer.getFPGATimestamp() > deployInitTime + 1); // actuator runs for 1 second
+  public void periodic() // actuator runs for 1 second
+    { 
+    if(Timer.getFPGATimestamp() > deployInitTime + 1){
+      motorActuate.set(0);
+    } 
+
     // This method will be called once per scheduler run
     SmartDashboard.getNumber("Collector Current: ", motorSpin.getOutputCurrent());
     SmartDashboard.getNumber("Collector Volt: ", motorSpin.getBusVoltage());

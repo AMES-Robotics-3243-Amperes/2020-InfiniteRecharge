@@ -30,7 +30,7 @@ public class AssimilatorSubsystem extends SubsystemBase {
   static CANEncoder indexEncoder;
   static boolean currentExtended = false;
   static boolean currentRetracted = true;
-  static final double CURRENT_CONST = 5.5;
+  static final double CURRENT_CONST = 13.0;
 
   public AssimilatorSubsystem() {
     intakeShaft = new CANSparkMax(Constants.BallCollectConstants.kSpinID, MotorType.kBrushless);
@@ -50,6 +50,7 @@ public class AssimilatorSubsystem extends SubsystemBase {
 
   }
   public static void setIndexCollectSpeed(boolean index) {
+    System.out.println(intakeActuator.getOutputCurrent());
 
     if (index) {
       if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentExtended) {
