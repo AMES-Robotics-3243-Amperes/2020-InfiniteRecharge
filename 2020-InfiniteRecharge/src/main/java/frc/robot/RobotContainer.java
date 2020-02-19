@@ -53,7 +53,7 @@ public class RobotContainer {
   private final AutoCommand m_autoCommand = new AutoCommand(m_exampleSubsystem);
   private final LimelightCommand m_limelightCommand = new LimelightCommand(m_robotDriveSubsystem, m_limelightSubsystem);
   private final BallCollectionCommand m_ballCollectionCommand = new BallCollectionCommand(m_ballCollectionSubsystem, indexerSubsystem);
-  public static ClimbCommand m_climbCommand = new ClimbCommand(m_climbSubsystem);
+  public static ClimbCommand m_climbCommand = new ClimbCommand(m_climbSubsystem, m_ballCollectionSubsystem);
   public static AssimilatorCommand m_AssimilatorCommand = new AssimilatorCommand(m_AssimilatorSubsystem);
 //-------------------------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------- CONTROL PANEL ------------------------------------------------------------------------------------------------------
