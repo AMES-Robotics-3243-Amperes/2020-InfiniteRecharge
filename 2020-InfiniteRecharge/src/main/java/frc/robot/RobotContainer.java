@@ -89,7 +89,7 @@ public class RobotContainer {
   public RobotContainer() {
 
     // This sets the practice robot you're on to true
-    //Preferences.getInstance().putBoolean("Is Practice", true);
+    Preferences.getInstance().putBoolean("Is Practice", false);
 
     // This says that the robot we're on will pass in true (if it's the prac robot) and falst (if it's the comp robot)
   

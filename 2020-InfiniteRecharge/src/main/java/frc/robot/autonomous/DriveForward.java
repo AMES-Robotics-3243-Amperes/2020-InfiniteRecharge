@@ -39,7 +39,7 @@ public class DriveForward extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
+/*
     if(m_encodeSparkLeft != null && m_encodeSparkRight != null){
       m_encodeSparkLeft.setPosition(0);
       m_encodeSparkRight.setPosition(0);
@@ -57,15 +57,17 @@ public class DriveForward extends CommandBase {
         DriveTrainSubSystem.tankDrive(0.55, 0.55, false);
       else if(m_encodeVictorLeft.getDistance() > 35 && m_encodeVictorRight.getDistance() > 35)
         DriveTrainSubSystem.tankDrive(-0.55, -0.55, false);
-      
+    } else{
+      DriveTrainSubSystem.tankDrive(0.0, 0.0, false);
     }
-
+      */
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // We probably don't need this execute method
+    DriveTrainSubSystem.PIDSet(35, 35);
+
   }
 
   // Called once the command ends or is interrupted.

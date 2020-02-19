@@ -32,6 +32,7 @@ public class LimelightSubsystem extends SubsystemBase {
   static double v;
   static double area;
 
+  
   boolean target = false;
 
   //These constants haven't been tuned 1/30/20
