@@ -28,9 +28,9 @@ public class AssimilatorSubsystem extends SubsystemBase {
   static CANSparkMax intakeActuator;
   static CANSparkMax polyLoop;
   static CANEncoder indexEncoder;
-  static boolean currentExtended = false;
-  static boolean currentRetracted = true;
-  static final double CURRENT_CONST = 13.0;
+  public static boolean currentExtended = false;
+  public static boolean currentRetracted = true;
+  static final double CURRENT_CONST = 20.0;
 
   public AssimilatorSubsystem() {
     intakeShaft = new CANSparkMax(Constants.BallCollectConstants.kSpinID, MotorType.kBrushless);
@@ -40,16 +40,7 @@ public class AssimilatorSubsystem extends SubsystemBase {
     // indexEncoder = intakeActuator.getOutputCurrent();
   }
 
-  public static void ballIndex(boolean ballIndex){
-    
-    if(ballIndex){
-      intakeShaft.set(0.45);
-    } else {
-      intakeShaft.stopMotor();
-    }
-
-  }
-  public static void setIndexCollectSpeed(boolean index) {
+  /*public static void setIndexCollectSpeed(boolean index) {
     System.out.println(intakeActuator.getOutputCurrent());
 
     if (index) {
@@ -73,11 +64,46 @@ public class AssimilatorSubsystem extends SubsystemBase {
 
       }
     }
+  }*/
+
+  public static void setExtend(){
+
+    System.err.println("It works");
+      if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentExtended) {
+        currentRetracted = false; 
+        intakeActuator.set(-0.65);
+        System.err.println("E ON");
+      } else {
+        intakeActuator.set(0.0);
+        currentExtended = true;
+        System.err.println("E OFF");
+      }
+
+  }
+
+  public static void setRetract(){
+    System.err.println("## Extend " + Boolean.toString(currentExtended));
+    System.err.println("## Retract " + Boolean.toString(currentRetracted));
+    System.err.println("#### Current: " + Double.toString(intakeActuator.getOutputCurrent()));
+    if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentRetracted) {
+      currentExtended = false;
+      intakeActuator.set(0.65);
+      System.err.println("R ON");
+    } else{
+      currentRetracted = true;
+      intakeActuator.stopMotor();
+      System.err.println("R OFF");
+    }
   }
 
   @Override
   public void periodic() {
 
+    if(currentExtended){
+      intakeShaft.set(0.5);
+    } else {
+      intakeShaft.stopMotor();
+    }
     // This method will be called once per scheduler run
   }
 }

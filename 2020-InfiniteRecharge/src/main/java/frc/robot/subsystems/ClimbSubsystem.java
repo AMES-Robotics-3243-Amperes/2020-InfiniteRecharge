@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.CANSparkMax;
@@ -34,6 +35,8 @@ public class ClimbSubsystem extends SubsystemBase {
   private static PIDMotor pidControlLeft = new PIDMotor(climberL);
   private static CANEncoder encodeLeft;
   private static CANEncoder encodeRight;
+
+  static Servo stopClimb = new Servo(1);
 
   private final double ARM_EXTENDED_ROTS = 10;
   private final double ARM_CONTROL_PANEL_POSITION_ROTS = 5;
@@ -63,30 +66,43 @@ public class ClimbSubsystem extends SubsystemBase {
     encodeRight = climberR.getEncoder();
     encodeLeft = climberL.getEncoder();
 
+    climberADJ.getEncoder().setPosition(0);
+
     climberADJ.setSmartCurrentLimit(39);
     climberR.setSmartCurrentLimit(39);
     climberL.setSmartCurrentLimit(39);
   }
 
-  public static void setClimb(double leftSpd, double rightSpd, boolean actuateUp) {
+  // Button pops the climbing system out and then we use the axes to extend the
+  // two sides individually
+  public static void setExtendClimb(double leftSpd, double rightSpd, boolean actuateUp, boolean servo) {
 
-    double maxRotations = 0.0;  // DON'T KNOW WHAT THE MAX ROTATIONS IS YET 2/16/20
+    double maxRotations = 0.0; // DON'T KNOW WHAT THE MAX ROTATIONS IS YET 2/16/20
+    double minRotations = 0.0; // Maybe change this too? Don't know the constant yet
 
     // One of these MUST BE NEGATIVE, so we have to test it 2/16/20
     leftPosition = encodeLeft.getPosition() + leftSpd;
     rightPosition = encodeRight.getPosition() + rightSpd;
 
     // Moves the climbing system up
-    if(actuateUp){
+    if (actuateUp) {
       climberADJPID.setPIDPosition(5);
-    } else if(!actuateUp){
+    } else if (!actuateUp) {
       climberADJPID.setPIDPosition(0);
     }
 
+    if (servo) {
+      stopClimb.setAngle(Constants.ClimbingConstant.kMoveServo);
+    } else if(!servo) {
+      stopClimb.setAngle(Constants.ClimbingConstant.kStopServo);
+    }
+
     // Left climber side
-    if(encodeLeft.getPosition() <= maxRotations){ // Move position if not hit max position
+    if(encodeLeft.getPosition() <= maxRotations){ // Move position if we haven't hit max position
       pidControlLeft.setPIDPosition(leftPosition);
+
     } else if(encodeLeft.getPosition() > maxRotations){
+
       if(leftPosition > encodeLeft.getPosition()){
         // if we force motor to go past max position, then stop motor
         climberL.stopMotor();
@@ -94,12 +110,25 @@ public class ClimbSubsystem extends SubsystemBase {
         // if we want motor to lower position, then let it move
         pidControlLeft.setPIDPosition(leftPosition);
       }
+
+    } else if(encodeLeft.getPosition() <= minRotations){
+
+      if(leftPosition > encodeLeft.getPosition()){
+        // let the motor move to it's desired position if we try to move away from starting config.
+        pidControlLeft.setPIDPosition(leftPosition);
+      } else if(leftPosition < encodeLeft.getPosition()){
+        // Don't let motor move if it's trying to move farther into starting config.
+        climberL.stopMotor();
+      }
+
     }
 
     // Right climber side
     if(encodeRight.getPosition() <= maxRotations){  // Move position if not hit max position
       pidControlRight.setPIDPosition(rightPosition);
+
     } else if(encodeRight.getPosition() > maxRotations){
+
       if(rightPosition > encodeRight.getPosition()){
         // if we force motor to go past max position, then stop motor
         climberR.stopMotor();
@@ -107,20 +136,36 @@ public class ClimbSubsystem extends SubsystemBase {
         // if we want motor to lower position, then let it move
         pidControlRight.setPIDPosition(rightPosition);
       }
-    }
 
+    } else if(encodeRight.getPosition() <= minRotations){
+
+      if(rightPosition > encodeRight.getPosition()){
+        // let the motor move to it's desired position if we try to move away from starting config.
+        pidControlRight.setPIDPosition(rightPosition);
+      } else if(rightPosition < encodeRight.getPosition()){
+        // Don't let motor move if it's trying to move farther into starting config.
+        climberR.stopMotor();
+      }
+
+    }
   }
 
+  /* Idk what you're doing here, but I think this is already what's happening in the code above,
+    but with end stops to make sure the mechanism doesn't hit itself too hard using encoder positioning...
+    If this is for the control panel, then sorry for this long comment, carry on with your coding :D */
+  /*
   public void extendArmsForClimbing()
   {
     setLeftExtendTarget(ARM_EXTENDED_ROTS);
     setRightExtendTarget(ARM_EXTENDED_ROTS);
   }
+
   public void retractArms()
   {
     setLeftExtendTarget(0);
     setRightExtendTarget(0);
   }
+  
   public void extendArmControlPanelMechanism()
   {
     setRightExtendTarget(ARM_CONTROL_PANEL_POSITION_ROTS);
@@ -133,7 +178,7 @@ public class ClimbSubsystem extends SubsystemBase {
   public void setRightExtendTarget(double rotations)
   {
     pidControlRight.setPIDPosition(rotations);
-  }
+  }*/
 
   @Override
   public void periodic() {

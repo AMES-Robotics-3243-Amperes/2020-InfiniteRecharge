@@ -66,8 +66,8 @@ public class DriveForward extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // Want to move 5 ft fwd, but don't know how many rotations, so used "35" as place holder
     DriveTrainSubSystem.setPosition(35, 35);
-
   }
 
   // Called once the command ends or is interrupted.
@@ -79,8 +79,7 @@ public class DriveForward extends CommandBase {
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() { // Want to move 5 ft fwd, but don't know how many rotations, so used "35" as place holder
-
+  public boolean isFinished() { 
     return false;
   }
 }

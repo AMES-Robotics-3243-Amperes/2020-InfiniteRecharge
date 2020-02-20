@@ -31,11 +31,17 @@ public class RobotContainer {
   //Joysticks
   private static Joystick driver = new Joystick(0);
   private static Joystick secondary = new Joystick(1);
+  static JoystickButton toggleIntake = new JoystickButton(secondary, 2);
   static double steerLeft;
   static double steerRight;
 
   // This helps the code know if we're using the practice robot or the competition robot
-  public static boolean   isPractice = Preferences.getInstance().getBoolean("Is Practice", false);
+  public static boolean isPractice = Preferences.getInstance().getBoolean("Is Practice", false);
+  static boolean toggleActOn = false;
+  static boolean toggleActPressed = false;
+  
+  static boolean toggleSerOn = false;
+  static boolean toggleSerPressed = false;
 
   //-------------------------------------- SUBSYSTEMS --------------------------------------------
   private static AssimilatorSubsystem m_AssimilatorSubsystem = new AssimilatorSubsystem();
@@ -43,7 +49,6 @@ public class RobotContainer {
   public static DriveTrainSubSystem m_robotDriveSubsystem = new DriveTrainSubSystem();
   public static ControlPanelSubsystem m_controlPanelSubsystem = new ControlPanelSubsystem();
   public final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
-  public static BallCollectionSubSystem m_ballCollectionSubsystem = new BallCollectionSubSystem();
   public static DumperSubsystem dumperSubsystem = new DumperSubsystem();
   public static ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
   public final IndexerSubsystem indexerSubsystem = new IndexerSubsystem();
@@ -52,9 +57,8 @@ public class RobotContainer {
   public final DriveTrainCommand m_robotDriveCommand = new DriveTrainCommand(m_robotDriveSubsystem);
   private final AutoCommand m_autoCommand = new AutoCommand(m_exampleSubsystem);
   private final LimelightCommand m_limelightCommand = new LimelightCommand(m_robotDriveSubsystem, m_limelightSubsystem);
-  private final BallCollectionCommand m_ballCollectionCommand = new BallCollectionCommand(m_ballCollectionSubsystem, indexerSubsystem);
-  public static ClimbCommand m_climbCommand = new ClimbCommand(m_climbSubsystem, m_ballCollectionSubsystem);
-  public static AssimilatorCommand m_AssimilatorCommand = new AssimilatorCommand(m_AssimilatorSubsystem);
+  public static ClimbCommand m_climbCommand = new ClimbCommand(m_climbSubsystem /*, m_ballCollectionSubsystem*/);
+  public static AssimilatorCommand m_AssimilatorCommand = new AssimilatorCommand();
 //-------------------------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------- CONTROL PANEL ------------------------------------------------------------------------------------------------------
   private final ControlPanelCommand.TurnNumTimes turn4Times = new ControlPanelCommand.TurnNumTimes(m_controlPanelSubsystem, 3.5, 4);
@@ -138,6 +142,7 @@ public class RobotContainer {
 
     JoystickButton dump = new JoystickButton(secondary, 6);
     dump.whenPressed(m_dumperCommand);
+    toggleIntake.toggleWhenPressed(m_AssimilatorCommand);
   }
   
   //-------------------- LIMELIGHT SECTION OF JOYSTICK ---------------------
@@ -244,11 +249,6 @@ public class RobotContainer {
     return Math.pow(scale, 3);
   }
 
-  //----------------- BALL COLLECTION SECTION OF JOYSTICK -------------------
-  public static boolean configureballbindings(){
-    return secondary.getRawButton(2);
-  }
-
    //----------------- INTAKE SECTION OF JOYSTICK -------------
   public static boolean configureIndexShaft(){
     return secondary.getRawButton(3);
@@ -269,7 +269,35 @@ public class RobotContainer {
   }
 
   public static boolean configureClimbActuate(){
-    return secondary.getRawButton(4);
+
+    // When you pressed the button, if() runs
+    if(secondary.getRawButton(4)){
+      if(!toggleActPressed){
+        // toggleOn turns on/off here
+        toggleActOn = !toggleActOn;
+
+        /* Once toggleOn turns on/off, we turn togglePressed off/on to make sure 
+          toggleOn stays true/false until when we need to turn it off/on by pressing our button again */
+        toggleActPressed = true;
+      
+      } else{
+        toggleActPressed = false;
+      }
+    }
+
+    return toggleActOn;
+  }
+
+  public static boolean configureClimbServo(){
+    if(secondary.getRawButton(9)){
+      if(!toggleSerPressed){
+        toggleSerOn = !toggleSerOn;
+        toggleSerPressed = true;
+      } else{
+        toggleSerPressed = false;
+      }
+    }
+    return toggleSerOn;
   }
 
   /**
@@ -308,10 +336,6 @@ public Command getLimelightCommand(){ // Limelight
 }
 
 //-------------- BALL COLLECTION / SHOOTER / SECONDARY FUNCTIONS -----------------
-  public Command getBallCollectCommand(){ 
-
-    return m_ballCollectionCommand;
-  }
 
   public Command getShootCommand(){
     return m_shootCommand;

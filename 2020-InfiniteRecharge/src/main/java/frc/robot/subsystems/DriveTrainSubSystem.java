@@ -144,9 +144,11 @@ public class DriveTrainSubSystem extends SubsystemBase {
     if(leftSparkEncode != null && rightSparkEncode != null){
       motorSpeedLeft = m_PIDleft.calculate(leftSparkEncode.getPosition() , leftSet);
       motorSpeedRight = m_PIDright.calculate(rightSparkEncode.getPosition(), rightSet);
+
     } else if(leftVictorEncode != null && rightVictorEncode != null){
       motorSpeedLeft = m_PIDleft.calculate(leftVictorEncode.getDistance(), leftSet);
       motorSpeedRight = m_PIDright.calculate(rightVictorEncode.getDistance(), rightSet);
+      
     } else{
       motorSpeedLeft = 0;
       motorSpeedRight = 0;

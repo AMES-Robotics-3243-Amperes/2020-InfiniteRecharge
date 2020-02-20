@@ -8,41 +8,42 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.BallCollectionSubSystem;
+//import frc.robot.subsystems.BallCollectionSubSystem;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.RobotContainer;
 
 public class ClimbCommand extends CommandBase {
   
   private final ClimbSubsystem m_elevator;
-  private final BallCollectionSubSystem collect_ball;
+  //private final BallCollectionSubSystem collect_ball;
 
-  public ClimbCommand(ClimbSubsystem elevator, BallCollectionSubSystem collect) {
+  public ClimbCommand(ClimbSubsystem elevator /*, BallCollectionSubSystem collect*/) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_elevator = elevator;  // Set variable to the object
-    collect_ball = collect;
+    //collect_ball = collect;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    collect_ball.setRetract();
+    //BallCollectionSubSystem.setRetract();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ClimbSubsystem.setClimb(
+    ClimbSubsystem.setExtendClimb(
       RobotContainer.configureclimbleftbindings(),
       RobotContainer.configureclimbrightbindings(),
-      RobotContainer.configureClimbActuate()
+      RobotContainer.configureClimbActuate(),
+      RobotContainer.configureClimbServo()
     );
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    ClimbSubsystem.setClimb(0.0, 0.0, false);
+    ClimbSubsystem.setExtendClimb(0.0, 0.0, false, false);
   }
 
   // Returns true when the command should end.

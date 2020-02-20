@@ -14,37 +14,57 @@ public class AssimilatorCommand extends CommandBase {
   /**
    * Creates a new AssimilatorCommand.
    */
-  AssimilatorSubsystem index = new AssimilatorSubsystem();
-
-  public AssimilatorCommand(AssimilatorSubsystem index) {
+  private boolean retract = false;
+  //private boolean extend = false;
+   
+  public AssimilatorCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.index = index;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
 
+    if(AssimilatorSubsystem.currentExtended){
+      retract = true;
+    } else if(AssimilatorSubsystem.currentRetracted){
+      retract = false;
+    } else {
+      retract = true;
+    }
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    AssimilatorSubsystem.setIndexCollectSpeed(RobotContainer.configureballbindings());
-    AssimilatorSubsystem.ballIndex(RobotContainer.configureIndexShaft());
+
+    if(retract){
+      AssimilatorSubsystem.setRetract();
+    } else{
+      AssimilatorSubsystem.setExtend();
+    }
+    System.err.println("Starting intake");
+
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    AssimilatorSubsystem.setIndexCollectSpeed(false);
-    AssimilatorSubsystem.ballIndex(false);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+
+    if(AssimilatorSubsystem.currentExtended && !retract){
+      return true;
+    } else if(AssimilatorSubsystem.currentRetracted && retract){
+      return true;
+    } else {
+      return false;
+    }
+
   }
 }
