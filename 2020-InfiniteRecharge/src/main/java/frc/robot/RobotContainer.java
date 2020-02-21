@@ -49,9 +49,8 @@ public class RobotContainer {
   public static DriveTrainSubSystem m_robotDriveSubsystem = new DriveTrainSubSystem();
   public static ControlPanelSubsystem m_controlPanelSubsystem = new ControlPanelSubsystem();
   public final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
-  public static DumperSubsystem dumperSubsystem = new DumperSubsystem();
+  public static DumperSubsystem m_dumperSubsystem = new DumperSubsystem();
   public static ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
-  public final IndexerSubsystem indexerSubsystem = new IndexerSubsystem();
   //----------------------------------------------------------------------------------------------
   //----------------------------------------------------------- COMMANDS --------------------------------------------------------------
   public final DriveTrainCommand m_robotDriveCommand = new DriveTrainCommand(m_robotDriveSubsystem);
@@ -70,8 +69,8 @@ public class RobotContainer {
   private final ControlPanelCommand.Manual manualPanelLeft = new ControlPanelCommand.Manual(m_controlPanelSubsystem, -0.5);
   private final ControlPanelCommand.Manual manualPanelRight = new ControlPanelCommand.Manual(m_controlPanelSubsystem, 0.5);
 
-  private final DumperCommand m_dumperCommand = new DumperCommand(dumperSubsystem);
-  private static ShootCommand m_shootCommand = new ShootCommand(dumperSubsystem);
+  private final DumperCommand m_dumperCommand = new DumperCommand();
+  private static ShootCommand m_shootCommand = new ShootCommand();
   
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------- AUTONOMOUS ---------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -150,12 +149,12 @@ public class RobotContainer {
     climberButton.whenPressed(m_climbCommand);
   }
   
-  //-------------------- LIMELIGHT SECTION OF JOYSTICK ---------------------
+  //-------------------- PRIMARY: LIMELIGHT SECTION OF JOYSTICK ---------------------
   public static boolean driveLime(){
     return driver.getRawButton(6);
   }
 
-  //-------------------- DRIVING SECTION OF JOYSTICK -----------------------
+  //-------------------- PRIMARY: DRIVING SECTION OF JOYSTICK -----------------------
   public static boolean getTurbo(){
     return driver.getRawButton(5);
   }
@@ -254,14 +253,14 @@ public class RobotContainer {
     return Math.pow(scale, 3);
   }
 
-   //----------------- INTAKE SECTION OF JOYSTICK -------------
+   //----------------- SECONDARY: INTAKE SECTION OF JOYSTICK -------------
   public static boolean configureIndexShaft(){
     return secondary.getRawButton(3);
   }
 
-  //----------------- SHOOTER SECTION OF JOYSTICK --------------------
-  public static boolean configureshootbindings(){
-    return secondary.getRawButton(5);
+  //----------------- SECONDARY: SHOOTER / INDEX SECTION OF JOYSTICK --------------------
+  public static boolean configureBallCollect(){
+    return secondary.getRawButton(7);
   }
 
   /**
@@ -269,7 +268,6 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-
 
 
 

@@ -31,7 +31,6 @@ public class Robot extends TimedRobot {
   private Command m_driveCommand;
   private Command m_limelightCommand;
   private Command m_driveForwardCommand;
-  private Command m_AssimilatorCommand;
   private Command m_dumperCommand;
   private Command m_shootCommand;
 

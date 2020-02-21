@@ -17,11 +17,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
  * Spins the dumper mototr for a set amount of time
  */
 public class DumperCommand extends CommandBase {
-  private final DumperSubsystem dumper;
-  private double startTime;
 
-  public DumperCommand(DumperSubsystem dumper) {  // Changed DumperSubsystem variable from "controlPanel" to "dumper"
-    this.dumper = dumper;  //Sets the variable to the object
+  public DumperCommand() {  // Changed DumperSubsystem variable from "controlPanel" to "dumper"
   }
 
   // Called when the command is initially scheduled.
@@ -31,7 +28,7 @@ public class DumperCommand extends CommandBase {
 
   @Override
   public void execute(){
-    DumperSubsystem.setDumpCollectSpeed(RobotContainer.configureshootbindings());
+    DumperSubsystem.setDumpCollectSpeed(RobotContainer.configureBallCollect());
   }
 
   // Called once the command ends or is interrupted.

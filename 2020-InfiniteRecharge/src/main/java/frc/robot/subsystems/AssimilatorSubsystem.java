@@ -8,15 +8,12 @@
 package frc.robot.subsystems;
 
 // Wpilib imports
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-import com.revrobotics.CANEncoder;
 // SparkMAX imports
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 
@@ -37,62 +34,28 @@ public class AssimilatorSubsystem extends SubsystemBase {
     intakeActuator = new CANSparkMax(Constants.BallCollectConstants.kActuateID, MotorType.kBrushed);
     intakeShaft.setSmartCurrentLimit(25);
     intakeActuator.setSmartCurrentLimit(28); // Test for limit
-    // indexEncoder = intakeActuator.getOutputCurrent();
   }
-
-  /*public static void setIndexCollectSpeed(boolean index) {
-    System.out.println(intakeActuator.getOutputCurrent());
-
-    if (index) {
-      if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentExtended) {
-        currentRetracted = false; 
-        intakeActuator.set(0.5);
-        intakeShaft.set(0.5);
-      } else {
-        intakeActuator.set(0.0);
-        currentExtended = true;
-      }
-    } else {
-      if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentRetracted) {
-        currentExtended = false;
-        intakeActuator.set(-0.5);
-        intakeShaft.set(0.0);
-      } else{
-        currentRetracted = true;
-        intakeActuator.stopMotor();
-        intakeShaft.stopMotor();
-
-      }
-    }
-  }*/
 
   public static void setExtend(){
 
-    System.err.println("It works");
       if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentExtended) {
         currentRetracted = false; 
         intakeActuator.set(-0.65);
-        System.err.println("E ON");
       } else {
         intakeActuator.set(0.0);
         currentExtended = true;
-        System.err.println("E OFF");
       }
 
   }
 
   public static void setRetract(){
-    System.err.println("## Extend " + Boolean.toString(currentExtended));
-    System.err.println("## Retract " + Boolean.toString(currentRetracted));
-    System.err.println("#### Current: " + Double.toString(intakeActuator.getOutputCurrent()));
+    
     if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentRetracted) {
       currentExtended = false;
       intakeActuator.set(0.65);
-      System.err.println("R ON");
     } else{
       currentRetracted = true;
       intakeActuator.stopMotor();
-      System.err.println("R OFF");
     }
   }
 
