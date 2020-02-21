@@ -36,7 +36,7 @@ public class ClimbSubsystem extends SubsystemBase {
   private static CANEncoder encodeLeft;
   private static CANEncoder encodeRight;
 
-  static Servo stopClimb = new Servo(1);
+  static Servo stopClimb = new Servo(2);
 
   private final double ARM_EXTENDED_ROTS = 10;
   private final double ARM_CONTROL_PANEL_POSITION_ROTS = 5;
@@ -91,6 +91,7 @@ public class ClimbSubsystem extends SubsystemBase {
       climberADJPID.setPIDPosition(0);
     }
 
+    // Don't know if the angles are correct yet 2/20/20
     if (servo) {
       stopClimb.setAngle(Constants.ClimbingConstant.kMoveServo);
     } else if(!servo) {

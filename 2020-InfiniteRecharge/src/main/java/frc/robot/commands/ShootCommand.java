@@ -16,11 +16,8 @@ public class ShootCommand extends CommandBase {
    * Creates a new ShootCommand.
    */
 
-  DumperSubsystem m_dump = new DumperSubsystem();
-
-  public ShootCommand(DumperSubsystem dump) {
+  public ShootCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_dump = dump;
   }
 
   // Called when the command is initially scheduled.
@@ -31,7 +28,7 @@ public class ShootCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    DumperSubsystem.setDumpShootSpeed(RobotContainer.configureshootbindings());
+    DumperSubsystem.setDumpShootSpeed(RobotContainer.configureBallShoot());
   }
 
   // Called once the command ends or is interrupted.

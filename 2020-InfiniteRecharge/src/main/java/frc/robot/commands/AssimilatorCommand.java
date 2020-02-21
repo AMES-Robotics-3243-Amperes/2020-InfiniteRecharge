@@ -15,7 +15,6 @@ public class AssimilatorCommand extends CommandBase {
    * Creates a new AssimilatorCommand.
    */
   private boolean retract = false;
-  //private boolean extend = false;
    
   public AssimilatorCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -44,7 +43,6 @@ public class AssimilatorCommand extends CommandBase {
     } else{
       AssimilatorSubsystem.setExtend();
     }
-    System.err.println("Starting intake");
 
 
   }
