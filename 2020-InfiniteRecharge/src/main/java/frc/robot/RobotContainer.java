@@ -57,7 +57,7 @@ public class RobotContainer {
   public final DriveTrainCommand m_robotDriveCommand = new DriveTrainCommand(m_robotDriveSubsystem);
   private final AutoCommand m_autoCommand = new AutoCommand(m_exampleSubsystem);
   private final LimelightCommand m_limelightCommand = new LimelightCommand(m_robotDriveSubsystem, m_limelightSubsystem);
-  public static ClimbCommand m_climbCommand = new ClimbCommand(m_climbSubsystem /*, m_ballCollectionSubsystem*/);
+  protected final ClimbCommand m_climbCommand = new ClimbCommand(m_climbSubsystem, new ClimbExtendCommand(m_climbSubsystem), new ClimbRetractCommand(m_climbSubsystem));
   public static AssimilatorCommand m_AssimilatorCommand = new AssimilatorCommand();
 //-------------------------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------- CONTROL PANEL ------------------------------------------------------------------------------------------------------
@@ -117,6 +117,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    // DRIVER
     JoystickButton triggerSpinner = new JoystickButton(driver, 1);
 
     JoystickButton selectColor = new JoystickButton(driver, 7);
@@ -143,6 +144,10 @@ public class RobotContainer {
     JoystickButton dump = new JoystickButton(secondary, 6);
     dump.whenPressed(m_dumperCommand);
     toggleIntake.toggleWhenPressed(m_AssimilatorCommand);
+
+    // SECONDARY
+    JoystickButton climberButton = new JoystickButton(driver, 4);
+    climberButton.whenPressed(m_climbCommand);
   }
   
   //-------------------- LIMELIGHT SECTION OF JOYSTICK ---------------------
@@ -259,47 +264,6 @@ public class RobotContainer {
     return secondary.getRawButton(5);
   }
 
-  //--------------- CLIMB SECTION OF JOYSTICK ------------------ 
-  public static double configureclimbleftbindings(){
-    return secondary.getRawAxis(1);
-  }
-
-  public static double configureclimbrightbindings(){
-    return secondary.getRawAxis(3);
-  }
-
-  public static boolean configureClimbActuate(){
-
-    // When you pressed the button, if() runs
-    if(secondary.getRawButton(4)){
-      if(!toggleActPressed){
-        // toggleOn turns on/off here
-        toggleActOn = !toggleActOn;
-
-        /* Once toggleOn turns on/off, we turn togglePressed off/on to make sure 
-          toggleOn stays true/false until when we need to turn it off/on by pressing our button again */
-        toggleActPressed = true;
-      
-      } else{
-        toggleActPressed = false;
-      }
-    }
-
-    return toggleActOn;
-  }
-
-  public static boolean configureClimbServo(){
-    if(secondary.getRawButton(9)){
-      if(!toggleSerPressed){
-        toggleSerOn = !toggleSerOn;
-        toggleSerPressed = true;
-      } else{
-        toggleSerPressed = false;
-      }
-    }
-    return toggleSerOn;
-  }
-
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -339,11 +303,6 @@ public Command getLimelightCommand(){ // Limelight
 
   public Command getShootCommand(){
     return m_shootCommand;
-  }
-
-  public Command getClimbCommand(){
-    
-    return m_climbCommand;
   }
 
   public Command getDumperCommand(){

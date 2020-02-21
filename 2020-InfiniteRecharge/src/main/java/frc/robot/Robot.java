@@ -30,7 +30,6 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private Command m_driveCommand;
   private Command m_limelightCommand;
-  private Command m_climbCommand;
   private Command m_driveForwardCommand;
   private Command m_AssimilatorCommand;
   private Command m_dumperCommand;
@@ -133,12 +132,10 @@ public class Robot extends TimedRobot {
 
     m_driveCommand = m_robotContainer.getDriveCommand();
     m_limelightCommand = m_robotContainer.getLimelightCommand();
-    m_climbCommand = m_robotContainer.getClimbCommand();
     //m_AssimilatorCommand = m_robotContainer.getAssimilatorCommand();
     m_dumperCommand = m_robotContainer.getDumperCommand();
     m_shootCommand = m_robotContainer.getShootCommand();
 
-    m_climbCommand.schedule();
     //m_AssimilatorCommand.schedule();
     m_dumperCommand.schedule();
     m_shootCommand.schedule();

@@ -27,27 +27,29 @@ import frc.robot.util.PIDMotor;
 
 public class ClimbSubsystem extends SubsystemBase {
   
-  private static CANSparkMax climberADJ = new CANSparkMax(Constants.ClimbingConstant.kClimbAdjID, MotorType.kBrushless);
-  private static CANSparkMax climberR = new CANSparkMax(Constants.ClimbingConstant.kClimbRID, MotorType.kBrushless);
-  private static CANSparkMax climberL = new CANSparkMax(Constants.ClimbingConstant.kClimbLID, MotorType.kBrushless);
-  private static PIDMotor climberADJPID = new PIDMotor(climberADJ);
-  private static PIDMotor pidControlRight = new PIDMotor(climberR);
-  private static PIDMotor pidControlLeft = new PIDMotor(climberL);
-  private static CANEncoder encodeLeft;
-  private static CANEncoder encodeRight;
+  private CANSparkMax climberWinch = new CANSparkMax(Constants.ClimbingConstant.kClimbAdjID, MotorType.kBrushless);
+  private CANSparkMax climberR = new CANSparkMax(Constants.ClimbingConstant.kClimbRID, MotorType.kBrushless);
+  private CANSparkMax climberL = new CANSparkMax(Constants.ClimbingConstant.kClimbLID, MotorType.kBrushless);
+  private PIDMotor climberWinchPID = new PIDMotor(climberWinch);
+  private PIDMotor pidControlRight = new PIDMotor(climberR);
+  private PIDMotor pidControlLeft = new PIDMotor(climberL);
+  private CANEncoder encodeLeft;
+  private CANEncoder encodeRight;
 
-  static Servo stopClimb = new Servo(1);
+  Servo stopClimb = new Servo(1);
 
   private final double ARM_EXTENDED_ROTS = 10;
   private final double ARM_CONTROL_PANEL_POSITION_ROTS = 5;
   private final double ARM_TARGET_MARGIN_ROTS = 0.5;
+  private final double WINCH_DEPLOYED_ROTS = 5;
+  private final double WINCH_TARGET_MARGIN_ROTS = 0.5;
 
   // NOT YET TUNED TO THE ROBOT! 2/5/20
   double kp = 0.0;
   double ki = 0.0;
   double kd = 0.0;
-  double min = 0.0;
-  double max = 0.99;
+  double min = -0.25;
+  double max = 0.25;
 
   static double leftPosition = 0.0;
   static double rightPosition = 0.0;
@@ -63,97 +65,33 @@ public class ClimbSubsystem extends SubsystemBase {
     pidControlLeft.setD(kd);
     pidControlLeft.setOutputRange(min, max);
 
+    climberWinchPID.setOutputRange(-0.25, 0.25);
+
     encodeRight = climberR.getEncoder();
     encodeLeft = climberL.getEncoder();
 
-    climberADJ.getEncoder().setPosition(0);
+    climberWinch.getEncoder().setPosition(0);
 
-    climberADJ.setSmartCurrentLimit(39);
+    climberWinch.setSmartCurrentLimit(39);
     climberR.setSmartCurrentLimit(39);
     climberL.setSmartCurrentLimit(39);
   }
 
-  // Button pops the climbing system out and then we use the axes to extend the
-  // two sides individually
-  public static void setExtendClimb(double leftSpd, double rightSpd, boolean actuateUp, boolean servo) {
-
-    double maxRotations = 0.0; // DON'T KNOW WHAT THE MAX ROTATIONS IS YET 2/16/20
-    double minRotations = 0.0; // Maybe change this too? Don't know the constant yet
-
-    // One of these MUST BE NEGATIVE, so we have to test it 2/16/20
-    leftPosition = encodeLeft.getPosition() + leftSpd;
-    rightPosition = encodeRight.getPosition() + rightSpd;
-
+  public void setWinchIsDeployed(boolean shouldDeploy)
+  {
     // Moves the climbing system up
-    if (actuateUp) {
-      climberADJPID.setPIDPosition(5);
-    } else if (!actuateUp) {
-      climberADJPID.setPIDPosition(0);
-    }
+    climberWinchPID.setPIDPosition(shouldDeploy ?WINCH_DEPLOYED_ROTS :0);
+  }
 
-    if (servo) {
+  public void setLatchServoOpen(boolean isOpen)
+  {
+    if (isOpen) {
       stopClimb.setAngle(Constants.ClimbingConstant.kMoveServo);
-    } else if(!servo) {
+    } else {
       stopClimb.setAngle(Constants.ClimbingConstant.kStopServo);
-    }
-
-    // Left climber side
-    if(encodeLeft.getPosition() <= maxRotations){ // Move position if we haven't hit max position
-      pidControlLeft.setPIDPosition(leftPosition);
-
-    } else if(encodeLeft.getPosition() > maxRotations){
-
-      if(leftPosition > encodeLeft.getPosition()){
-        // if we force motor to go past max position, then stop motor
-        climberL.stopMotor();
-      } else if(leftPosition < encodeLeft.getPosition()){
-        // if we want motor to lower position, then let it move
-        pidControlLeft.setPIDPosition(leftPosition);
-      }
-
-    } else if(encodeLeft.getPosition() <= minRotations){
-
-      if(leftPosition > encodeLeft.getPosition()){
-        // let the motor move to it's desired position if we try to move away from starting config.
-        pidControlLeft.setPIDPosition(leftPosition);
-      } else if(leftPosition < encodeLeft.getPosition()){
-        // Don't let motor move if it's trying to move farther into starting config.
-        climberL.stopMotor();
-      }
-
-    }
-
-    // Right climber side
-    if(encodeRight.getPosition() <= maxRotations){  // Move position if not hit max position
-      pidControlRight.setPIDPosition(rightPosition);
-
-    } else if(encodeRight.getPosition() > maxRotations){
-
-      if(rightPosition > encodeRight.getPosition()){
-        // if we force motor to go past max position, then stop motor
-        climberR.stopMotor();
-      } else if(rightPosition < encodeRight.getPosition()){
-        // if we want motor to lower position, then let it move
-        pidControlRight.setPIDPosition(rightPosition);
-      }
-
-    } else if(encodeRight.getPosition() <= minRotations){
-
-      if(rightPosition > encodeRight.getPosition()){
-        // let the motor move to it's desired position if we try to move away from starting config.
-        pidControlRight.setPIDPosition(rightPosition);
-      } else if(rightPosition < encodeRight.getPosition()){
-        // Don't let motor move if it's trying to move farther into starting config.
-        climberR.stopMotor();
-      }
-
     }
   }
 
-  /* Idk what you're doing here, but I think this is already what's happening in the code above,
-    but with end stops to make sure the mechanism doesn't hit itself too hard using encoder positioning...
-    If this is for the control panel, then sorry for this long comment, carry on with your coding :D */
-  /*
   public void extendArmsForClimbing()
   {
     setLeftExtendTarget(ARM_EXTENDED_ROTS);
@@ -178,20 +116,44 @@ public class ClimbSubsystem extends SubsystemBase {
   public void setRightExtendTarget(double rotations)
   {
     pidControlRight.setPIDPosition(rotations);
-  }*/
+  }
+
+  public void stopAllMotors()
+  {
+    climberR.stopMotor();
+    climberL.stopMotor();
+    climberWinch.stopMotor();
+  }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    
+
+    // Arm extension safeguard; If near limit and moving toward limit, stop the motor.
+    if((pidControlRight.encoder.getVelocity()<-1 && Math.abs(pidControlRight.encoder.getPosition() - 0) < ARM_TARGET_MARGIN_ROTS)
+      || (pidControlRight.encoder.getVelocity()>1 && Math.abs(pidControlRight.encoder.getPosition() - ARM_EXTENDED_ROTS) < ARM_TARGET_MARGIN_ROTS))
+      climberR.stopMotor();
+    if((pidControlLeft.encoder.getVelocity()<-1 && Math.abs(pidControlLeft.encoder.getPosition() - 0) < ARM_TARGET_MARGIN_ROTS)
+      || (pidControlLeft.encoder.getVelocity()>1 && Math.abs(pidControlLeft.encoder.getPosition() - ARM_EXTENDED_ROTS) < ARM_TARGET_MARGIN_ROTS))
+      climberL.stopMotor();
+
     // Done by Alejandro. Not sure if its right or needed
-    SmartDashboard.getNumber("ClimberADJ Current: ", climberADJ.getOutputCurrent()); // Prints current in amps
+    SmartDashboard.getNumber("ClimberADJ Current: ", climberWinch.getOutputCurrent()); // Prints current in amps
     SmartDashboard.getNumber("ClimberR Current: ", climberR.getOutputCurrent());
     SmartDashboard.getNumber("ClimberL Current: ", climberL.getOutputCurrent());
 
-    SmartDashboard.getNumber("ClimberADJ Volt: ", climberADJ.getBusVoltage()); // Prints the voltage going into the motor controller
+    SmartDashboard.getNumber("ClimberADJ Volt: ", climberWinch.getBusVoltage()); // Prints the voltage going into the motor controller
     SmartDashboard.getNumber("ClimberR Volt: ", climberR.getBusVoltage());
     SmartDashboard.getNumber("ClimberL Volt: ", climberL.getBusVoltage());
+  }
+
+  public boolean isWinchDeployed()
+  {
+    return Math.abs(climberWinchPID.encoder.getPosition() - WINCH_DEPLOYED_ROTS) <= WINCH_TARGET_MARGIN_ROTS;
+  }
+  public boolean isWinchRetracted()
+  {
+    return Math.abs(climberWinchPID.encoder.getPosition() - 0) <= WINCH_TARGET_MARGIN_ROTS;
   }
 
   public boolean isControlPanelLifted()
