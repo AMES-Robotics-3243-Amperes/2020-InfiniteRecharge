@@ -44,7 +44,7 @@ public class ClimbSubsystem extends SubsystemBase {
   private final double ARM_EXTENDED_ROTS = 3.75 * 64; // 64:1 gearbox
   private final double ARM_CONTROL_PANEL_POSITION_ROTS = 5;
   private final double ARM_TARGET_MARGIN_ROTS = 0.5;
-  private final double WINCH_DEPLOYED_ROTS = -6.25 * 100; // 100:1 gearbox
+  private final double WINCH_DEPLOYED_ROTS = -3 * 100; // 100:1 gearbox
   private final double WINCH_TARGET_MARGIN_ROTS = 0.5;
 
   // NOT YET TUNED TO THE ROBOT! 2/5/20
@@ -74,6 +74,8 @@ public class ClimbSubsystem extends SubsystemBase {
     encodeLeft = climberL.getEncoder();
 
     climberWinch.getEncoder().setPosition(0);
+    climberR.getEncoder().setPosition(0);
+    climberL.getEncoder().setPosition(0);
 
     climberWinch.setSmartCurrentLimit(39);
     climberR.setSmartCurrentLimit(39);

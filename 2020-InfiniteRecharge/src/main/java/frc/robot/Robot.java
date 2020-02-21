@@ -133,11 +133,11 @@ public class Robot extends TimedRobot {
     m_limelightCommand = m_robotContainer.getLimelightCommand();
     //m_AssimilatorCommand = m_robotContainer.getAssimilatorCommand();
     m_dumperCommand = m_robotContainer.getDumperCommand();
-    m_shootCommand = m_robotContainer.getShootCommand();
+    //m_shootCommand = m_robotContainer.getShootCommand();
 
     //m_AssimilatorCommand.schedule();
     m_dumperCommand.schedule();
-    m_shootCommand.schedule();
+    //m_shootCommand.schedule();
 
     CommandScheduler.getInstance().run();
 
