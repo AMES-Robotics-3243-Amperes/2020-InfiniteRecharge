@@ -26,7 +26,10 @@ import frc.robot.util.PIDMotor;
  */
 
 public class ClimbSubsystem extends SubsystemBase {
-  
+  // MOTOR DIRECTIONS
+  // -1 Extends Left
+  // 1 Extends Right
+  // -1 Deploys Winch
   private CANSparkMax climberWinch = new CANSparkMax(Constants.ClimbingConstant.kClimbAdjID, MotorType.kBrushless);
   private CANSparkMax climberR = new CANSparkMax(Constants.ClimbingConstant.kClimbRID, MotorType.kBrushless);
   private CANSparkMax climberL = new CANSparkMax(Constants.ClimbingConstant.kClimbLID, MotorType.kBrushless);
@@ -38,10 +41,10 @@ public class ClimbSubsystem extends SubsystemBase {
 
   Servo stopClimb = new Servo(1);
 
-  private final double ARM_EXTENDED_ROTS = 10;
+  private final double ARM_EXTENDED_ROTS = 3.75 * 64; // 3.75 rots, 64:1 gearbox
   private final double ARM_CONTROL_PANEL_POSITION_ROTS = 5;
   private final double ARM_TARGET_MARGIN_ROTS = 0.5;
-  private final double WINCH_DEPLOYED_ROTS = 5;
+  private final double WINCH_DEPLOYED_ROTS = -5 * 100; // 500 rots, 100:1 gearbox
   private final double WINCH_TARGET_MARGIN_ROTS = 0.5;
 
   // NOT YET TUNED TO THE ROBOT! 2/5/20
@@ -65,7 +68,7 @@ public class ClimbSubsystem extends SubsystemBase {
     pidControlLeft.setD(kd);
     pidControlLeft.setOutputRange(min, max);
 
-    climberWinchPID.setOutputRange(-0.25, 0.25);
+    climberWinchPID.setOutputRange(-1, 1);
 
     encodeRight = climberR.getEncoder();
     encodeLeft = climberL.getEncoder();
@@ -94,7 +97,7 @@ public class ClimbSubsystem extends SubsystemBase {
 
   public void extendArmsForClimbing()
   {
-    setLeftExtendTarget(ARM_EXTENDED_ROTS);
+    setLeftExtendTarget( - ARM_EXTENDED_ROTS);
     setRightExtendTarget(ARM_EXTENDED_ROTS);
   }
 
@@ -133,8 +136,8 @@ public class ClimbSubsystem extends SubsystemBase {
     if((pidControlRight.encoder.getVelocity()<-1 && Math.abs(pidControlRight.encoder.getPosition() - 0) < ARM_TARGET_MARGIN_ROTS)
       || (pidControlRight.encoder.getVelocity()>1 && Math.abs(pidControlRight.encoder.getPosition() - ARM_EXTENDED_ROTS) < ARM_TARGET_MARGIN_ROTS))
       climberR.stopMotor();
-    if((pidControlLeft.encoder.getVelocity()<-1 && Math.abs(pidControlLeft.encoder.getPosition() - 0) < ARM_TARGET_MARGIN_ROTS)
-      || (pidControlLeft.encoder.getVelocity()>1 && Math.abs(pidControlLeft.encoder.getPosition() - ARM_EXTENDED_ROTS) < ARM_TARGET_MARGIN_ROTS))
+    if((pidControlLeft.encoder.getVelocity()>1 && Math.abs(pidControlLeft.encoder.getPosition() - 0) < ARM_TARGET_MARGIN_ROTS)
+      || (pidControlLeft.encoder.getVelocity()<-1 && Math.abs(pidControlLeft.encoder.getPosition() - -ARM_EXTENDED_ROTS) < ARM_TARGET_MARGIN_ROTS))
       climberL.stopMotor();
 
     // Done by Alejandro. Not sure if its right or needed
@@ -164,7 +167,7 @@ public class ClimbSubsystem extends SubsystemBase {
   public boolean isClimberArmExtended()
   {
     return Math.abs(pidControlRight.encoder.getPosition() - ARM_EXTENDED_ROTS) <= ARM_TARGET_MARGIN_ROTS
-      && Math.abs(pidControlLeft.encoder.getPosition() - ARM_EXTENDED_ROTS) <= ARM_TARGET_MARGIN_ROTS;
+      && Math.abs(pidControlLeft.encoder.getPosition() - -ARM_EXTENDED_ROTS) <= ARM_TARGET_MARGIN_ROTS;
   }
   public boolean isClimberArmRetracted()
   {

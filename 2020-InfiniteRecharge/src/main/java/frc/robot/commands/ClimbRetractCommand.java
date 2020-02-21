@@ -18,7 +18,7 @@ public class ClimbRetractCommand extends CommandBase {
   @Override
   public void initialize() {
       hasRetracted = false;
-      climber.retractArms();
+      //climber.retractArms();
   }
 
   @Override

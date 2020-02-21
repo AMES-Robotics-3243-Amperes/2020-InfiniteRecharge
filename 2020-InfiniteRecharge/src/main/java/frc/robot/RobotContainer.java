@@ -146,7 +146,7 @@ public class RobotContainer {
     toggleIntake.toggleWhenPressed(m_AssimilatorCommand);
 
     // SECONDARY
-    JoystickButton climberButton = new JoystickButton(driver, 4);
+    JoystickButton climberButton = new JoystickButton(secondary, 4);
     climberButton.whenPressed(m_climbCommand);
   }
   
