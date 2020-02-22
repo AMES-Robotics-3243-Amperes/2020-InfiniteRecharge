@@ -63,7 +63,7 @@ public class AssimilatorSubsystem extends SubsystemBase {
   public void periodic() {
 
     if(currentExtended){
-      intakeShaft.set(0.5);
+      intakeShaft.set(-0.5);
     } else {
       intakeShaft.stopMotor();
     }

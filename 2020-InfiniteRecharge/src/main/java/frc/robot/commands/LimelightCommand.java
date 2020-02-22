@@ -32,6 +32,9 @@ public class LimelightCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    if(RobotContainer.getDriveCommand().isScheduled()){
+      RobotContainer.getDriveCommand().cancel();
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -41,19 +44,20 @@ public class LimelightCommand extends CommandBase {
     double var =  0;
     double var2 = 0.0;
 
-    double steer = LimelightSubsystem.setSteer();
-    double dist = LimelightSubsystem.setDist();
+    double steer = LimelightSubsystem.setPIDSteer();
+    double dist = LimelightSubsystem.setPIDDist();
+    dist = 0;
 
       //Left side
 
-      if (steer + dist > 1) {
+      /*if (steer + dist > 1) {
         var = 1.0;
       }
       else if(steer + dist < -1) {
         var = -1.0;
       }
       else {
-        var = steer + dist;
+        var = -steer + dist;
       }
 
       //Right side
@@ -65,11 +69,13 @@ public class LimelightCommand extends CommandBase {
       }
       else {
         var2 = steer - dist;
-      }
+      }*/
+      var = -steer;
+      var2 = steer;
+      SmartDashboard.putNumber("Steer", steer);
+      SmartDashboard.putNumber("Dist", dist);
 
       DriveTrainSubSystem.tankDrive(var, var2, false);
-      SmartDashboard.putNumber("Steer: ", steer);
-      SmartDashboard.putNumber("Distance: ", dist);
   }
 
   // Called once the command ends or is interrupted.

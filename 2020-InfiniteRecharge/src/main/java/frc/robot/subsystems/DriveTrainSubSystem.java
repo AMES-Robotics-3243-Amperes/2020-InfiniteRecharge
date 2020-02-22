@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -75,9 +76,6 @@ public class DriveTrainSubSystem extends SubsystemBase {
       m_rightSide = new DrivetrainPIDSubsystem(m_rightmotors, null, rightVictorEncode);
       m_leftSide = new DrivetrainPIDSubsystem(m_leftmotors, null, leftVictorEncode);
 
-      ((WPI_VictorSPX) motorLB).follow((WPI_VictorSPX) motorLT); // motorLB follows the path of motorLT
-      ((WPI_VictorSPX) motorRB).follow((WPI_VictorSPX) motorRT); // motorRB follows the path of motorRT
-
     } else { // If competition robot, use CANSparkMax motors and encoders
       motorLT = new CANSparkMax(Constants.DriveConstants.kLTID, MotorType.kBrushless);
       motorLB = new CANSparkMax(Constants.DriveConstants.kLBID, MotorType.kBrushless);
@@ -101,8 +99,6 @@ public class DriveTrainSubSystem extends SubsystemBase {
 
       
     }
-
-    //m_drive = new DifferentialDrive(m_leftmotors, m_rightmotors);
 
     m_rightSide.enable(); // Enables the PID loop
     m_leftSide.enable(); // Enables the PID loop  
@@ -132,7 +128,7 @@ public class DriveTrainSubSystem extends SubsystemBase {
     } else {
       m_rightSide.setSetpoint(-varRight);
       m_leftSide.setSetpoint(varLeft);
-  
+
     }
 
   }
@@ -184,6 +180,9 @@ public class DriveTrainSubSystem extends SubsystemBase {
       SmartDashboard.getNumber("CurrentMotorRT: ", ((CANSparkMax) motorRT).getBusVoltage());
       SmartDashboard.getNumber("CurrentMotorRB: ", ((CANSparkMax) motorRB).getBusVoltage());
   
+    } else {
+      SmartDashboard.putNumber("Prac Encode Right: ", rightVictorEncode.getDistance());
+      SmartDashboard.putNumber("Prac Encode Left: ", leftVictorEncode.getDistance());
     }
 
     // This method will be called once per scheduler run

@@ -44,7 +44,7 @@ public class ClimbSubsystem extends SubsystemBase {
   private final double ARM_EXTENDED_ROTS = 3.75 * 64; // 64:1 gearbox
   private final double ARM_CONTROL_PANEL_POSITION_ROTS = 5;
   private final double ARM_TARGET_MARGIN_ROTS = 0.5;
-  private final double WINCH_DEPLOYED_ROTS = -6.25 * 100; // 100:1 gearbox
+  private final double WINCH_DEPLOYED_ROTS = -3 * 100; // 100:1 gearbox
   private final double WINCH_TARGET_MARGIN_ROTS = 0.5;
 
   // NOT YET TUNED TO THE ROBOT! 2/5/20
@@ -74,6 +74,8 @@ public class ClimbSubsystem extends SubsystemBase {
     encodeLeft = climberL.getEncoder();
 
     climberWinch.getEncoder().setPosition(0);
+    climberR.getEncoder().setPosition(0);
+    climberL.getEncoder().setPosition(0);
 
     climberWinch.setSmartCurrentLimit(39);
     climberR.setSmartCurrentLimit(39);
@@ -132,6 +134,8 @@ public class ClimbSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
+    SmartDashboard.putNumber("Winch rots", climberWinchPID.encoder.getPosition());
+
     // Arm extension safeguard; If near limit and moving toward limit, stop the motor.
     if((pidControlRight.encoder.getVelocity()<-1 && Math.abs(pidControlRight.encoder.getPosition() - 0) < ARM_TARGET_MARGIN_ROTS)
       || (pidControlRight.encoder.getVelocity()>1 && Math.abs(pidControlRight.encoder.getPosition() - ARM_EXTENDED_ROTS) < ARM_TARGET_MARGIN_ROTS))
@@ -139,6 +143,10 @@ public class ClimbSubsystem extends SubsystemBase {
     if((pidControlLeft.encoder.getVelocity()>1 && Math.abs(pidControlLeft.encoder.getPosition() - 0) < ARM_TARGET_MARGIN_ROTS)
       || (pidControlLeft.encoder.getVelocity()<-1 && Math.abs(pidControlLeft.encoder.getPosition() - -ARM_EXTENDED_ROTS) < ARM_TARGET_MARGIN_ROTS))
       climberL.stopMotor();
+    // Winch deployment safeguard
+    if((climberWinchPID.encoder.getVelocity()>1 && Math.abs(climberWinchPID.encoder.getPosition() - 0) < WINCH_TARGET_MARGIN_ROTS)
+      || (climberWinchPID.encoder.getVelocity()<-1 && Math.abs(climberWinchPID.encoder.getPosition() - (WINCH_DEPLOYED_ROTS-100)) < WINCH_TARGET_MARGIN_ROTS))
+      climberWinch.stopMotor();
 
     // Done by Alejandro. Not sure if its right or needed
     SmartDashboard.getNumber("ClimberADJ Current: ", climberWinch.getOutputCurrent()); // Prints current in amps

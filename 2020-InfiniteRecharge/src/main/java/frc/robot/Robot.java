@@ -40,9 +40,6 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
-  NetworkTable Yleft = NetworkTableInstance.getDefault().getTable("Yleft");
-  NetworkTable Yright = NetworkTableInstance.getDefault().getTable("Yright");
-
   private RobotContainer m_robotContainer;
 
   /**
@@ -51,10 +48,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-
-    Yleft.getEntry("Yleft").setDouble(23.2); // Joystick Value. I'm not sure where it's held
-
-    Yright.getEntry("Yright").setDouble(22.4);
 
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our
@@ -131,13 +124,12 @@ public class Robot extends TimedRobot {
 
     m_driveCommand = m_robotContainer.getDriveCommand();
     m_limelightCommand = m_robotContainer.getLimelightCommand();
-    //m_AssimilatorCommand = m_robotContainer.getAssimilatorCommand();
     m_dumperCommand = m_robotContainer.getDumperCommand();
-    m_shootCommand = m_robotContainer.getShootCommand();
+    //m_shootCommand = m_robotContainer.getShootCommand();
 
-    //m_AssimilatorCommand.schedule();
     m_dumperCommand.schedule();
-    m_shootCommand.schedule();
+    m_driveCommand.schedule();
+    //m_shootCommand.schedule();
 
     CommandScheduler.getInstance().run();
 
@@ -150,13 +142,13 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
 
     // Makes sure that when the limelight code runs, the driving code doesn't run
-    if (RobotContainer.driveLime()) {
+    /*if (RobotContainer.driveLime()) {
       m_limelightCommand.schedule();
       m_driveCommand.cancel();
     } else if (!RobotContainer.driveLime()) {
       m_driveCommand.schedule();
       m_limelightCommand.cancel();
-    }
+    }*/
 
     CommandScheduler.getInstance().run();
   }
