@@ -92,6 +92,13 @@ public class DumperSubsystem extends SubsystemBase {
       //dumpShoot.stopMotor();
     }
   }
+  
+  public static void shootBall(){
+    //Make motor dumpShoot spin continously
+    //Check for a certain period of time to pass
+    //Move dumpCollect dumpCollect to a certain spot
+    }
+  }
 
   @Override
   public void periodic() {
