@@ -97,7 +97,7 @@ public class DumperSubsystem extends SubsystemBase {
     //Make motor dumpShoot spin continously
     //Check for a certain period of time to pass
     //Move dumpCollect dumpCollect to a certain spot
-    }
+    
   }
 
   @Override

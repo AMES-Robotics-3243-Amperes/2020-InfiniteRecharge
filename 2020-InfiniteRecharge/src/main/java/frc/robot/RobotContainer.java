@@ -44,7 +44,7 @@ public class RobotContainer {
   static boolean toggleSerPressed = false;
 
   //-------------------------------------- SUBSYSTEMS --------------------------------------------
-  private static AssimilatorSubsystem m_AssimilatorSubsystem = new AssimilatorSubsystem();
+  private static IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final AutoSubsystem m_exampleSubsystem = new AutoSubsystem();
   public static DriveTrainSubSystem m_robotDriveSubsystem = new DriveTrainSubSystem();
   public static ControlPanelSubsystem m_controlPanelSubsystem = new ControlPanelSubsystem();
@@ -58,7 +58,7 @@ public class RobotContainer {
   private final LimelightCommand m_limelightCommand = new LimelightCommand(m_robotDriveSubsystem, m_limelightSubsystem);
   protected final ClimbCommand m_climbCommand = new ClimbCommand(m_climbSubsystem,
       new ClimbExtendCommand(m_climbSubsystem), new ClimbRetractCommand(m_climbSubsystem));
-  public static AssimilatorCommand m_AssimilatorCommand = new AssimilatorCommand();
+  public static AssimilatorCommand m_AssimilatorCommand = new AssimilatorCommand(m_intakeSubsystem);
   // -------------------------------------------------------------------------------------------------------------------------------------
   // ----------------------------------------------------------- CONTROL PANEL
   // ------------------------------------------------------------------------------------------------------

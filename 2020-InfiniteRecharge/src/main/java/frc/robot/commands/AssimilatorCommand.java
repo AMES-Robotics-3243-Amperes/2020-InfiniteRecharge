@@ -9,24 +9,23 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.AssimilatorSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 public class AssimilatorCommand extends CommandBase {
-  /**
-   * Creates a new AssimilatorCommand.
-   */
+  private IntakeSubsystem intake;
   private boolean retract = false;
    
-  public AssimilatorCommand() {
-    // Use addRequirements() here to declare subsystem dependencies.
+  public AssimilatorCommand(IntakeSubsystem intake) {
+    addRequirements(intake);
+    this.intake = intake;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
 
-    if(AssimilatorSubsystem.currentExtended){
+    if(IntakeSubsystem.currentExtended){
       retract = true;
-    } else if(AssimilatorSubsystem.currentRetracted){
+    } else if(IntakeSubsystem.currentRetracted){
       retract = false;
     } else {
       retract = true;
@@ -39,9 +38,9 @@ public class AssimilatorCommand extends CommandBase {
   public void execute() {
 
     if(retract){
-      AssimilatorSubsystem.setRetract();
+      intake.setRetract();
     } else{
-      AssimilatorSubsystem.setExtend();
+      intake.setExtend();
     }
 
 
@@ -56,9 +55,9 @@ public class AssimilatorCommand extends CommandBase {
   @Override
   public boolean isFinished() {
 
-    if(AssimilatorSubsystem.currentExtended && !retract){
+    if(IntakeSubsystem.currentExtended && !retract){
       return true;
-    } else if(AssimilatorSubsystem.currentRetracted && retract){
+    } else if(IntakeSubsystem.currentRetracted && retract){
       return true;
     } else {
       return false;
