@@ -25,7 +25,7 @@ public class ClimbExtendCommand extends CommandBase {
   public void execute() {
       if( ! hasDeployed && climber.isWinchDeployed())
       {
-        climber.extendArmsForClimbing();
+        //climber.extendArmsForClimbing();
         hasDeployed = true;
       }
   }

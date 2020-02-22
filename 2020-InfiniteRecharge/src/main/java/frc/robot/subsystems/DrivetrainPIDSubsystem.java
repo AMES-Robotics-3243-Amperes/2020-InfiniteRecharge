@@ -22,9 +22,11 @@ public class DrivetrainPIDSubsystem extends PIDSubsystem {
   SpeedControllerGroup m_group;
   CANEncoder m_encoderSpark;
   Encoder m_encoderVictor;
+  double kp;
+  double ki;
+  double kd;
 
   public DrivetrainPIDSubsystem(SpeedControllerGroup group, CANEncoder encoderSpark, Encoder encoderVictor) {
-    // Commented out temporarily because of compile errors - Silas 2020 Jan 31
     super(
         // The PIDController used by the subsystem
         new PIDController(0.75, 1e-6, 1e-4)); // P I D // P In PID being used for correcting oscillation
@@ -44,7 +46,7 @@ public class DrivetrainPIDSubsystem extends PIDSubsystem {
   @Override
   public void useOutput(double output, double setpoint) {
     // Use the output here
-    m_group.pidWrite(output); 
+    m_group.pidWrite(output);
   }
 
   @Override
@@ -53,7 +55,7 @@ public class DrivetrainPIDSubsystem extends PIDSubsystem {
     if(m_encoderSpark != null){
       return m_encoderSpark.getVelocity()/5676;
     }else if(m_encoderVictor != null){
-      return m_encoderVictor.getRate()/5676;
+      return m_encoderVictor.getRate()/1486.8;  // 5310 (free spd of cim) multiplied by gear ratio of 14/50
     } else{
       return 0;
     }

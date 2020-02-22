@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DriveTrainSubSystem;
 
@@ -32,6 +33,8 @@ public class LimelightSubsystem extends SubsystemBase {
   static double v;
   static double area;
 
+  static PIDController m_PIDSteer = new PIDController(0.63, 0.56, 1.2);
+  static PIDController m_PIDDist = new PIDController(1, 0, 0);
   
   boolean target = false;
 
@@ -52,6 +55,14 @@ public class LimelightSubsystem extends SubsystemBase {
     y = ty.getDouble(0.0);
     v = tv.getDouble(0.0);
     area = ta.getDouble(0.0);
+  }
+
+  public static double setPIDSteer(){
+    return m_PIDSteer.calculate(x, 0);
+  }
+
+  public static double setPIDDist(){
+    return m_PIDDist.calculate(area, refArea);
   }
 
   public static double setDist(){
@@ -76,7 +87,7 @@ public class LimelightSubsystem extends SubsystemBase {
     // These constants haven't been tuned to the robot!
     double heading_error = x;
     double steer_adjust = 0.0;
-    double maxAngAdjust = 1.0;
+    double maxAngAdjust = 3.3;
 
       if (-.25 < heading_error && heading_error < .25) {
         heading_error = 0.0;
@@ -112,5 +123,6 @@ public class LimelightSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Lime Area: ", area);
     SmartDashboard.putNumber("Lime Pipeline: ", (double) pipeline.getNumber(0)); // Idk what to do here yet
     SmartDashboard.putBoolean("See target?: ", target);
+
   }
 }
