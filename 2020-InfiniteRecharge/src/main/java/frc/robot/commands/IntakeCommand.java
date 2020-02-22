@@ -11,15 +11,13 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.IntakeSubsystem;
-
 public class IntakeCommand extends CommandBase {
-  /**
-   * Creates a new AssimilatorCommand.
-   */
+  private IntakeSubsystem intake;
   private boolean retract = false;
    
-  public IntakeCommand() {
-    // Use addRequirements() here to declare subsystem dependencies.
+  public IntakeCommand(IntakeSubsystem intake) {
+    addRequirements(intake);
+    this.intake = intake;
   }
 
   // Called when the command is initially scheduled.
@@ -41,9 +39,9 @@ public class IntakeCommand extends CommandBase {
   public void execute() {
 
     if(retract){
-      IntakeSubsystem.setRetract();
+      intake.setRetract();
     } else{
-      IntakeSubsystem.setExtend();
+      intake.setExtend();
     }
 
 

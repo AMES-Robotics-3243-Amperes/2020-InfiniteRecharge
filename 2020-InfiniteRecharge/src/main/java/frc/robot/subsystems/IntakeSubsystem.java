@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Timer;
 // Wpilib imports
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -30,6 +31,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public static boolean currentExtended = false;
   public static boolean currentRetracted = true;
   static final double CURRENT_CONST = 20.0;
+  private double lastTimeJustRetracted = -100;
 
   public IntakeSubsystem() {
     intakeShaft = new CANSparkMax(Constants.BallCollectConstants.kSpinID, MotorType.kBrushless);
@@ -38,8 +40,8 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeActuator.setSmartCurrentLimit(28); // Test for limit
   }
 
-  public static void setExtend(){
-
+  public void setExtend(){
+      currentExtended = true;
       if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentExtended) {
         currentRetracted = false; 
         intakeActuator.set(-0.65);
@@ -50,15 +52,19 @@ public class IntakeSubsystem extends SubsystemBase {
 
   }
 
-  public static void setRetract(){
+  public void setRetract(){
     
     if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentRetracted) {
-      currentExtended = false;
+      
+      lastTimeJustRetracted = Timer.getFPGATimestamp();
       intakeActuator.set(0.65);
     } else{
       currentRetracted = true;
       intakeActuator.stopMotor();
     }
+
+    if(currentRetracted && Timer.getFPGATimestamp() > lastTimeJustRetracted+1) // Spin for 1 second after retracting
+      currentExtended = false;
   }
 
   @Override

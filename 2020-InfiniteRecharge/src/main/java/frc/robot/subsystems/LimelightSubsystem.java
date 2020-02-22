@@ -33,8 +33,8 @@ public class LimelightSubsystem extends SubsystemBase {
   static double v;
   static double area;
 
-  static PIDController m_PIDSteer = new PIDController(0.63, 0.56, 1.2);
-  static PIDController m_PIDDist = new PIDController(1, 0, 0);
+  static PIDController m_PIDSteer = new PIDController(5e-2, 1e-8, 7e-5);
+  static PIDController m_PIDDist = new PIDController(0.1, 0, 0);
   
   boolean target = false;
 
@@ -44,11 +44,14 @@ public class LimelightSubsystem extends SubsystemBase {
   static float KpDist = 0.01f;
   static float KpDist2 = 0.2f;
   static float min_command = 0;
-  static float refArea = 6;
+  static double refArea = 11.5; //This is for the big target
+  //static double refArea = 5; //This is for the small target
 
   public LimelightSubsystem() {
+    m_PIDSteer.setIntegratorRange(-0.9, 0.9);
     //this class's object "drive" is equal to the DriveTrainSubSystem's object "drive"
   }
+
 
   public static void getLimeValues() {
     x = tx.getDouble(0.0);

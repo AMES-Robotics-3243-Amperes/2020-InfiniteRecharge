@@ -57,7 +57,7 @@ public class RobotContainer {
   private final LimelightCommand m_limelightCommand = new LimelightCommand(m_robotDriveSubsystem, m_limelightSubsystem);
   protected final ClimbCommand m_climbCommand = new ClimbCommand(m_climbSubsystem,
       new ClimbExtendCommand(m_climbSubsystem), new ClimbRetractCommand(m_climbSubsystem));
-  public static IntakeCommand m_IntakeCommand = new IntakeCommand();
+  public static IntakeCommand m_IntakeCommand = new IntakeCommand(m_IntakeSubsystem);
   // -------------------------------------------------------------------------------------------------------------------------------------
   // ----------------------------------------------------------- CONTROL PANEL
   // ------------------------------------------------------------------------------------------------------

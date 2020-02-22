@@ -46,8 +46,9 @@ public class LimelightCommand extends CommandBase {
 
     double steer = LimelightSubsystem.setPIDSteer();
     double dist = LimelightSubsystem.setPIDDist();
-    dist = 0;
-
+    
+      var = dist - steer;
+      var2 = dist + steer;
       //Left side
 
       /*if (steer + dist > 1) {
@@ -70,8 +71,8 @@ public class LimelightCommand extends CommandBase {
       else {
         var2 = steer - dist;
       }*/
-      var = -steer;
-      var2 = steer;
+     // var = -steer;
+      //var2 = steer;
       SmartDashboard.putNumber("Steer", steer);
       SmartDashboard.putNumber("Dist", dist);
 
