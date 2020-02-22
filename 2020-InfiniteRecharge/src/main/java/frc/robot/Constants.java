@@ -46,6 +46,8 @@ public final class Constants {
         public static final int kClimbAdjID = 10;
         public static final int kClimbRID = 9;
         public static final int kClimbLID = 12;
+
+        // Servo
         public static final int kServoID = 2;
         public static final int kStopServo = 0;
         public static final int kMoveServo = 100;

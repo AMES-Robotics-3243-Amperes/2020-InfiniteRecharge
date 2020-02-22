@@ -8,15 +8,17 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.AssimilatorSubsystem;
-public class AssimilatorCommand extends CommandBase {
+import frc.robot.subsystems.IntakeSubsystem;
+
+public class IntakeCommand extends CommandBase {
   /**
    * Creates a new AssimilatorCommand.
    */
   private boolean retract = false;
    
-  public AssimilatorCommand() {
+  public IntakeCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -24,9 +26,9 @@ public class AssimilatorCommand extends CommandBase {
   @Override
   public void initialize() {
 
-    if(AssimilatorSubsystem.currentExtended){
+    if(IntakeSubsystem.currentExtended){
       retract = true;
-    } else if(AssimilatorSubsystem.currentRetracted){
+    } else if(IntakeSubsystem.currentRetracted){
       retract = false;
     } else {
       retract = true;
@@ -39,9 +41,9 @@ public class AssimilatorCommand extends CommandBase {
   public void execute() {
 
     if(retract){
-      AssimilatorSubsystem.setRetract();
+      IntakeSubsystem.setRetract();
     } else{
-      AssimilatorSubsystem.setExtend();
+      IntakeSubsystem.setExtend();
     }
 
 
@@ -56,9 +58,9 @@ public class AssimilatorCommand extends CommandBase {
   @Override
   public boolean isFinished() {
 
-    if(AssimilatorSubsystem.currentExtended && !retract){
+    if(IntakeSubsystem.currentExtended && !retract){
       return true;
-    } else if(AssimilatorSubsystem.currentRetracted && retract){
+    } else if(IntakeSubsystem.currentRetracted && retract){
       return true;
     } else {
       return false;

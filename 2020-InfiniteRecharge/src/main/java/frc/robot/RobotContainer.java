@@ -31,7 +31,6 @@ public class RobotContainer {
   //Joysticks
   private static Joystick driver = new Joystick(0);
   private static Joystick secondary = new Joystick(1);
-  static JoystickButton toggleIntake = new JoystickButton(secondary, 2);
   static double steerLeft;
   static double steerRight;
 
@@ -44,7 +43,7 @@ public class RobotContainer {
   static boolean toggleSerPressed = false;
 
   //-------------------------------------- SUBSYSTEMS --------------------------------------------
-  private static AssimilatorSubsystem m_AssimilatorSubsystem = new AssimilatorSubsystem();
+  private static IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
   private final AutoSubsystem m_exampleSubsystem = new AutoSubsystem();
   public static DriveTrainSubSystem m_robotDriveSubsystem = new DriveTrainSubSystem();
   public static ControlPanelSubsystem m_controlPanelSubsystem = new ControlPanelSubsystem();
@@ -58,7 +57,7 @@ public class RobotContainer {
   private final LimelightCommand m_limelightCommand = new LimelightCommand(m_robotDriveSubsystem, m_limelightSubsystem);
   protected final ClimbCommand m_climbCommand = new ClimbCommand(m_climbSubsystem,
       new ClimbExtendCommand(m_climbSubsystem), new ClimbRetractCommand(m_climbSubsystem));
-  public static AssimilatorCommand m_AssimilatorCommand = new AssimilatorCommand();
+  public static IntakeCommand m_IntakeCommand = new IntakeCommand();
   // -------------------------------------------------------------------------------------------------------------------------------------
   // ----------------------------------------------------------- CONTROL PANEL
   // ------------------------------------------------------------------------------------------------------
@@ -162,7 +161,9 @@ public class RobotContainer {
 
     JoystickButton dump = new JoystickButton(secondary, 6);
     dump.whenPressed(m_dumperCommand);
-    toggleIntake.toggleWhenPressed(m_AssimilatorCommand);
+
+    JoystickButton toggleIntake = new JoystickButton(secondary, 2);
+    toggleIntake.toggleWhenPressed(m_IntakeCommand);
 
     JoystickButton driveLime = new JoystickButton(driver, 6);
     driveLime.whileActiveOnce(m_limelightCommand);
@@ -290,6 +291,10 @@ public class RobotContainer {
     return secondary.getRawButton(7);
   }
 
+  public static boolean configureBallShoot(){
+    return secondary.getRawButton(8);
+  }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -334,9 +339,9 @@ public Command getLimelightCommand(){ // Limelight
   }
 
  
-  public Command getAssimilatorCommand(){
+  public Command getIntakeCommand(){
 
-    return m_AssimilatorCommand;
+    return m_IntakeCommand;
   }
 }
 //--------------------------------------------------------------------------------

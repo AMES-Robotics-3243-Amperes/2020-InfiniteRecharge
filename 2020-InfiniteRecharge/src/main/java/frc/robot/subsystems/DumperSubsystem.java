@@ -21,13 +21,13 @@ import frc.robot.Constants;
 public class DumperSubsystem extends SubsystemBase {
   
   static CANSparkMax dumpCollect; // Add IDs in Constants.DumperConstants to make more motors here
-  //static CANSparkMax dumpShoot;
+  static CANSparkMax dumpShoot;
 
   static CANEncoder encodeCollect;
-  //static CANEncoder encodeShoot;
+  static CANEncoder encodeShoot;
 
   static CANPIDController pidCollect;
-  //static CANPIDController pidShoot;
+  static CANPIDController pidShoot;
 
   private static final double ballRotation = 2; // We don't know the correct rotations yet
   
@@ -42,27 +42,27 @@ public class DumperSubsystem extends SubsystemBase {
   double max = 0.99;
 
   static double encodePosition = 0.0;
-  static double encodeVelocity = 0.0;
+  static double encodeVelocity = 5000;
 
   public DumperSubsystem() {
     dumpCollect = new CANSparkMax(Constants.IndexerConstants.kIndexCollectID, MotorType.kBrushless);
-    //dumpShoot = new CANSparkMax(Constants.IndexerConstants.kIndexShootID, MotorType.kBrushless);
+    dumpShoot = new CANSparkMax(Constants.IndexerConstants.kIndexShootID, MotorType.kBrushless);
     
     encodeCollect = dumpCollect.getEncoder();
     pidCollect = dumpCollect.getPIDController();
 
-    //encodeShoot = dumpShoot.getEncoder();
-    //pidShoot = dumpShoot.getPIDController();
+    encodeShoot = dumpShoot.getEncoder();
+    pidShoot = dumpShoot.getPIDController();
 
     pidCollect.setP(kp);
     pidCollect.setI(ki);
     pidCollect.setD(kd);
     pidCollect.setOutputRange(min, max);
 
-    //pidShoot.setP(kp);
-    //pidShoot.setI(ki);
-    //pidShoot.setD(kd);
-    //pidShoot.setOutputRange(min, max);
+    pidShoot.setP(kp);
+    pidShoot.setI(ki);
+    pidShoot.setD(kd);
+
 
   }
 
@@ -80,16 +80,11 @@ public class DumperSubsystem extends SubsystemBase {
 
   public static void setDumpShootSpeed(boolean value)
   {
-    //encodeVelocity = encodeShoot.getVelocity() + shootRPM;
-
-    /*if(encodeVelocity > MAX_RPM){
-      encodeVelocity = MAX_RPM;
-    }*/
 
     if(value){
-      //pidShoot.setReference(encodeVelocity, ControlType.kVelocity);
+      pidShoot.setReference(5000, ControlType.kVelocity);
     } else{
-      //dumpShoot.stopMotor();
+      pidShoot.setReference(0, ControlType.kVelocity);
     }
   }
   
@@ -97,7 +92,7 @@ public class DumperSubsystem extends SubsystemBase {
     //Make motor dumpShoot spin continously
     //Check for a certain period of time to pass
     //Move dumpCollect dumpCollect to a certain spot
-    }
+    
   }
 
   @Override

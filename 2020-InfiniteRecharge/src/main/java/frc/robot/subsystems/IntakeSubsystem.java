@@ -17,7 +17,9 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 
-public class AssimilatorSubsystem extends SubsystemBase {
+// ------------------- THIS WAS CHANGED FROM ASSIMILATOR SUBSYSTEM TO INTAKE SUBSYSTEM ---------------------- //
+
+public class IntakeSubsystem extends SubsystemBase {
   /**
    * Creates a new AssimilatorSubsystem.
    */
@@ -29,7 +31,7 @@ public class AssimilatorSubsystem extends SubsystemBase {
   public static boolean currentRetracted = true;
   static final double CURRENT_CONST = 20.0;
 
-  public AssimilatorSubsystem() {
+  public IntakeSubsystem() {
     intakeShaft = new CANSparkMax(Constants.BallCollectConstants.kSpinID, MotorType.kBrushless);
     intakeActuator = new CANSparkMax(Constants.BallCollectConstants.kActuateID, MotorType.kBrushed);
     intakeShaft.setSmartCurrentLimit(25);
