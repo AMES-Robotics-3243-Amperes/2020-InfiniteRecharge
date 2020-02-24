@@ -66,16 +66,20 @@ public class DumperSubsystem extends SubsystemBase {
 
   }
 
-  public static void setDumpCollectSpeed(boolean value)
+  public static void setDumpCollectSpeed(boolean shoot, boolean backwards)
   {
-    encodePosition = encodeCollect.getPosition() + ballRotation;
     
-    if(value){
+    if(shoot && !backwards){
+      encodePosition = encodeCollect.getPosition() + ballRotation;
       pidCollect.setReference(encodePosition, ControlType.kPosition);
+      System.err.println("It shoots");
+    } else if(backwards && !shoot){
+      encodePosition = encodeCollect.getPosition() - ballRotation;
+      pidCollect.setReference(encodePosition, ControlType.kPosition);
+      System.err.println("It works");
     } else {
       dumpCollect.stopMotor();
     }
-    
   }
 
   public static void setDumpShootSpeed(boolean value)
@@ -99,6 +103,7 @@ public class DumperSubsystem extends SubsystemBase {
   public void periodic() {
     //SmartDashboard.getNumber("Dump Current: ", dumpCollect.getOutputCurrent());
     //SmartDashboard.getNumber("Dump Voltages: ", dumpCollect.getBusVoltage());
+    SmartDashboard.putNumber("Collect Encoder", encodeCollect.getPosition());
   }
 
 }

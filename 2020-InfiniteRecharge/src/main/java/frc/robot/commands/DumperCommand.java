@@ -28,13 +28,13 @@ public class DumperCommand extends CommandBase {
 
   @Override
   public void execute(){
-    DumperSubsystem.setDumpCollectSpeed(RobotContainer.configureBallCollect());
+    DumperSubsystem.setDumpCollectSpeed(RobotContainer.configureBallCollect(),RobotContainer.configureBallCollectBackwards());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    DumperSubsystem.setDumpCollectSpeed(false);
+    DumperSubsystem.setDumpCollectSpeed(false,false);
   }
 
   // Returns true when the command should end.
