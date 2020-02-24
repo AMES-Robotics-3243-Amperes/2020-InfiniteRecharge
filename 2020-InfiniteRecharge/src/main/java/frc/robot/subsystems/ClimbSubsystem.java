@@ -41,9 +41,9 @@ public class ClimbSubsystem extends SubsystemBase {
 
   private final double ARM_EXTENDED_ROTS = 3.75 * 64; // 64:1 gearbox ratio
   private final double ARM_CONTROL_PANEL_POSITION_ROTS = 5;
-  private final double ARM_TARGET_MARGIN_ROTS = 0.5;
+  private final double ARM_TARGET_MARGIN_ROTS = 0.25 * 64;
   private final double WINCH_DEPLOYED_ROTS = -5 * 100; // 100:1 gearbox ratio  CHANGED FROM 3 TO 5 ROTATIONS
-  private final double WINCH_TARGET_MARGIN_ROTS = 0.5;
+  private final double WINCH_TARGET_MARGIN_ROTS = 0.25 * 100;
 
   // NOT YET TUNED TO THE ROBOT! 2/5/20
   double kp = 0.0;

@@ -41,7 +41,6 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void setExtend(){
-      currentExtended = true;
       if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentExtended) {
         currentRetracted = false; 
         intakeActuator.set(-0.65);
