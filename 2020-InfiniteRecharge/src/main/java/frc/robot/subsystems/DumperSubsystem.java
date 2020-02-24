@@ -86,9 +86,12 @@ public class DumperSubsystem extends SubsystemBase {
   {
 
     if(value){
-      pidShoot.setReference(5000, ControlType.kVelocity);
-    } else{
-      pidShoot.setReference(0, ControlType.kVelocity);
+      //pidShoot.setReference(5000, ControlType.kVelocity);
+      dumpShoot.set(-0.40);
+    } 
+    else{
+      //pidShoot.setReference(0, ControlType.kVelocity);
+      dumpShoot.stopMotor();
     }
   }
   
