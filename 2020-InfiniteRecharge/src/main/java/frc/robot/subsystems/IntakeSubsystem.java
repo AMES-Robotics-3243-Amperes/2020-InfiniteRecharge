@@ -30,8 +30,9 @@ public class IntakeSubsystem extends SubsystemBase {
   static CANEncoder indexEncoder;
   public static boolean currentExtended = false;
   public static boolean currentRetracted = true;
+  public boolean shouldSpin = false;
   static final double CURRENT_CONST = 20.0;
-  private double lastTimeJustRetracted = -100;
+  private double lastTimeWasExtended = -100;
 
   public IntakeSubsystem() {
     intakeShaft = new CANSparkMax(Constants.BallCollectConstants.kSpinID, MotorType.kBrushless);
@@ -54,26 +55,23 @@ public class IntakeSubsystem extends SubsystemBase {
   public void setRetract(){
     
     if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentRetracted) {
-      
-      lastTimeJustRetracted = Timer.getFPGATimestamp();
+      currentExtended = false;
       intakeActuator.set(0.65);
     } else{
       currentRetracted = true;
       intakeActuator.stopMotor();
     }
-
-    if(currentRetracted && Timer.getFPGATimestamp() > lastTimeJustRetracted+1) // Spin for 1 second after retracting
-      currentExtended = false;
   }
 
   @Override
   public void periodic() {
 
-    if(currentExtended){
+    if(currentExtended)
+      lastTimeWasExtended = Timer.getFPGATimestamp();
+
+    if(Timer.getFPGATimestamp() < lastTimeWasExtended+1)
       intakeShaft.set(-0.5);
-    } else {
+    else
       intakeShaft.stopMotor();
-    }
-    // This method will be called once per scheduler run
   }
 }
