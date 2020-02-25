@@ -36,6 +36,7 @@ public class ClimbSubsystem extends SubsystemBase {
   private PIDMotor pidControlLeft = new PIDMotor(climberL);
   private CANEncoder encodeLeft;
   private CANEncoder encodeRight;
+  private CANEncoder encodeWinch;
 
   Servo stopClimb = new Servo(Constants.ClimbingConstant.kServoID);
 
@@ -70,6 +71,7 @@ public class ClimbSubsystem extends SubsystemBase {
 
     encodeRight = climberR.getEncoder();
     encodeLeft = climberL.getEncoder();
+    encodeWinch = climberWinch.getEncoder();
 
     climberWinch.getEncoder().setPosition(0);
     climberR.getEncoder().setPosition(0);
@@ -101,6 +103,7 @@ public class ClimbSubsystem extends SubsystemBase {
     setLeftExtendTarget( - ARM_EXTENDED_ROTS);
     setRightExtendTarget(ARM_EXTENDED_ROTS);
     System.err.println("####   The arms DO EXTEND   ####");
+    
   }
 
   public void retractArms()
@@ -108,6 +111,7 @@ public class ClimbSubsystem extends SubsystemBase {
     setLeftExtendTarget(0);
     setRightExtendTarget(0);
     System.err.println("####   The arms DO RETRACT   ####");
+
   }
   
   public void extendArmControlPanelMechanism()
@@ -166,6 +170,12 @@ public class ClimbSubsystem extends SubsystemBase {
     SmartDashboard.getNumber("ClimberR Current: ", climberR.getOutputCurrent());
     SmartDashboard.getNumber("ClimberL Current: ", climberL.getOutputCurrent());
 
+    SmartDashboard.putBoolean("Winch works", encodeWinch.getPosition()>500 || encodeWinch.getPosition()<-500 ?true :false);
+    SmartDashboard.putBoolean("Left extend?", encodeRight.getPosition()>0 ?true :false);
+    SmartDashboard.putBoolean("Right extend?", encodeLeft.getPosition()>0 ?true :false);
+
+    SmartDashboard.putBoolean("isWinchDeployed()", isWinchDeployed());
+    SmartDashboard.putBoolean("isWinchRetracted()", isWinchRetracted());
   }
 
   public boolean isWinchDeployed()
