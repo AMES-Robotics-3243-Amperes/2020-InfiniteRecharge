@@ -41,13 +41,15 @@ public class ClimbSubsystem extends SubsystemBase {
 
   private DigitalInput limitSwitchLeft = new DigitalInput(0);
   private DigitalInput limitSwitchRight = new DigitalInput(1);
+  private DigitalInput limitSwitchWinchBottom = new DigitalInput(3);
+  private DigitalInput limitSwitchWinchTop = new DigitalInput(4);
 
   Servo stopClimb = new Servo(Constants.ClimbingConstant.kServoID);
 
   private final double ARM_EXTENDED_ROTS = 3.75 * 64; // 64:1 gearbox ratio
   private final double ARM_CONTROL_PANEL_POSITION_ROTS = 5;
   private final double ARM_TARGET_MARGIN_ROTS = 0.25 * 64;
-  private final double WINCH_DEPLOYED_ROTS = -5 * 100; // 100:1 gearbox ratio  CHANGED FROM 3 TO 5 ROTATIONS
+  private final double WINCH_DEPLOYED_ROTS = -9 * 100; // 100:1 gearbox ratio  CHANGED FROM 3 TO 5 ROTATIONS
   private final double WINCH_TARGET_MARGIN_ROTS = 0.25 * 100;
 
   // NOT YET TUNED TO THE ROBOT! 2/5/20
@@ -61,14 +63,8 @@ public class ClimbSubsystem extends SubsystemBase {
   static double rightPosition = 0.0;
 
   public ClimbSubsystem() {
-    pidControlRight.setP(kp);
-    pidControlRight.setI(ki);
-    pidControlRight.setD(kd);
     pidControlRight.setOutputRange(min, max);
 
-    pidControlLeft.setP(kp);
-    pidControlLeft.setI(ki);
-    pidControlLeft.setD(kd);
     pidControlLeft.setOutputRange(min, max);
 
     climberWinchPID.setOutputRange(-1, 1);
@@ -166,25 +162,35 @@ public class ClimbSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
 
     SmartDashboard.putNumber("Winch rots", climberWinchPID.encoder.getPosition());
+    SmartDashboard.putNumber("climbL rots", pidControlLeft.encoder.getPosition());
+    SmartDashboard.putNumber("climbR rots", pidControlRight.encoder.getPosition());
 
     enforceMotorRangeSafeguards();
 
-    SmartDashboard.putNumber("ClimberADJ Current: ", climberWinch.getOutputCurrent()); // Prints current in amps
-    SmartDashboard.putNumber("ClimberR Current: ", climberR.getOutputCurrent());
-    SmartDashboard.putNumber("ClimberL Current: ", climberL.getOutputCurrent());
+    //SmartDashboard.putNumber("ClimberADJ Current: ", climberWinch.getOutputCurrent()); // Prints current in amps
+    //SmartDashboard.putNumber("ClimberR Current: ", climberR.getOutputCurrent());
+    //SmartDashboard.putNumber("ClimberL Current: ", climberL.getOutputCurrent());
+
+    
+    SmartDashboard.putBoolean("isWinchDeployed()", isWinchDeployed());
+    SmartDashboard.putBoolean("isWinchRetracted()", isWinchRetracted());
+    SmartDashboard.putBoolean("isLeftArmExtended()", isLeftArmExtended());
+    SmartDashboard.putBoolean("isLeftArmRetracted()", isLeftarmRetracted());
+    SmartDashboard.putBoolean("isRightArmExtended()", isRightArmExtended());
+    SmartDashboard.putBoolean("isRightArmRetracted()", isRightArmRetracted());
   }
 
   private void enforceMotorRangeSafeguards()
   {
     // Arm extension safeguard; If near limit and moving toward limit, stop the motor.
-    if((pidControlRight.encoder.getVelocity()<-1 && Math.abs(pidControlRight.encoder.getPosition() - 0) < ARM_TARGET_MARGIN_ROTS)
-      || (pidControlRight.encoder.getVelocity()>1 && Math.abs(pidControlRight.encoder.getPosition() - ARM_EXTENDED_ROTS) < ARM_TARGET_MARGIN_ROTS)){
+    if((pidControlRight.encoder.getVelocity()<-1 && isRightArmRetracted())
+      || (pidControlRight.encoder.getVelocity()>1 && isRightArmExtended())){
         System.err.println("#### THE RIGHT CLIMBER DOES STOP ####");
         climberR.stopMotor();
       }
 
-    if((pidControlLeft.encoder.getVelocity()>1 && Math.abs(pidControlLeft.encoder.getPosition() - 0) < ARM_TARGET_MARGIN_ROTS)
-      || (pidControlLeft.encoder.getVelocity()<-1 && Math.abs(pidControlLeft.encoder.getPosition() - -ARM_EXTENDED_ROTS) < ARM_TARGET_MARGIN_ROTS)){
+    if((pidControlLeft.encoder.getVelocity()>1 && isLeftarmRetracted())
+      || (pidControlLeft.encoder.getVelocity()<-1 && isLeftArmExtended())){
       System.err.println("#### THE LEFT CLIMBER DOES STOP ####");
       climberL.stopMotor();
       }
@@ -198,25 +204,25 @@ public class ClimbSubsystem extends SubsystemBase {
 
 
     // Done by Alejandro. Not sure if its right or needed
-    SmartDashboard.getNumber("ClimberADJ Current: ", climberWinch.getOutputCurrent()); // Prints current in amps
-    SmartDashboard.getNumber("ClimberR Current: ", climberR.getOutputCurrent());
-    SmartDashboard.getNumber("ClimberL Current: ", climberL.getOutputCurrent());
+    //SmartDashboard.getNumber("ClimberADJ Current: ", climberWinch.getOutputCurrent()); // Prints current in amps
+    //SmartDashboard.getNumber("ClimberR Current: ", climberR.getOutputCurrent());
+    //SmartDashboard.getNumber("ClimberL Current: ", climberL.getOutputCurrent());
 
-    SmartDashboard.putBoolean("Winch works", encodeWinch.getPosition()>500 || encodeWinch.getPosition()<-500 ?true :false);
-    SmartDashboard.putBoolean("Left extend?", encodeRight.getPosition()>0 ?true :false);
-    SmartDashboard.putBoolean("Right extend?", encodeLeft.getPosition()>0 ?true :false);
+    //SmartDashboard.putBoolean("Winch works", encodeWinch.getPosition()>500 || encodeWinch.getPosition()<-500 ?true :false);
+    //SmartDashboard.putBoolean("Left extend?", encodeRight.getPosition()>0 ?true :false);
+    //SmartDashboard.putBoolean("Right extend?", encodeLeft.getPosition()>0 ?true :false);
 
-    SmartDashboard.putBoolean("isWinchDeployed()", isWinchDeployed());
-    SmartDashboard.putBoolean("isWinchRetracted()", isWinchRetracted());
   }
 
   public boolean isWinchDeployed()
   {
-    return climberWinchPID.encoder.getPosition() <= WINCH_DEPLOYED_ROTS + WINCH_TARGET_MARGIN_ROTS;
+    return climberWinchPID.encoder.getPosition() <= WINCH_DEPLOYED_ROTS + WINCH_TARGET_MARGIN_ROTS
+      || limitSwitchWinchTop.get();
   }
   public boolean isWinchRetracted()
   {
-    return climberWinchPID.encoder.getPosition() >= - WINCH_TARGET_MARGIN_ROTS;
+    return climberWinchPID.encoder.getPosition() >= - WINCH_TARGET_MARGIN_ROTS
+      || limitSwitchWinchBottom.get();
   }
 
   public boolean isControlPanelLifted()
@@ -230,7 +236,7 @@ public class ClimbSubsystem extends SubsystemBase {
   }
   public boolean isLeftArmExtended()
   {
-    return pidControlLeft.encoder.getPosition() <= ARM_EXTENDED_ROTS + ARM_TARGET_MARGIN_ROTS;
+    return pidControlLeft.encoder.getPosition() <= - ARM_EXTENDED_ROTS + ARM_TARGET_MARGIN_ROTS;
   }
   public boolean isRightArmExtended()
   {
