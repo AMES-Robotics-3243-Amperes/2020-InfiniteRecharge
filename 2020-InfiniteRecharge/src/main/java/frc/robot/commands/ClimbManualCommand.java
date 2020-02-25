@@ -21,6 +21,9 @@ public class ClimbManualCommand extends CommandBase {
     this.joyst = controllerJoyst;
   }
 
+
+
+  
   @Override
   public void initialize() {
   }
@@ -47,10 +50,14 @@ public class ClimbManualCommand extends CommandBase {
         if((left<0 || right<0) && ! (left>0 || right>0) // If trying to retract
                 && climber.isClimberArmRetracted() // AND both arms are retracted
                 && ! climber.isWinchRetracted()) // AND the winch is NOT down
+
             climber.setWinchTarget(climber.getWinchPosition() + avgOffset);
+
         else if((left<0 || right<0) && ! (left>0 || right>0) // If trying to extend
                 && ! climber.isWinchDeployed()) // AND the winch is NOT up
+
             climber.setWinchTarget(climber.getWinchPosition() + avgOffset);
+
         else if(climber.isWinchDeployed())
         {
             climber.setLeftExtendTarget(climber.getLeftArmPosition() + leftOffset);

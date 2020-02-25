@@ -47,6 +47,13 @@ public final class Constants {
         public static final int kClimbRID = 9;
         public static final int kClimbLID = 12;
 
+        // Limit switches DON'T KNOW THE CORRECT IDs YET 2/24/20
+        public static final int kBottomWinchLimitID = 3;
+        public static final int kTopWinchLimitID = 4;
+        public static final int kLeftLimitID = 0;
+        public static final int kRightLimitID = 1;
+
+
         // Servo
         public static final int kServoID = 2;
         public static final int kStopServo = 0;

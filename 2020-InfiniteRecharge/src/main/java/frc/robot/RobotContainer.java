@@ -174,6 +174,10 @@ public class RobotContainer {
     // SECONDARY
     JoystickButton climberButton = new JoystickButton(secondary, 4);
     climberButton.whenPressed(m_climbCommand);
+
+    JoystickButton climberExtend = new JoystickButton(secondary, 3);
+    
+    JoystickButton climberRetract = new JoystickButton(secondary, 1);
   }
 
   // -------------------- PRIMARY: LIMELIGHT SECTION OF JOYSTICK
@@ -214,7 +218,9 @@ public class RobotContainer {
 
   /** Gets a joystick value, with dead zone applied. */
   private static double getJoystWithDead(boolean isLeft) {
-    double steer = isLeft ? -driver.getRawAxis(1) : -driver.getRawAxis(3); // Should be the left axis
+
+    // Switched the 3 and 1 around
+    double steer = isLeft ? driver.getRawAxis(3) : driver.getRawAxis(1); // Should be the left axis
     steer = JoystUtil.deadZone(steer);
     return steer;
   }

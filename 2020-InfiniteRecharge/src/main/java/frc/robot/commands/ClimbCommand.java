@@ -5,7 +5,7 @@ import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.RobotContainer;
 
 public class ClimbCommand extends CommandBase {
-  
+
   private final ClimbSubsystem climber;
   private final ClimbExtendCommand extend;
   private final ClimbRetractCommand retract;
@@ -13,18 +13,23 @@ public class ClimbCommand extends CommandBase {
 
   public ClimbCommand(ClimbSubsystem climber, ClimbExtendCommand extend, ClimbRetractCommand retract) {
     addRequirements(climber);
-    this.climber = climber;  // Set variable to the object
+    this.climber = climber; // Set variable to the object
     this.extend = extend;
     this.retract = retract;
   }
 
   @Override
   public void initialize() {
-      isInDeployMode = ! isInDeployMode;
-      if(isInDeployMode)
-        extend.schedule();
+
+  }
+
+  @Override
+  public void execute() {
+    isInDeployMode = !isInDeployMode;
+    if (isInDeployMode)
+      extend.schedule();
     else
-        retract.schedule();
+      retract.schedule();
   }
 
   @Override
