@@ -195,7 +195,6 @@ public class ClimbSubsystem extends SubsystemBase {
         System.err.println("#### The winch does stop! ####");
         climberWinch.stopMotor();
       }
-<<<<<<< HEAD
 
 
     // Done by Alejandro. Not sure if its right or needed
@@ -209,8 +208,6 @@ public class ClimbSubsystem extends SubsystemBase {
 
     SmartDashboard.putBoolean("isWinchDeployed()", isWinchDeployed());
     SmartDashboard.putBoolean("isWinchRetracted()", isWinchRetracted());
-=======
->>>>>>> f349e12d90d2880c4379fe3329ea4f1a71c709b0
   }
 
   public boolean isWinchDeployed()
