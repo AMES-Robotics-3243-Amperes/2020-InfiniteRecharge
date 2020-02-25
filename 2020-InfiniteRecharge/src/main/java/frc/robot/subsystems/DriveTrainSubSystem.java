@@ -123,11 +123,11 @@ public class DriveTrainSubSystem extends SubsystemBase {
     rightVector = varRight;
     //m_rightBumper = rightBumper;
     if(bumperLeft){
-      m_rightSide.setSetpoint(-varRight * 1.5);
-      m_leftSide.setSetpoint(varLeft * 1.5);
+      m_rightSide.setSetpoint(varRight * 1.5);
+      m_leftSide.setSetpoint(-varLeft * 1.5);
     } else {
-      m_rightSide.setSetpoint(-varRight);
-      m_leftSide.setSetpoint(varLeft);
+      m_rightSide.setSetpoint(varRight);
+      m_leftSide.setSetpoint(-varLeft);
 
     }
 

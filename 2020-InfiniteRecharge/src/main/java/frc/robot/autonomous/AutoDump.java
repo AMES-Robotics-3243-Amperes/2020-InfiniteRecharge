@@ -27,7 +27,7 @@ public class AutoDump extends CommandBase {
   @Override
   public void initialize() {
     timeNow = Timer.getFPGATimestamp();
-    DumperSubsystem.setDumpCollectSpeed(true);
+    DumperSubsystem.setDumpCollectSpeed(true,false);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -39,7 +39,7 @@ public class AutoDump extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    DumperSubsystem.setDumpCollectSpeed(false);
+    DumperSubsystem.setDumpCollectSpeed(false, false);
   }
 
   // Returns true when the command should end.
