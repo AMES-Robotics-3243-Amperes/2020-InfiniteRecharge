@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -122,13 +121,14 @@ public class DriveTrainSubSystem extends SubsystemBase {
     leftVector = varLeft;
     rightVector = varRight;
     //m_rightBumper = rightBumper;
+    
+    // Switched negative sign from right side to left side
     if(bumperLeft){
       m_rightSide.setSetpoint(varRight * 1.5);
       m_leftSide.setSetpoint(-varLeft * 1.5);
     } else {
       m_rightSide.setSetpoint(varRight);
       m_leftSide.setSetpoint(-varLeft);
-
     }
 
   }

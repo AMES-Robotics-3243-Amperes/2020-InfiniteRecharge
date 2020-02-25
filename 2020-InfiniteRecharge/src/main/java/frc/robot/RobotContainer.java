@@ -85,18 +85,11 @@ public class RobotContainer {
   // --------------------------------------------------------------------
   // AUTONOMOUS
   // ---------------------------------------------------------------------------------------------------------------------------------------------------------------
-  public static DriveForward m_driveForward = new DriveForward(/*
-                                                                * m_robotDriveSubsystem,
-                                                                * DriveTrainSubSystem.getSparkLeft(),
-                                                                * DriveTrainSubSystem.getSparkRight(),
-                                                                * DriveTrainSubSystem.getVictorLeft(),
-                                                                * DriveTrainSubSystem.getVictorRight()
-                                                                */ );
+  public static DriveForward m_driveForward = new DriveForward();
   public static AutoDump m_AutoDump = new AutoDump();
   // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-  // Color Wheel variables. ALSO, YOU CAN PUT THIS INTO CONSTANTS TO MAKE THIS
-  // PLACE A LITTLE MORE NEAT?
+  // Color Wheel variables. ALSO, YOU CAN PUT THIS INTO CONSTANTS TO MAKE THIS PLACE A LITTLE MORE NEAT?
   private static final int B_BLUE = 1;
   private static final int B_GREEN = 2;
   private static final int B_RED = 3;

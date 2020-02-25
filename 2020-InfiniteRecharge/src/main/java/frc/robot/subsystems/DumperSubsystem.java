@@ -30,9 +30,6 @@ public class DumperSubsystem extends SubsystemBase {
   static CANPIDController pidShoot;
 
   private static final double ballRotation = 2; // We don't know the correct rotations yet
-  
-  private static final int shootRPM = 1500;
-  private static final int MAX_RPM = 5700;
 
   // NOT YET TUNED TO CORRECT NUMBERS 2/16/20
   double kp = 0.7;
@@ -42,7 +39,7 @@ public class DumperSubsystem extends SubsystemBase {
   double max = 0.99;
 
   static double encodePosition = 0.0;
-  static double encodeVelocity = 5000;
+  static final double encodeVelocity = 5000;
 
   public DumperSubsystem() {
     dumpCollect = new CANSparkMax(Constants.IndexerConstants.kIndexCollectID, MotorType.kBrushless);
@@ -84,14 +81,11 @@ public class DumperSubsystem extends SubsystemBase {
 
   public static void setDumpShootSpeed(boolean value)
   {
-
     if(value){
-      //pidShoot.setReference(5000, ControlType.kVelocity);
-      dumpShoot.set(-0.40);
+      pidShoot.setReference(encodeVelocity, ControlType.kVelocity);
     } 
     else{
-      //pidShoot.setReference(0, ControlType.kVelocity);
-      dumpShoot.stopMotor();
+      pidShoot.setReference(0, ControlType.kVelocity);
     }
   }
   
@@ -104,8 +98,6 @@ public class DumperSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    //SmartDashboard.getNumber("Dump Current: ", dumpCollect.getOutputCurrent());
-    //SmartDashboard.getNumber("Dump Voltages: ", dumpCollect.getBusVoltage());
     SmartDashboard.putNumber("Collect Encoder", encodeCollect.getPosition());
   }
 
