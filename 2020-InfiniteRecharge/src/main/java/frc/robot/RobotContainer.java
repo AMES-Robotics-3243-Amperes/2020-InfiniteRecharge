@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
+
 // WPILib Imports ----------------------------------------
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -17,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 //--------------------------------------------------------
 //Class Imports ------------------------------------------
 import frc.robot.subsystems.*;
+import frc.robot.util.JoystUtil;
 import frc.robot.commands.*;
 import frc.robot.autonomous.*;
 //--------------------------------------------------------
@@ -29,8 +31,8 @@ import frc.robot.autonomous.*;
 public class RobotContainer {
 
   //Joysticks
-  private static Joystick driver = new Joystick(0);
-  private static Joystick secondary = new Joystick(1);
+  public static Joystick driver = new Joystick(0);
+  public static Joystick secondary = new Joystick(1);
   static double steerLeft;
   static double steerRight;
 
@@ -165,6 +167,10 @@ public class RobotContainer {
     // SECONDARY
     JoystickButton climberButton = new JoystickButton(secondary, 4);
     climberButton.whenPressed(m_climbCommand);
+
+    JoystickButton climberExtend = new JoystickButton(secondary, 3);
+    
+    JoystickButton climberRetract = new JoystickButton(secondary, 1);
   }
 
   // -------------------- PRIMARY: LIMELIGHT SECTION OF JOYSTICK
@@ -183,10 +189,10 @@ public class RobotContainer {
     steerLeft = getJoystWithDead(true); // Should be the left axis
     double sr = getJoystWithDead(false);
 
-    steerLeft = matchZone(steerLeft, sr);
+    steerLeft = JoystUtil.matchZone(steerLeft, sr);
     if (Constants.TEST_VERSION)
       SmartDashboard.putNumber("Unscaled JoyL", steerLeft);
-    steerLeft = scaleZone(steerLeft);
+    steerLeft = JoystUtil.scaleZone(steerLeft);
 
     return steerLeft;
   }
@@ -195,82 +201,21 @@ public class RobotContainer {
     steerRight = getJoystWithDead(false);
     double sl = getJoystWithDead(true);
 
-    steerRight = matchZone(steerRight, sl);
+    steerRight = JoystUtil.matchZone(steerRight, sl);
     if (Constants.TEST_VERSION)
       SmartDashboard.putNumber("Unscaled JoyR", steerRight);
-    steerRight = scaleZone(steerRight);
+    steerRight = JoystUtil.scaleZone(steerRight);
 
     return steerRight;
   }
 
   /** Gets a joystick value, with dead zone applied. */
   private static double getJoystWithDead(boolean isLeft) {
-    double steer = isLeft ? -driver.getRawAxis(1) : -driver.getRawAxis(3); // Should be the left axis
-    steer = deadZone(steer);
+
+    // Switched the 3 and 1 around
+    double steer = isLeft ? driver.getRawAxis(3) : driver.getRawAxis(1); // Should be the left axis
+    steer = JoystUtil.deadZone(steer);
     return steer;
-  }
-
-  /**
-   * Given both left and right steering, returns the average of the two if they're
-   * really close together.
-   * <p>
-   * Useful for trying to drive in a straight line.
-   */
-  private static double matchZone(double steer1, double steer2) {
-    double matchZoneRadius = 0.09;
-
-    double avgSteer = (steer1 + steer2) / 2.0;
-    if (Constants.TEST_VERSION)
-      SmartDashboard.putNumber("avgSteer", avgSteer);
-    double r = matchZoneRadius / 2.0;
-
-    // The steer1 values past which steer1's unadjusted value should be returned.
-    // If avgSteer is >0, steer1 will be returned at 1 and below 0. If <0, at -1 and
-    // above 0.
-    double lowerBound = (avgSteer - r <= 0) ? -1 : 0;
-    double upperBound = (avgSteer + r >= 0) ? 0 : 1;
-    // Very slight bias functions to make sure lowerBound and upperBound are
-    // respected.
-    double upperBoundCorrector = clamp((steer1 - (avgSteer + r)) * ((r) / (upperBound - (avgSteer + r))), 0, r);
-    double lowerBoundCorrector = clamp((steer1 - (avgSteer - r)) * ((r) / ((avgSteer - r) - lowerBound)), -r, 0);
-
-    if (Constants.TEST_VERSION) {
-      SmartDashboard.putNumber("upperBoundConnector", upperBoundCorrector);
-      SmartDashboard.putNumber("lowerBoundConnector", lowerBoundCorrector);
-    }
-
-    // A y=x function with a plateau in the middle. The plateau is at avgSteer and
-    // causes values to 'snap' to it.
-    // Either lowerBoundCorrector or upperBoundCorrector is added, depending on
-    // whether steer1 is between avgSteer
-    // and lowerBound, or between avgSteer and upperBound.
-    double result = Math.signum(steer1 - avgSteer) * Math.max(0, Math.abs(steer1 - avgSteer) - r) + avgSteer
-        + ((steer1 > avgSteer + r) ? upperBoundCorrector : lowerBoundCorrector);
-
-    return result;
-    // return (Math.abs(avgSteer-steer1) <= r) ?avgSteer :steer1; Without smoothing;
-    // don't use.
-  }
-
-  private static double clamp(double a, double min, double max) {
-    double realMin = Math.min(min, max);
-    double realMax = Math.max(min, max);
-    return Math.min(realMax, Math.max(realMin, a));
-  }
-
-  private static double lerp(double a, double b, double f) {
-    return a + f * (b - a);
-  }
-
-  public static double deadZone(double dead) {
-    double deadZoneRadius = 0.09;
-    // This makes input increase smoothly, instead of jumping up slightly as soon as
-    // 0.09 is passed.
-    return Math.signum(dead) * Math.max(0, Math.abs(dead * (1 + deadZoneRadius)) - deadZoneRadius);
-  }
-
-  public static double scaleZone(double scale) {
-    return Math.pow(scale, 3);
   }
 
   // ----------------- SECONDARY: INTAKE SECTION OF JOYSTICK -------------

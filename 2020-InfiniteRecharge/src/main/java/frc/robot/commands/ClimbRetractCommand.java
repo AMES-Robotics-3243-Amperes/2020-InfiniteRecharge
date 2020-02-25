@@ -6,37 +6,36 @@ import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.RobotContainer;
 
 public class ClimbRetractCommand extends CommandBase {
-  
+
   private final ClimbSubsystem climber;
   private boolean hasRetracted; // flag
 
   public ClimbRetractCommand(ClimbSubsystem climber) {
     addRequirements(climber);
-    this.climber = climber;  // Set variable to the object
+    this.climber = climber; // Set variable to the object
   }
 
   @Override
   public void initialize() {
-      hasRetracted = false;
-      //climber.retractArms();
+    hasRetracted = climber.isWinchRetracted();
   }
 
   @Override
   public void execute() {
-      if( ! hasRetracted && climber.isClimberArmRetracted())
-      {
-        climber.setWinchIsDeployed(false);
-        hasRetracted = true;
-      }
+
+    if (!hasRetracted) {
+      climber.retractArms();
+      hasRetracted = climber.setRetractWinch();
+    }
+
   }
 
   @Override
   public void end(boolean interrupted) {
-    climber.stopAllMotors();
   }
 
   @Override
   public boolean isFinished() {
-    return climber.isWinchRetracted() && climber.isClimberArmRetracted();
+    return hasRetracted;
   }
 }

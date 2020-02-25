@@ -124,11 +124,12 @@ public class DriveTrainSubSystem extends SubsystemBase {
     
     // Switched negative sign from right side to left side
     if(bumperLeft){
-      m_rightSide.setSetpoint(varRight * 1.5);
-      m_leftSide.setSetpoint(-varLeft * 1.5);
+      m_rightSide.setSetpoint(-varRight * 1.5);
+      m_leftSide.setSetpoint(varLeft * 1.5);
     } else {
-      m_rightSide.setSetpoint(varRight);
-      m_leftSide.setSetpoint(-varLeft);
+      m_rightSide.setSetpoint(-varRight);
+      m_leftSide.setSetpoint(varLeft);
+
     }
 
   }
