@@ -48,13 +48,14 @@ public class DriveTrainSubSystem extends SubsystemBase {
   static double rightVector = 0.0;
 
   // m_drive is a combination of both left and right motors
-  //private DifferentialDrive m_drive;
+  // private DifferentialDrive m_drive;
 
   // Encoder data objects
   private static DrivetrainPIDSubsystem m_rightSide;
   private static DrivetrainPIDSubsystem m_leftSide;
   static PIDController m_PIDleft = new PIDController(1, 0, 0);
   static PIDController m_PIDright = new PIDController(1, 0, 0);
+
   // Command Based code requirement: enabling motors
   public DriveTrainSubSystem() {
 
@@ -66,8 +67,10 @@ public class DriveTrainSubSystem extends SubsystemBase {
       motorRT = new WPI_VictorSPX(Constants.DriveConstants.kPracRTID);
       motorRB = new WPI_VictorSPX(Constants.DriveConstants.kPracRBID);
 
-      leftVictorEncode = new Encoder(Constants.DriveConstants.kPracLEncode3, Constants.DriveConstants.kPracLEncode4, false, EncodingType.k4X); // The external encoder on the practice robot
-      rightVictorEncode = new Encoder(Constants.DriveConstants.kPracREncode0, Constants.DriveConstants.kPracREncode1, false, EncodingType.k4X);
+      leftVictorEncode = new Encoder(Constants.DriveConstants.kPracLEncode3, Constants.DriveConstants.kPracLEncode4,
+          false, EncodingType.k4X); // The external encoder on the practice robot
+      rightVictorEncode = new Encoder(Constants.DriveConstants.kPracREncode0, Constants.DriveConstants.kPracREncode1,
+          false, EncodingType.k4X);
 
       m_leftmotors = new SpeedControllerGroup(motorLT, motorLB); // Classifying left side motors
       m_rightmotors = new SpeedControllerGroup(motorRT, motorRB); // Classifying right side motors
@@ -90,40 +93,40 @@ public class DriveTrainSubSystem extends SubsystemBase {
       m_rightSide = new DrivetrainPIDSubsystem(m_rightmotors, rightSparkEncode, null);
       m_leftSide = new DrivetrainPIDSubsystem(m_leftmotors, leftSparkEncode, null);
 
-      
       ((CANSparkMax) motorLT).setSmartCurrentLimit(39); // Limits the maximum amps
       ((CANSparkMax) motorLB).setSmartCurrentLimit(39);
       ((CANSparkMax) motorRT).setSmartCurrentLimit(39);
       ((CANSparkMax) motorRB).setSmartCurrentLimit(39);
 
-      
     }
 
     m_rightSide.enable(); // Enables the PID loop
-    m_leftSide.enable(); // Enables the PID loop  
+    m_leftSide.enable(); // Enables the PID loop
 
   }
 
-  public static Encoder getVictorLeft(){
+  public static Encoder getVictorLeft() {
     return leftVictorEncode;
   }
-  public static Encoder getVictorRight(){
+
+  public static Encoder getVictorRight() {
     return rightVictorEncode;
   }
-  public static CANEncoder getSparkLeft(){
+
+  public static CANEncoder getSparkLeft() {
     return leftSparkEncode;
   }
-  public static CANEncoder getSparkRight(){
+
+  public static CANEncoder getSparkRight() {
     return rightSparkEncode;
-  } 
+  }
 
   public static void tankDrive(double varLeft, double varRight, boolean bumperLeft) {
     leftVector = varLeft;
     rightVector = varRight;
-    //m_rightBumper = rightBumper;
-    
+
     // Switched negative sign from right side to left side
-    if(bumperLeft){
+    if (bumperLeft) {
       m_rightSide.setSetpoint(-varRight * 1.5);
       m_leftSide.setSetpoint(varLeft * 1.5);
     } else {
@@ -134,27 +137,26 @@ public class DriveTrainSubSystem extends SubsystemBase {
 
   }
 
-  public static void setPosition(double leftSet, double rightSet){
-    double motorSpeedLeft; 
+  public static void setPosition(double leftSet, double rightSet) {
+    double motorSpeedLeft;
     double motorSpeedRight;
 
-    if(leftSparkEncode != null && rightSparkEncode != null){
-      motorSpeedLeft = m_PIDleft.calculate(leftSparkEncode.getPosition() , leftSet);
+    if (leftSparkEncode != null && rightSparkEncode != null) {
+      motorSpeedLeft = m_PIDleft.calculate(leftSparkEncode.getPosition(), leftSet);
       motorSpeedRight = m_PIDright.calculate(rightSparkEncode.getPosition(), rightSet);
 
-    } else if(leftVictorEncode != null && rightVictorEncode != null){
+    } else if (leftVictorEncode != null && rightVictorEncode != null) {
       motorSpeedLeft = m_PIDleft.calculate(leftVictorEncode.getDistance(), leftSet);
       motorSpeedRight = m_PIDright.calculate(rightVictorEncode.getDistance(), rightSet);
-      
-    } else{
+
+    } else {
       motorSpeedLeft = 0;
       motorSpeedRight = 0;
     }
     m_leftSide.setSetpoint(motorSpeedLeft);
     m_leftSide.setSetpoint(motorSpeedRight);
-    
-  }
 
+  }
 
   @Override
   public void periodic() {
@@ -175,12 +177,6 @@ public class DriveTrainSubSystem extends SubsystemBase {
       SmartDashboard.getNumber("CurrentMotorRT: ", ((CANSparkMax) motorRT).getOutputCurrent());
       SmartDashboard.getNumber("CurrentMotorRB: ", ((CANSparkMax) motorRB).getOutputCurrent());
 
-      // Prints the voltage going into the motor controller
-      SmartDashboard.getNumber("CurrentMotorLT: ", ((CANSparkMax) motorLT).getBusVoltage());
-      SmartDashboard.getNumber("CurrentMotorLB: ", ((CANSparkMax) motorLB).getBusVoltage());
-      SmartDashboard.getNumber("CurrentMotorRT: ", ((CANSparkMax) motorRT).getBusVoltage());
-      SmartDashboard.getNumber("CurrentMotorRB: ", ((CANSparkMax) motorRB).getBusVoltage());
-  
     } else {
       SmartDashboard.putNumber("Prac Encode Right: ", rightVictorEncode.getDistance());
       SmartDashboard.putNumber("Prac Encode Left: ", leftVictorEncode.getDistance());

@@ -240,8 +240,8 @@ public class ClimbSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("isWinchDeployed()", isWinchDeployed());
     SmartDashboard.putBoolean("isWinchRetracted()", isWinchRetracted());
 
-    SmartDashboard.putBoolean("Left Limit", limitSwitchLeft.get());
-    SmartDashboard.putBoolean("Right Limit", limitSwitchRight.get());
+    //SmartDashboard.putBoolean("Left Limit", limitSwitchLeft.get());
+    //SmartDashboard.putBoolean("Right Limit", limitSwitchRight.get());
   }
 
   private void enforceMotorRangeSafeguards() {
@@ -252,7 +252,6 @@ public class ClimbSubsystem extends SubsystemBase {
         && Math.abs(pidControlRight.encoder.getPosition() - 0) < ARM_TARGET_MARGIN_ROTS))
         || (pidControlRight.encoder.getVelocity() > 0
             && Math.abs(pidControlRight.encoder.getPosition() - ARM_EXTENDED_ROTS) < ARM_TARGET_MARGIN_ROTS)) {
-      System.err.println("#### THE RIGHT CLIMBER DOES STOP ####");
       climberR.stopMotor();
     }
 
@@ -260,7 +259,6 @@ public class ClimbSubsystem extends SubsystemBase {
         && Math.abs(pidControlLeft.encoder.getPosition() - 0) < ARM_TARGET_MARGIN_ROTS)
         || (pidControlLeft.encoder.getVelocity() < 0
             && Math.abs(pidControlLeft.encoder.getPosition() - -ARM_EXTENDED_ROTS) < ARM_TARGET_MARGIN_ROTS)) {
-      System.err.println("#### THE LEFT CLIMBER DOES STOP ####");
       climberL.stopMotor();
     }
 

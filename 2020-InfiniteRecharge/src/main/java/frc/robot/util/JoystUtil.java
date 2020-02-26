@@ -65,6 +65,7 @@ public class JoystUtil
   }
 
   public static double scaleZone(double scale) {
-    return Math.pow(scale, 3);
+    return Math.pow(0.4*scale, 3) + 0.4*scale;  // Hopefully this will dampen the ramping up at the beginning of drive
+    //return Math.pow(scale, 3);
   }
 }

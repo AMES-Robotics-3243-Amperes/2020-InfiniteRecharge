@@ -69,14 +69,13 @@ public class DumperSubsystem extends SubsystemBase {
     if(shoot && !backwards){
       encodePosition = encodeCollect.getPosition() + ballRotation;
       pidCollect.setReference(encodePosition, ControlType.kPosition);
-      System.err.println("It shoots");
     } else if(backwards && !shoot){
       encodePosition = encodeCollect.getPosition() - ballRotation;
       pidCollect.setReference(encodePosition, ControlType.kPosition);
-      System.err.println("It works");
     } else {
       dumpCollect.stopMotor();
     }
+    
   }
 
   public static void setDumpShootSpeed(boolean value)

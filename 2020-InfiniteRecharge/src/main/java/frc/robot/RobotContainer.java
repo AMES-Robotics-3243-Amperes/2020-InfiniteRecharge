@@ -212,7 +212,7 @@ public class RobotContainer {
   /** Gets a joystick value, with dead zone applied. */
   private static double getJoystWithDead(boolean isLeft) {
 
-    // Switched the 3 and 1 around
+    // Switched the 3 and 1 around so that forward is the shooter
     double steer = isLeft ? driver.getRawAxis(3) : driver.getRawAxis(1); // Should be the left axis
     steer = JoystUtil.deadZone(steer);
     return steer;
@@ -228,10 +228,10 @@ public class RobotContainer {
   public static boolean configureBallCollect() {
     return secondary.getRawButton(7);
   }
+
   public static boolean configureBallCollectBackwards() {
     return secondary.getRawButton(10);
   }
-  
 
   public static boolean configureBallShoot(){
     return secondary.getRawButton(8);

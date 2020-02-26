@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
-import frc.robot.RobotContainer;
 
 public class DrivetrainPIDSubsystem extends PIDSubsystem {
   /**
@@ -53,7 +52,7 @@ public class DrivetrainPIDSubsystem extends PIDSubsystem {
   public double getMeasurement() {
     // Return the process variable measurement here
     if(m_encoderSpark != null){
-      return m_encoderSpark.getVelocity()/5676;
+      return m_encoderSpark.getVelocity()/5676; // Free speed is 5676
     }else if(m_encoderVictor != null){
       return m_encoderVictor.getRate()/1486.8;  // 5310 (free spd of cim) multiplied by gear ratio of 14/50
     } else{
