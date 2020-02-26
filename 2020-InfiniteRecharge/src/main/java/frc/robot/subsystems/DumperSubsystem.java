@@ -31,15 +31,20 @@ public class DumperSubsystem extends SubsystemBase {
 
   private static final double ballRotation = 2; // We don't know the correct rotations yet
 
-  // NOT YET TUNED TO CORRECT NUMBERS 2/16/20
+  // Good enough 2/25/20
   double kp = 0.7;
   double ki = 1.5e-3;
   double kd = 5e-8;
   double min = 0.0;
   double max = 0.99;
 
+  // Still need to tune these constants 2/25/20
+  double kpShoot = 0.15;
+  double kiShoot = 0;
+  double kdShoot = 0;
+
   static double encodePosition = 0.0;
-  static final double encodeVelocity = 5000;
+  static final double encodeVelocity = 5500;  // 5700 is max rpm
 
   public DumperSubsystem() {
     dumpCollect = new CANSparkMax(Constants.IndexerConstants.kIndexCollectID, MotorType.kBrushless);
@@ -56,9 +61,9 @@ public class DumperSubsystem extends SubsystemBase {
     pidCollect.setD(kd);
     pidCollect.setOutputRange(min, max);
 
-    pidShoot.setP(kp);
-    pidShoot.setI(ki);
-    pidShoot.setD(kd);
+    pidShoot.setP(kpShoot);
+    pidShoot.setI(kiShoot);
+    pidShoot.setD(kdShoot);
 
 
   }
@@ -69,9 +74,11 @@ public class DumperSubsystem extends SubsystemBase {
     if(shoot && !backwards){
       encodePosition = encodeCollect.getPosition() + ballRotation;
       pidCollect.setReference(encodePosition, ControlType.kPosition);
+      System.err.println("### Forwards works ###");
     } else if(backwards && !shoot){
-      encodePosition = encodeCollect.getPosition() - ballRotation;
+      encodePosition = - encodeCollect.getPosition() + ballRotation;
       pidCollect.setReference(encodePosition, ControlType.kPosition);
+      System.err.println("### Backwards works ###");
     } else {
       dumpCollect.stopMotor();
     }
@@ -82,6 +89,7 @@ public class DumperSubsystem extends SubsystemBase {
   {
     if(value){
       pidShoot.setReference(encodeVelocity, ControlType.kVelocity);
+      System.err.println("#### Shoot works ####");
     } 
     else{
       pidShoot.setReference(0, ControlType.kVelocity);
