@@ -49,7 +49,7 @@ public class ClimbSubsystem extends SubsystemBase {
   private final double ARM_EXTENDED_ROTS = 3.75 * 64; // 64:1 gearbox ratio
   private final double ARM_CONTROL_PANEL_POSITION_ROTS = 5;
   private final double ARM_TARGET_MARGIN_ROTS = 0.25 * 64;
-  private final double WINCH_DEPLOYED_ROTS = -9 * 100; // 100:1 gearbox ratio  CHANGED FROM 3 TO 5 ROTATIONS
+  private final double WINCH_DEPLOYED_ROTS = (-9 + 6*0.25) * 100; // 100:1 gearbox ratio  CHANGED FROM 3 TO 5 ROTATIONS
   private final double WINCH_TARGET_MARGIN_ROTS = 0.25 * 100;
 
   // NOT YET TUNED TO THE ROBOT! 2/5/20
@@ -62,6 +62,8 @@ public class ClimbSubsystem extends SubsystemBase {
   static double leftPosition = 0.0;
   static double rightPosition = 0.0;
 
+  public boolean areEncodersReset = false;
+
   public ClimbSubsystem() {
     pidControlRight.setOutputRange(min, max);
 
@@ -73,9 +75,9 @@ public class ClimbSubsystem extends SubsystemBase {
     encodeLeft = climberL.getEncoder();
     encodeWinch = climberWinch.getEncoder();
 
-    climberWinch.getEncoder().setPosition(0);
-    climberR.getEncoder().setPosition(0);
-    climberL.getEncoder().setPosition(0);
+    //climberWinch.getEncoder().setPosition(0);
+    //climberR.getEncoder().setPosition(0);
+    //climberL.getEncoder().setPosition(0);
 
     climberWinch.setSmartCurrentLimit(39);
     climberR.setSmartCurrentLimit(39);
@@ -85,7 +87,7 @@ public class ClimbSubsystem extends SubsystemBase {
   public void setWinchIsDeployed(boolean shouldDeploy)
   {
     // Moves the climbing system up
-    climberWinchPID.setPIDPosition(shouldDeploy ?WINCH_DEPLOYED_ROTS :0);
+    setWinchTarget(shouldDeploy ?WINCH_DEPLOYED_ROTS :0);
     System.err.println("#### The winch does deploy ####");
   }
   public void setWinchTarget(double rotations)
@@ -178,6 +180,10 @@ public class ClimbSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("isLeftArmRetracted()", isLeftarmRetracted());
     SmartDashboard.putBoolean("isRightArmExtended()", isRightArmExtended());
     SmartDashboard.putBoolean("isRightArmRetracted()", isRightArmRetracted());
+    SmartDashboard.putBoolean("limitSwitch Right", limitSwitchRight.get());
+    SmartDashboard.putBoolean("limitSwitch Left", limitSwitchLeft.get());
+    SmartDashboard.putBoolean("limitSwitch WinchBottom", limitSwitchWinchBottom.get());
+    SmartDashboard.putBoolean("limitSwitch WinchTop", limitSwitchWinchTop.get());
   }
 
   private void enforceMotorRangeSafeguards()
@@ -221,7 +227,7 @@ public class ClimbSubsystem extends SubsystemBase {
   }
   public boolean isWinchRetracted()
   {
-    return climberWinchPID.encoder.getPosition() >= - WINCH_TARGET_MARGIN_ROTS
+    return (climberWinchPID.encoder.getPosition() >= - WINCH_TARGET_MARGIN_ROTS && areEncodersReset) // Don't let the encoders stop motors while resetting is happening
       || limitSwitchWinchBottom.get();
   }
 
@@ -249,12 +255,37 @@ public class ClimbSubsystem extends SubsystemBase {
   }
   public boolean isLeftarmRetracted()
   {
-    return pidControlLeft.encoder.getPosition() >= - ARM_TARGET_MARGIN_ROTS
+    return (pidControlLeft.encoder.getPosition() >= - ARM_TARGET_MARGIN_ROTS && areEncodersReset)
       || limitSwitchLeft.get();
   }
   public boolean isRightArmRetracted()
   {
-    return pidControlRight.encoder.getPosition() <= ARM_TARGET_MARGIN_ROTS
+    return (pidControlRight.encoder.getPosition() <= ARM_TARGET_MARGIN_ROTS && areEncodersReset)
       || limitSwitchRight.get();
+  }
+
+  public boolean resetRetractLeft()
+  {
+    boolean lSwitch = limitSwitchLeft.get();
+    climberL.set(lSwitch ?0 :0.5);
+    if(lSwitch)
+        pidControlLeft.encoder.setPosition(0);
+    return lSwitch;
+  }
+  public boolean resetRetractRight()
+  {
+    boolean lSwitch = limitSwitchRight.get();
+    climberR.set(lSwitch ?0 :-0.5);
+    if(lSwitch)
+        pidControlRight.encoder.setPosition(0);
+    return lSwitch;
+  }
+  public boolean resetRetractWinch()
+  {
+    boolean lSwitch = limitSwitchWinchBottom.get();
+    climberWinch.set(lSwitch ?0 :1);
+    if(lSwitch)
+        climberWinchPID.encoder.setPosition(0);
+    return lSwitch;
   }
 }

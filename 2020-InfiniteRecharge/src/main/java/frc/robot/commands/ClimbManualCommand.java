@@ -53,7 +53,7 @@ public class ClimbManualCommand extends CommandBase {
             climber.setWinchTarget(climber.getWinchPosition() + avgOffset);
         else if(climber.isWinchDeployed())
         {
-            climber.setLeftExtendTarget(climber.getLeftArmPosition() + leftOffset);
+            climber.setLeftExtendTarget(climber.getLeftArmPosition() - leftOffset);
             climber.setRightExtendTarget(climber.getRightArmPosition() + rightOffset);
         }
       }
