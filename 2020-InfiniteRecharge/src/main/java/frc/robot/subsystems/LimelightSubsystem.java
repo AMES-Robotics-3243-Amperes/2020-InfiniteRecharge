@@ -68,7 +68,7 @@ public class LimelightSubsystem extends SubsystemBase {
     return m_PIDDist.calculate(area, refArea);
   }
 
-  public static double setDist(){
+  /*public static double setDist(){
     double heading_error = x;
     double dist_error = area;
     double dist_adjust = 0.0;
@@ -107,7 +107,7 @@ public class LimelightSubsystem extends SubsystemBase {
       steer_adjust = Math.tanh(steer_adjust) * maxAngAdjust;
 
     return steer_adjust;
-  }
+  }*/
 
   @Override
   public void periodic() {

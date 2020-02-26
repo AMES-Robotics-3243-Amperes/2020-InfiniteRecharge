@@ -230,7 +230,7 @@ public class RobotContainer {
   }
 
   public static boolean configureBallCollectBackwards() {
-    return secondary.getRawButton(10);
+    return secondary.getRawButton(5);
   }
 
   public static boolean configureBallShoot(){

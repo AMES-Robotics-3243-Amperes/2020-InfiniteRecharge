@@ -49,30 +49,7 @@ public class LimelightCommand extends CommandBase {
     
       var = dist - steer;
       var2 = dist + steer;
-      //Left side
 
-      /*if (steer + dist > 1) {
-        var = 1.0;
-      }
-      else if(steer + dist < -1) {
-        var = -1.0;
-      }
-      else {
-        var = -steer + dist;
-      }
-
-      //Right side
-      if (steer - dist > 1) {
-        var2 = 1.0;
-      }
-      else if(steer - dist <-1) {
-        var2 = -1.0;
-      }
-      else {
-        var2 = steer - dist;
-      }*/
-     // var = -steer;
-      //var2 = steer;
       SmartDashboard.putNumber("Steer", steer);
       SmartDashboard.putNumber("Dist", dist);
 
@@ -88,7 +65,7 @@ public class LimelightCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(Math.abs(LimelightSubsystem.setSteer()) - Math.abs(LimelightSubsystem.setDist()) == 0){
+    if(Math.abs(LimelightSubsystem.setPIDSteer()) - Math.abs(LimelightSubsystem.setPIDDist()) == 0){
       return true;
     }
     
