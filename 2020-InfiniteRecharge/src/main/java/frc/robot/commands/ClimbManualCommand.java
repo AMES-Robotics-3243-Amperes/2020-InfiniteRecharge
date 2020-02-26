@@ -10,7 +10,7 @@ import frc.robot.RobotContainer;
 
 public class ClimbManualCommand extends CommandBase {
   
-  private final ClimbSubsystem climber;
+  private final ClimbSubsystem climber; 
   private final Joystick joyst;
   private static final double INTERRUPT_OFFSET_MULTI = 5;
 

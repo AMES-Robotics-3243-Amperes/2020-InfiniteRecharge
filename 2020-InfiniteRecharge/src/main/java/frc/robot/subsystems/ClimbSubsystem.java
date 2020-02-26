@@ -26,8 +26,8 @@ import frc.robot.util.PIDMotor;
 
 public class ClimbSubsystem extends SubsystemBase {
   // MOTOR DIRECTIONS
-  // -1 Extends Left
-  // 1 Extends Right
+  // 1 Extends Left
+  // -1 Extends Right
   // -1 Deploys Winch
   private CANSparkMax climberWinch = new CANSparkMax(Constants.ClimbingConstant.kClimbAdjID, MotorType.kBrushless);
   private CANSparkMax climberR = new CANSparkMax(Constants.ClimbingConstant.kClimbRID, MotorType.kBrushless);
@@ -46,7 +46,7 @@ public class ClimbSubsystem extends SubsystemBase {
 
   Servo stopClimb = new Servo(Constants.ClimbingConstant.kServoID);
 
-  private final double ARM_EXTENDED_ROTS = 3.75 * 64; // 64:1 gearbox ratio
+  private final double ARM_EXTENDED_ROTS = -3.75 * 64; // 64:1 gearbox ratio
   private final double ARM_CONTROL_PANEL_POSITION_ROTS = 5;
   private final double ARM_TARGET_MARGIN_ROTS = 0.25 * 64;
   private final double WINCH_DEPLOYED_ROTS = (-9 + 6*0.25) * 100; // 100:1 gearbox ratio  CHANGED FROM 3 TO 5 ROTATIONS
@@ -143,6 +143,21 @@ public class ClimbSubsystem extends SubsystemBase {
     enforceMotorRangeSafeguards(); // Don't wait until periodic() to run this; If something's wrong, we need to stop immediately!
   }
 
+  public void setLeftVelocity(double velocity){
+    if(isLeftarmRetracted() && velocity > 0){
+      climberL.set(velocity);
+    } else if (isLeftArmExtended() && velocity < 0){
+      climberL.set(velocity);
+    } 
+  }
+  public void setRightVelocity(double velocity){
+    if(isRightArmRetracted() && velocity > 0){
+      climberR.set(-velocity);
+    } else if (isRightArmExtended() && velocity < 0){
+      climberR.set(-velocity);
+    }
+  }
+  
   public double getLeftArmPosition()
   {
     return pidControlLeft.encoder.getPosition();
@@ -189,14 +204,14 @@ public class ClimbSubsystem extends SubsystemBase {
   private void enforceMotorRangeSafeguards()
   {
     // Arm extension safeguard; If near limit and moving toward limit, stop the motor.
-    if((pidControlRight.encoder.getVelocity()<-1 && isRightArmRetracted())
-      || (pidControlRight.encoder.getVelocity()>1 && isRightArmExtended())){
+    if((pidControlRight.encoder.getVelocity()>1 && isRightArmRetracted())
+      || (pidControlRight.encoder.getVelocity()<-1 && isRightArmExtended())){
         System.err.println("#### THE RIGHT CLIMBER DOES STOP ####");
         climberR.stopMotor();
       }
 
-    if((pidControlLeft.encoder.getVelocity()>1 && isLeftarmRetracted())
-      || (pidControlLeft.encoder.getVelocity()<-1 && isLeftArmExtended())){
+    if((pidControlLeft.encoder.getVelocity()<-1 && isLeftarmRetracted())
+      || (pidControlLeft.encoder.getVelocity()>1 && isLeftArmExtended())){
       System.err.println("#### THE LEFT CLIMBER DOES STOP ####");
       climberL.stopMotor();
       }
@@ -242,11 +257,11 @@ public class ClimbSubsystem extends SubsystemBase {
   }
   public boolean isLeftArmExtended()
   {
-    return pidControlLeft.encoder.getPosition() <= - ARM_EXTENDED_ROTS + ARM_TARGET_MARGIN_ROTS;
+    return pidControlLeft.encoder.getPosition() <= - ARM_EXTENDED_ROTS - ARM_TARGET_MARGIN_ROTS;
   }
   public boolean isRightArmExtended()
   {
-    return pidControlRight.encoder.getPosition() >= ARM_EXTENDED_ROTS - ARM_TARGET_MARGIN_ROTS;
+    return pidControlRight.encoder.getPosition() >= ARM_EXTENDED_ROTS + ARM_TARGET_MARGIN_ROTS;
   }
 
   public boolean isClimberArmRetracted()
@@ -255,19 +270,19 @@ public class ClimbSubsystem extends SubsystemBase {
   }
   public boolean isLeftarmRetracted()
   {
-    return (pidControlLeft.encoder.getPosition() >= - ARM_TARGET_MARGIN_ROTS && areEncodersReset)
+    return (pidControlLeft.encoder.getPosition() <= ARM_TARGET_MARGIN_ROTS && areEncodersReset)
       || limitSwitchLeft.get();
   }
   public boolean isRightArmRetracted()
   {
-    return (pidControlRight.encoder.getPosition() <= ARM_TARGET_MARGIN_ROTS && areEncodersReset)
+    return (pidControlRight.encoder.getPosition() >= -ARM_TARGET_MARGIN_ROTS && areEncodersReset)
       || limitSwitchRight.get();
   }
 
   public boolean resetRetractLeft()
   {
     boolean lSwitch = limitSwitchLeft.get();
-    climberL.set(lSwitch ?0 :0.5);
+    climberL.set(lSwitch ?0 :-0.5);
     if(lSwitch)
         pidControlLeft.encoder.setPosition(0);
     return lSwitch;
@@ -275,7 +290,7 @@ public class ClimbSubsystem extends SubsystemBase {
   public boolean resetRetractRight()
   {
     boolean lSwitch = limitSwitchRight.get();
-    climberR.set(lSwitch ?0 :-0.5);
+    climberR.set(lSwitch ?0 :0.5);
     if(lSwitch)
         pidControlRight.encoder.setPosition(0);
     return lSwitch;

@@ -44,8 +44,8 @@ public final class Constants {
 
     public static final class ClimbingConstant {
         public static final int kClimbAdjID = 10;
-        public static final int kClimbRID = 9;
-        public static final int kClimbLID = 12;
+        public static final int kClimbRID = 12;
+        public static final int kClimbLID = 9;
 
         // Servo
         public static final int kServoID = 2;

@@ -34,6 +34,7 @@ public class ClimbResetCommand extends CommandBase {
             climber.areEncodersReset = true;
         }
       }
+      System.err.println(isDone);
   }
 
   @Override
