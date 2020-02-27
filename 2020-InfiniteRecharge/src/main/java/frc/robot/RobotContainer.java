@@ -167,10 +167,6 @@ public class RobotContainer {
     // SECONDARY
     JoystickButton climberButton = new JoystickButton(secondary, 4);
     climberButton.whenPressed(m_climbCommand);
-
-    JoystickButton climberExtend = new JoystickButton(secondary, 3);
-    
-    JoystickButton climberRetract = new JoystickButton(secondary, 1);
   }
 
   // -------------------- PRIMARY: LIMELIGHT SECTION OF JOYSTICK
@@ -192,7 +188,7 @@ public class RobotContainer {
     steerLeft = JoystUtil.matchZone(steerLeft, sr);
     if (Constants.TEST_VERSION)
       SmartDashboard.putNumber("Unscaled JoyL", steerLeft);
-    steerLeft = JoystUtil.scaleZone(steerLeft);
+    steerLeft = 0.85 * JoystUtil.scaleZone(steerLeft);
 
     return steerLeft;
   }
@@ -204,16 +200,14 @@ public class RobotContainer {
     steerRight = JoystUtil.matchZone(steerRight, sl);
     if (Constants.TEST_VERSION)
       SmartDashboard.putNumber("Unscaled JoyR", steerRight);
-    steerRight = JoystUtil.scaleZone(steerRight);
+    steerRight = 0.85 * JoystUtil.scaleZone(steerRight);
 
     return steerRight;
   }
 
   /** Gets a joystick value, with dead zone applied. */
   private static double getJoystWithDead(boolean isLeft) {
-
-    // Switched the 3 and 1 around so that forward is the shooter
-    double steer = isLeft ? driver.getRawAxis(3) : driver.getRawAxis(1); // Should be the left axis
+    double steer = isLeft ? driver.getRawAxis(1) : driver.getRawAxis(3);
     steer = JoystUtil.deadZone(steer);
     return steer;
   }

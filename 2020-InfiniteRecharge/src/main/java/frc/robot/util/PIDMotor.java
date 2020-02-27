@@ -141,6 +141,6 @@ public class PIDMotor
      */
     public void setPIDReference(double value, ControlType ctrlType)
     {
-        pidController.setReference(value, ctrlType);
+		pidController.setReference(value, ctrlType);
     }
 }

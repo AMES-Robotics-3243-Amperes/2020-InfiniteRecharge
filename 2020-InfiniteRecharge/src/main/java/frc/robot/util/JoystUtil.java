@@ -43,8 +43,6 @@ public class JoystUtil
         + ((steer1 > avgSteer + r) ? upperBoundCorrector : lowerBoundCorrector);
 
     return result;
-    // return (Math.abs(avgSteer-steer1) <= r) ?avgSteer :steer1; Without smoothing;
-    // don't use.
   }
 
   private static double clamp(double a, double min, double max) {
@@ -65,7 +63,6 @@ public class JoystUtil
   }
 
   public static double scaleZone(double scale) {
-    //return Math.pow(0.4*scale, 3) + 0.4*scale;  // Hopefully this will dampen the ramping up at the beginning of drive
     return Math.pow(scale, 3);
   }
 }

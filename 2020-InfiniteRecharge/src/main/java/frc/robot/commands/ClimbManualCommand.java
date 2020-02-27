@@ -10,7 +10,7 @@ import frc.robot.RobotContainer;
 
 public class ClimbManualCommand extends CommandBase {
   
-  private final ClimbSubsystem climber;
+  private final ClimbSubsystem climber; 
   private final Joystick joyst;
   private static final double INTERRUPT_OFFSET_MULTI = 5;
 
@@ -47,6 +47,7 @@ public class ClimbManualCommand extends CommandBase {
         double leftOffset = left * INTERRUPT_OFFSET_MULTI;
         double rightOffset = right * INTERRUPT_OFFSET_MULTI;
         double avgOffset = (right+left)/2.0 * INTERRUPT_OFFSET_MULTI;
+        
         if((left<0 || right<0) && ! (left>0 || right>0) // If trying to retract
                 && climber.isClimberArmRetracted() // AND both arms are retracted
                 && ! climber.isWinchRetracted()) // AND the winch is NOT down
@@ -60,7 +61,7 @@ public class ClimbManualCommand extends CommandBase {
 
         else if(climber.isWinchDeployed())
         {
-            climber.setLeftExtendTarget(climber.getLeftArmPosition() + leftOffset);
+            climber.setLeftExtendTarget(climber.getLeftArmPosition() - leftOffset);
             climber.setRightExtendTarget(climber.getRightArmPosition() + rightOffset);
         }
       }

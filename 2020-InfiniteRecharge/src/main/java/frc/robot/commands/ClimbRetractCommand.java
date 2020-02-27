@@ -17,25 +17,27 @@ public class ClimbRetractCommand extends CommandBase {
 
   @Override
   public void initialize() {
-    hasRetracted = climber.isWinchRetracted();
+    hasRetracted = false;
+    climber.retractArms();
   }
 
   @Override
   public void execute() {
-
-    if (!hasRetracted) {
-      climber.retractArms();
-      hasRetracted = climber.setRetractWinch();
+    if( ! hasRetracted && climber.isClimberArmRetracted())
+    {
+      climber.setWinchIsDeployed(false);
+      hasRetracted = true;
     }
 
   }
 
   @Override
   public void end(boolean interrupted) {
+    climber.stopAllMotors();
   }
 
   @Override
   public boolean isFinished() {
-    return hasRetracted;
+    return climber.isWinchRetracted() && climber.isClimberArmRetracted();
   }
 }

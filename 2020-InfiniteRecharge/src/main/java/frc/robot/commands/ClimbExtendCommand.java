@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.subsystems.ClimbSubsystem;
@@ -17,25 +19,26 @@ public class ClimbExtendCommand extends CommandBase {
 
   @Override
   public void initialize() {
-    hasDeployed = climber.isWinchDeployed();
+    hasDeployed = false;
+    climber.setWinchIsDeployed(true);
   }
 
   @Override
   public void execute() {
-
-    if (!hasDeployed) {
-      climber.extendArmsForClimbing();
-      hasDeployed = climber.setExtendWinch();
-    }
-
+      if( ! hasDeployed && climber.isWinchDeployed())
+      {
+        climber.extendArmsForClimbing();
+        hasDeployed = true;
+      }
   }
 
   @Override
   public void end(boolean interrupted) {
+    climber.stopAllMotors();
   }
 
   @Override
   public boolean isFinished() {
-    return hasDeployed;
+    return climber.isWinchDeployed() && climber.isClimberArmExtended();
   }
 }
