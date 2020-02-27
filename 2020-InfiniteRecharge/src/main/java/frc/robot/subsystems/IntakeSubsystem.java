@@ -70,7 +70,7 @@ public class IntakeSubsystem extends SubsystemBase {
       lastTimeWasExtended = Timer.getFPGATimestamp();
 
     if(Timer.getFPGATimestamp() < lastTimeWasExtended+1)
-      intakeShaft.set(-0.5);
+      intakeShaft.set(-0.6);  // Was 50% spd
     else
       intakeShaft.stopMotor();
   }

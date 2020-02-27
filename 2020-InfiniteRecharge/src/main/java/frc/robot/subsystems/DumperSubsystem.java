@@ -39,12 +39,12 @@ public class DumperSubsystem extends SubsystemBase {
   double max = 0.99;
 
   // Still need to tune these constants 2/25/20
-  double kpShoot = 0.15;
+  double kpShoot = 6e-4;
   double kiShoot = 0;
-  double kdShoot = 0;
+  double kdShoot = 1e-5;
 
   static double encodePosition = 0.0;
-  static final double encodeVelocity = 5500;  // 5700 is max rpm
+  static final double encodeVelocity = -5500;  // 5700 is max rpm
 
   public DumperSubsystem() {
     dumpCollect = new CANSparkMax(Constants.IndexerConstants.kIndexCollectID, MotorType.kBrushless);
@@ -88,7 +88,8 @@ public class DumperSubsystem extends SubsystemBase {
   public static void setDumpShootSpeed(boolean value)
   {
     if(value){
-      pidShoot.setReference(encodeVelocity, ControlType.kVelocity);
+      //pidShoot.setReference(encodeVelocity, ControlType.kVelocity);
+      dumpShoot.set(-0.8);
       System.err.println("#### Shoot works ####");
     } 
     else{
