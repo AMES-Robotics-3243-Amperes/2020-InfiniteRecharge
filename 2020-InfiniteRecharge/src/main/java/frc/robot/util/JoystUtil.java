@@ -65,6 +65,6 @@ public class JoystUtil
   }
 
   public static double scaleZone(double scale) {
-    return Math.pow(scale, 3);
+    return 0.85 * Math.pow(scale, 3);
   }
 }

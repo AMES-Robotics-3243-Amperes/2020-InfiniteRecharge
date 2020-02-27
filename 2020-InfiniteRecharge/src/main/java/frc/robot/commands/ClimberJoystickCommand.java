@@ -10,6 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ClimbSubsystem;
+import frc.robot.util.JoystUtil;
 
 public class ClimberJoystickCommand extends CommandBase {
 
@@ -36,8 +37,13 @@ public class ClimberJoystickCommand extends CommandBase {
     double leftJoystick = joystick.getRawAxis(1); 
     double rightJoystick = joystick.getRawAxis(3);
 
+    leftJoystick = JoystUtil.deadZone(leftJoystick);
+    rightJoystick = JoystUtil.deadZone(rightJoystick);
+
     climber.setLeftVelocity(leftJoystick);
     climber.setRightVelocity(rightJoystick);
+    System.err.println("#### Left Climb ####: " + leftJoystick);
+    System.err.println("#### Right Climb ####: " + rightJoystick);
   }
 
   // Called once the command ends or is interrupted.

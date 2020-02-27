@@ -11,6 +11,10 @@ public class ClimbResetCommand extends CommandBase {
   
   private final ClimbSubsystem climber;
   private boolean isDone = false;
+  private boolean  isDoneL = false;
+  private boolean isDoneR = false;
+  private boolean isDoneW = false; 
+
 
   public ClimbResetCommand(ClimbSubsystem climber) {
     addRequirements(climber);
@@ -27,7 +31,11 @@ public class ClimbResetCommand extends CommandBase {
   public void execute() {
       if( ! isDone)
       {
-        isDone |= climber.resetRetractLeft() && climber.resetRetractRight() && climber.resetRetractWinch();
+        isDoneL = climber.resetRetractLeft();
+        isDoneR = climber.resetRetractRight();
+        isDoneW = climber.resetRetractWinch();
+
+        isDone = isDoneL && isDoneR && isDoneW;
         if(isDone)
         {
             climber.stopAllMotors();

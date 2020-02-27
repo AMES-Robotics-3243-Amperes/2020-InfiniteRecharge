@@ -44,6 +44,7 @@ public class ClimbManualCommand extends CommandBase {
         double leftOffset = left * INTERRUPT_OFFSET_MULTI;
         double rightOffset = right * INTERRUPT_OFFSET_MULTI;
         double avgOffset = (right+left)/2.0 * INTERRUPT_OFFSET_MULTI;
+        
         if((left<0 || right<0) && ! (left>0 || right>0) // If trying to retract
                 && climber.isClimberArmRetracted() // AND both arms are retracted
                 && ! climber.isWinchRetracted()) // AND the winch is NOT down
