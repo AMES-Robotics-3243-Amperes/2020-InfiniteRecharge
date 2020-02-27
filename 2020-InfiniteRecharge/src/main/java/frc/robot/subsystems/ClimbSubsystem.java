@@ -32,9 +32,9 @@ public class ClimbSubsystem extends SubsystemBase {
   // 1 Extends Left
   // -1 Extends Right
   // -1 Deploys Winch
-  private CANSparkMax climberWinch = new CANSparkMax(Constants.ClimbingConstant.kClimbAdjID, MotorType.kBrushless);
-  private CANSparkMax climberR = new CANSparkMax(Constants.ClimbingConstant.kClimbRID, MotorType.kBrushless);
-  private CANSparkMax climberL = new CANSparkMax(Constants.ClimbingConstant.kClimbLID, MotorType.kBrushless);
+  public CANSparkMax climberWinch = new CANSparkMax(Constants.ClimbingConstant.kClimbAdjID, MotorType.kBrushless);
+  public CANSparkMax climberR = new CANSparkMax(Constants.ClimbingConstant.kClimbRID, MotorType.kBrushless);
+  public CANSparkMax climberL = new CANSparkMax(Constants.ClimbingConstant.kClimbLID, MotorType.kBrushless);
   private PIDMotor climberWinchPID = new PIDMotor(climberWinch);
   private PIDMotor pidControlRight = new PIDMotor(climberR);
   private PIDMotor pidControlLeft = new PIDMotor(climberL);
@@ -71,13 +71,13 @@ public class ClimbSubsystem extends SubsystemBase {
 
     climberWinchPID.setOutputRange(-1, 1);
 
-    //pidLeft.setP(kp);
-    //pidLeft.setI(ki);
-    //pidLeft.setD(kd);
+    pidControlLeft.setP(kp);
+    pidControlLeft.setI(ki);
+    pidControlLeft.setD(kd);
 
-    //pidRight.setP(kp);
-    //pidRight.setI(ki);
-    //pidRight.setD(kd);
+    pidControlRight.setP(kp);
+    pidControlRight.setI(ki);
+    pidControlRight.setD(kd);
 
     //climberWinch.getEncoder().setPosition(0);
     //climberR.getEncoder().setPosition(0);
@@ -137,28 +137,18 @@ public class ClimbSubsystem extends SubsystemBase {
   }
 
   public void setLeftVelocity(double velocity){
-    /*if(isLeftarmRetracted() && velocity > 0){
-
-      pidControlLeft.setPIDPosition(pidControlLeft.encoder.getPosition() - 1.75 * velocity);
-
-      //climberL.set(-0.8 * velocity);
-    } else if (isLeftArmExtended() && velocity < 0){
-
-      pidControlLeft.setPIDPosition(pidControlLeft.encoder.getPosition() - 1.75 * velocity);
-
-      //climberL.set(-0.8 * velocity);
-    } */
-    //pidControlLeft.setPIDPosition(pidControlLeft.encoder.getPosition() - .2 * velocity);
-
+    
     if((!isLeftarmRetracted() && velocity > 0) || (!isLeftArmExtended() && velocity < 0)){
       pidControlLeft.setPIDPosition(pidControlLeft.encoder.getPosition() - 2.25 * velocity);
     }
 
   }
   public void setRightVelocity(double velocity){
+
     if((!isRightArmRetracted() && velocity > 0) || (!isRightArmExtended() && velocity < 0)){
       pidControlRight.setPIDPosition(pidControlRight.encoder.getPosition() + 2.25 * velocity);
     }
+
   }
   
   public double getLeftArmPosition()
@@ -216,6 +206,12 @@ public class ClimbSubsystem extends SubsystemBase {
       System.err.println("#### THE LEFT CLIMBER DOES STOP ####");
       climberL.stopMotor();
       }
+
+    /*if((climberWinchPID.encoder.getVelocity() < -1 && isWinchRetracted())
+      || (climberWinchPID.encoder.getVelocity() > 1 && isWinchDeployed())){
+      System.err.println(" #### THE WINCH DOES STOP ##### ");
+      climberWinch.stopMotor();
+      }*/
   }
 
   public boolean isWinchDeployed()
@@ -235,7 +231,7 @@ public class ClimbSubsystem extends SubsystemBase {
   }
 
   public boolean isClimberArmExtended() {
-    return isLeftarmRetracted() && isRightArmExtended();
+    return isLeftarmRetracted() && isRightArmRetracted();
   }
   public boolean isLeftArmExtended()
   {
@@ -247,7 +243,7 @@ public class ClimbSubsystem extends SubsystemBase {
   }
 
   public boolean isClimberArmRetracted() {
-    return isRightArmRetracted() && isLeftarmRetracted();
+    return isRightArmExtended() && isLeftArmExtended();
   }
   public boolean isLeftarmRetracted()
   {
