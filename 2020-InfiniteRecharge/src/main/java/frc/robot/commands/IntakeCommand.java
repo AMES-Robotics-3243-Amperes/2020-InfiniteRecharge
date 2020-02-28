@@ -23,14 +23,14 @@ public class IntakeCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
-    if(IntakeSubsystem.currentExtended){
+    retract = !retract;
+    /*if(IntakeSubsystem.currentExtended){
       retract = true;
     } else if(IntakeSubsystem.currentRetracted){
       retract = false;
     } else {
       retract = true;
-    }
+    }*/
 
   }
 

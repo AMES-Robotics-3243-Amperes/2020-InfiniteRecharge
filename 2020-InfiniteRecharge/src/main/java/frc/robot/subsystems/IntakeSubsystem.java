@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // Wpilib imports
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -73,5 +74,8 @@ public class IntakeSubsystem extends SubsystemBase {
       intakeShaft.set(-0.6);  // Was 50% spd
     else
       intakeShaft.stopMotor();
+
+      SmartDashboard.putBoolean("currentExtended", currentExtended);
+      SmartDashboard.putBoolean("currentRetracted", currentRetracted);
   }
 }

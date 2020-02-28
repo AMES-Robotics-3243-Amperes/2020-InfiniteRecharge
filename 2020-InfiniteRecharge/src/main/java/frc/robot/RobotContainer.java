@@ -157,7 +157,7 @@ public class RobotContainer {
     dump.whenPressed(m_dumperCommand);
 
     JoystickButton toggleIntake = new JoystickButton(secondary, 2);
-    toggleIntake.toggleWhenPressed(m_IntakeCommand);
+    toggleIntake.whenPressed(m_IntakeCommand); // Toggling is done by the command itself
 
     JoystickButton driveLime = new JoystickButton(driver, 6);
     driveLime.whileActiveOnce(m_limelightCommand);
