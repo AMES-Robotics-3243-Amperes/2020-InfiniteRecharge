@@ -32,6 +32,7 @@ public class DumperSubsystem extends SubsystemBase {
   private static final double ballRotation = 2; // We don't know the correct rotations yet
 
   // Good enough 2/25/20
+  // Collector Constants
   double kp = 0.7;
   double ki = 1.5e-3;
   double kd = 5e-8;
@@ -39,12 +40,19 @@ public class DumperSubsystem extends SubsystemBase {
   double max = 0.99;
 
   // Still need to tune these constants 2/25/20
+  // Shooter Constants
+  // Todo:
+  /*
+  - Lower RPM for new goal (currently -5500) - needs to go into low goal, rather than the high one
+  - tune PID constants to correct oscillation
+  - 
+  */
   double kpShoot = 6e-4;
   double kiShoot = 0;
-  double kdShoot = 1e-5;
+  double kdShoot = 1e-2;
 
   static double encodePosition = 0.0;
-  static final double encodeVelocity = -5500;  // 5700 is max rpm
+  static final double encodeVelocity = -4000;  // 5700 is max rpm
 
   public DumperSubsystem() {
     dumpCollect = new CANSparkMax(Constants.IndexerConstants.kIndexCollectID, MotorType.kBrushless);
@@ -101,7 +109,10 @@ public class DumperSubsystem extends SubsystemBase {
     //Make motor dumpShoot spin continously
     //Check for a certain period of time to pass
     //Move dumpCollect dumpCollect to a certain spot
-    
+    setDumpShootSpeed(true);
+    if(encodeShoot.getVelocity() >= encodeVelocity - 500)
+      setDumpCollectSpeed(true, false);
+    // TODO: shooter needs to turn off when this method isn't called continuously
   }
 
   @Override

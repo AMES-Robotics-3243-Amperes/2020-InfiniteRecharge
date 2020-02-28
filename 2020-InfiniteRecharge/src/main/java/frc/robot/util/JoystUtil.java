@@ -1,5 +1,6 @@
 package frc.robot.util;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
@@ -51,7 +52,7 @@ public class JoystUtil
     return Math.min(realMax, Math.max(realMin, a));
   }
 
-  private static double lerp(double a, double b, double f) {
+  public static double lerp(double a, double b, double f) {
     return a + f * (b - a);
   }
 
@@ -63,6 +64,14 @@ public class JoystUtil
   }
 
   public static double scaleZone(double scale) {
+    //return Math.pow(scale, 2) * Math.signum(scale); // Keeps negative input negative
     return Math.pow(scale, 3);
+  }
+
+  
+
+  public static double getAxisMagnitude(Joystick joyst, int xAxis)
+  {
+    return Math.sqrt(Math.pow(joyst.getRawAxis(xAxis), 2) + Math.pow(joyst.getRawAxis(xAxis +1), 2));
   }
 }
