@@ -17,11 +17,13 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.subsystems.DrivetrainPIDSubsystem;
+import frc.robot.util.JoystUtil;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
@@ -46,6 +48,8 @@ public class DriveTrainSubSystem extends SubsystemBase {
   static boolean testBot = false;
   static double leftVector = 0.0; // deci multiple of 0.11111 - 0.99999
   static double rightVector = 0.0;
+  static double timeAtLastTankDrive = -1;
+  static final double SMOOTH_DECELERATION_COEFF = 5;
 
   // m_drive is a combination of both left and right motors
   // private DifferentialDrive m_drive;
@@ -121,17 +125,31 @@ public class DriveTrainSubSystem extends SubsystemBase {
     return rightSparkEncode;
   }
 
-  public static void tankDrive(double varLeft, double varRight, boolean bumperLeft) {
-    leftVector = varLeft;
-    rightVector = varRight;
+  public static void tankDrive(double speedL, double speedR, boolean isTurbo)
+  {
+    tankDrive(speedL, speedR, isTurbo, false);
+  }
+
+  public static void tankDrive(double varLeft, double varRight, boolean bumperLeft, boolean shouldSmoothDeceleration) {
+    double dTime = Timer.getFPGATimestamp() - timeAtLastTankDrive;
+    timeAtLastTankDrive = Timer.getFPGATimestamp();
+
+    if(shouldSmoothDeceleration && Math.abs(varLeft) < Math.abs(leftVector))
+      leftVector = JoystUtil.lerp(leftVector, varLeft, dTime*SMOOTH_DECELERATION_COEFF);
+    else
+      leftVector = varLeft;
+    if(shouldSmoothDeceleration && Math.abs(varRight) < Math.abs(rightVector))
+      rightVector = JoystUtil.lerp(rightVector, varRight, dTime*SMOOTH_DECELERATION_COEFF);
+    else
+      rightVector = varRight;
 
     // Switched negative sign from right side to left side
     if (bumperLeft) {
-      m_rightSide.setSetpoint(-varRight * 1.5);
-      m_leftSide.setSetpoint(varLeft * 1.5);
+      m_rightSide.setSetpoint(rightVector * 1.5);
+      m_leftSide.setSetpoint(-leftVector * 1.5);
     } else {
-      m_rightSide.setSetpoint(-varRight);
-      m_leftSide.setSetpoint(varLeft);
+      m_rightSide.setSetpoint(rightVector);
+      m_leftSide.setSetpoint(-leftVector);
 
     }
 

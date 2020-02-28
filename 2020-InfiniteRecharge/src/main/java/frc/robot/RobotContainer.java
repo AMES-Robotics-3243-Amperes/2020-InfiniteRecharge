@@ -37,7 +37,7 @@ public class RobotContainer {
   static double steerRight;
 
   // This helps the code know if we're using the practice robot or the competition robot
-  public static boolean isPractice = Preferences.getInstance().getBoolean("Is Practice", false);
+  public static boolean isPractice = false; // TODO Silas: I don't know how to set preferences, hardcoded for now.  //Preferences.getInstance().getBoolean("Is Practice", false);
   static boolean toggleActOn = false;
   static boolean toggleActPressed = false;
   
@@ -188,7 +188,7 @@ public class RobotContainer {
     steerLeft = JoystUtil.matchZone(steerLeft, sr);
     if (Constants.TEST_VERSION)
       SmartDashboard.putNumber("Unscaled JoyL", steerLeft);
-    steerLeft = 0.85 * JoystUtil.scaleZone(steerLeft);
+    steerLeft =  Constants.DriveConstants.DRIVE_SLOW_SPEED * JoystUtil.scaleZone(steerLeft);
 
     return steerLeft;
   }
@@ -200,14 +200,17 @@ public class RobotContainer {
     steerRight = JoystUtil.matchZone(steerRight, sl);
     if (Constants.TEST_VERSION)
       SmartDashboard.putNumber("Unscaled JoyR", steerRight);
-    steerRight = 0.85 * JoystUtil.scaleZone(steerRight);
+    steerRight = Constants.DriveConstants.DRIVE_SLOW_SPEED * JoystUtil.scaleZone(steerRight);
 
     return steerRight;
   }
 
   /** Gets a joystick value, with dead zone applied. */
   private static double getJoystWithDead(boolean isLeft) {
-    double steer = isLeft ? driver.getRawAxis(1) : driver.getRawAxis(3);
+    // Silas: trying using the amount the stick is pressed in any direction times the sign of the vertical axis.
+    //     May help with perceived stick sensitivity issues.
+    double steer = isLeft ? JoystUtil.getAxisMagnitude(driver, 0) * Math.signum(driver.getRawAxis(1))
+      : JoystUtil.getAxisMagnitude(driver, 2) * Math.signum(driver.getRawAxis(3));
     steer = JoystUtil.deadZone(steer);
     return steer;
   }
