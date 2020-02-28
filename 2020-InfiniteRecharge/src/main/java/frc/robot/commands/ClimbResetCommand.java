@@ -36,6 +36,7 @@ public class ClimbResetCommand extends CommandBase {
         isDoneW = climber.resetRetractWinch();
 
         isDone = isDoneL && isDoneR && isDoneW;
+
         if(isDone)
         {
             climber.stopAllMotors();

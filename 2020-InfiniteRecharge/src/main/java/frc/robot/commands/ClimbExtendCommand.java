@@ -34,7 +34,11 @@ public class ClimbExtendCommand extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    climber.stopAllMotors();
+    //climber.stopAllMotors();
+    climber.climberWinch.stopMotor();
+    climber.climberL.stopMotor();
+    climber.climberR.stopMotor();
+            
   }
 
   @Override
