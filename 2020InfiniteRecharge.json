@@ -12,7 +12,7 @@
         "tiles": {
           "0,0": {
             "size": [
-              7,
+              5,
               4
             ],
             "content": {
@@ -25,11 +25,11 @@
               "Controls/Rotation": "NONE",
               "compression": -1.0,
               "fps": -1,
-              "imageWidth": -1,
-              "imageHeight": -1
+              "imageWidth": 0,
+              "imageHeight": 0
             }
           },
-          "7,0": {
+          "5,0": {
             "size": [
               2,
               1
@@ -40,7 +40,7 @@
               "_title": "/SmartDashboard/Lime X: "
             }
           },
-          "7,1": {
+          "5,1": {
             "size": [
               2,
               1
@@ -51,7 +51,7 @@
               "_title": "/SmartDashboard/Lime Y: "
             }
           },
-          "7,2": {
+          "5,2": {
             "size": [
               2,
               1
@@ -62,7 +62,7 @@
               "_title": "/SmartDashboard/Lime Area: "
             }
           },
-          "7,3": {
+          "5,3": {
             "size": [
               2,
               1
@@ -73,6 +73,28 @@
               "_title": "/SmartDashboard/See target?: ",
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "7,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Dist",
+              "_title": "SmartDashboard/Dist"
+            }
+          },
+          "7,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Steer",
+              "_title": "SmartDashboard/Steer"
             }
           }
         }
@@ -396,6 +418,19 @@
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
             }
+          },
+          "5,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/isClimberArmExtended",
+              "_title": "SmartDashboard/isClimberArmExtended",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
           }
         }
       }
@@ -536,9 +571,9 @@
     }
   ],
   "windowGeometry": {
-    "x": 1358.6666259765625,
-    "y": -7.333333492279053,
-    "width": 1294.6666259765625,
-    "height": 694.6666870117188
+    "x": -8.0,
+    "y": -8.0,
+    "width": 1382.0,
+    "height": 744.0
   }
 }
