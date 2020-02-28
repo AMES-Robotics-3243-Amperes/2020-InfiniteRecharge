@@ -35,7 +35,7 @@ public class ClimbSubsystem extends SubsystemBase {
   public CANSparkMax climberWinch = new CANSparkMax(Constants.ClimbingConstant.kClimbAdjID, MotorType.kBrushless);
   public CANSparkMax climberR = new CANSparkMax(Constants.ClimbingConstant.kClimbRID, MotorType.kBrushless);
   public CANSparkMax climberL = new CANSparkMax(Constants.ClimbingConstant.kClimbLID, MotorType.kBrushless);
-  private PIDMotor climberWinchPID = new PIDMotor(climberWinch);
+  public PIDMotor climberWinchPID = new PIDMotor(climberWinch);
   private PIDMotor pidControlRight = new PIDMotor(climberR);
   private PIDMotor pidControlLeft = new PIDMotor(climberL);
 
@@ -55,7 +55,7 @@ public class ClimbSubsystem extends SubsystemBase {
   // NOT YET TUNED TO THE ROBOT! 2/5/20
   double kp = 0.65;
   double ki = 0.0;
-  double kd = 0.0;
+  double kd = 1e-8;
   double min = -0.25;
   double max = 0.25;
 
@@ -90,7 +90,8 @@ public class ClimbSubsystem extends SubsystemBase {
 
   public void setWinchIsDeployed(boolean shouldDeploy) {
     // Moves the climbing system up
-    setWinchTarget(shouldDeploy ?WINCH_DEPLOYED_ROTS :0);
+    //setWinchTarget(shouldDeploy ?WINCH_DEPLOYED_ROTS :0);
+    climberWinch.set(shouldDeploy ?-1.0 : 1.0);
   }
 
   public void setWinchTarget(double rotations) {
@@ -173,6 +174,7 @@ public class ClimbSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Winch rots", climberWinchPID.encoder.getPosition());
     SmartDashboard.putNumber("climbL rots", pidControlLeft.encoder.getPosition());
     SmartDashboard.putNumber("climbR rots", pidControlRight.encoder.getPosition());
+    SmartDashboard.putBoolean("isClimberArmExtended", isClimberArmExtended());
 
     enforceMotorRangeSafeguards();
 
@@ -231,7 +233,7 @@ public class ClimbSubsystem extends SubsystemBase {
   }
 
   public boolean isClimberArmExtended() {
-    return isLeftarmRetracted() && isRightArmRetracted();
+    return isLeftArmExtended() && isRightArmExtended(); // Checks if arm is retracted when method is for extended
   }
   public boolean isLeftArmExtended()
   {
@@ -243,7 +245,7 @@ public class ClimbSubsystem extends SubsystemBase {
   }
 
   public boolean isClimberArmRetracted() {
-    return isRightArmExtended() && isLeftArmExtended();
+    return isRightArmRetracted() && isLeftarmRetracted();
   }
   public boolean isLeftarmRetracted()
   {

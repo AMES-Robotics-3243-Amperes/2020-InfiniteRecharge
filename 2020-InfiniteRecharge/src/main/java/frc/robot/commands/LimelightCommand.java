@@ -41,14 +41,14 @@ public class LimelightCommand extends CommandBase {
   @Override
   public void execute() {
 
-    double var =  0;
+    double var = 0.0;
     double var2 = 0.0;
 
     double steer = LimelightSubsystem.setPIDSteer();
-    double dist = LimelightSubsystem.setPIDDist();
+    double dist = -LimelightSubsystem.setPIDDist();
     
-      var = dist - steer;
-      var2 = dist + steer;
+      var = dist + steer;
+      var2 = dist - steer;
 
       SmartDashboard.putNumber("Steer", steer);
       SmartDashboard.putNumber("Dist", dist);

@@ -165,6 +165,7 @@ public class RobotContainer {
 
     // SECONDARY
     JoystickButton climberButton = new JoystickButton(secondary, 4);
+    // Starts running ClimbCommand when button 4 is pressed
     climberButton.whenPressed(m_climbCommand);
   }
 

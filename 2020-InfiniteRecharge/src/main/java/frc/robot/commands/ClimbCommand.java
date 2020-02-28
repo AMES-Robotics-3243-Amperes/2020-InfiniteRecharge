@@ -26,6 +26,7 @@ public class ClimbCommand extends CommandBase {
   @Override
   public void execute() {
     isInDeployMode = !isInDeployMode;
+    System.err.println("####### The climb button is: " + isInDeployMode + " #######");
     if (isInDeployMode)
       extend.schedule();
     else

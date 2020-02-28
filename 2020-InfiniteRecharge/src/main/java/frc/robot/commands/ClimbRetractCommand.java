@@ -7,8 +7,7 @@ import frc.robot.RobotContainer;
 
 public class ClimbRetractCommand extends CommandBase {
 
-  private final ClimbSubsystem climber;
-  private boolean hasRetracted; // flag
+  private final ClimbSubsystem climber;  
 
   public ClimbRetractCommand(ClimbSubsystem climber) {
     addRequirements(climber);
@@ -17,16 +16,13 @@ public class ClimbRetractCommand extends CommandBase {
 
   @Override
   public void initialize() {
-    hasRetracted = false;
-    climber.retractArms();
   }
 
   @Override
   public void execute() {
-    if( ! hasRetracted && climber.isClimberArmRetracted())
+    if( !climber.isWinchRetracted())
     {
       climber.setWinchIsDeployed(false);
-      hasRetracted = true;
     }
 
   }
@@ -38,6 +34,6 @@ public class ClimbRetractCommand extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return climber.isWinchRetracted() && climber.isClimberArmRetracted();
+    return climber.isWinchRetracted();
   }
 }
