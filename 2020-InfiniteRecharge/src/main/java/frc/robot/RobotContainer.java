@@ -207,7 +207,7 @@ public class RobotContainer {
   /** Gets a joystick value, with dead zone applied. */
   private static double getJoystWithDead(boolean isLeft) {
     // Silas: trying using the amount the stick is pressed in any direction times the sign of the vertical axis.
-    //     May help with perceived stick sensitivity issues.
+    //     Is more intuitive, and may help with perceived stick sensitivity issues.
     double steer = isLeft ? JoystUtil.getAxisMagnitude(driver, 0) * Math.signum(driver.getRawAxis(1))
       : JoystUtil.getAxisMagnitude(driver, 2) * Math.signum(driver.getRawAxis(3));
     steer = JoystUtil.deadZone(steer);
