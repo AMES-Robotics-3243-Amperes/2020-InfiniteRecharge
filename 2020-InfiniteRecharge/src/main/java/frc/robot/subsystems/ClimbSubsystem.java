@@ -195,7 +195,7 @@ public class ClimbSubsystem extends SubsystemBase {
   private void enforceMotorRangeSafeguards()
   {
     // Arm extension safeguard; If near limit and moving toward limit, stop the motor.
-    if((pidControlRight.encoder.getVelocity()>1 && isRightArmRetracted())
+    if((pidControlRight.encoder.getVelocity()>1 && isRightArmRetracted()) // Velocity in RPM
       || (pidControlRight.encoder.getVelocity()<-1 && isRightArmExtended())){
         System.err.println("#### THE RIGHT CLIMBER DOES STOP ####");
         climberR.stopMotor();
