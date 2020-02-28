@@ -101,7 +101,10 @@ public class DumperSubsystem extends SubsystemBase {
     //Make motor dumpShoot spin continously
     //Check for a certain period of time to pass
     //Move dumpCollect dumpCollect to a certain spot
-    
+    setDumpShootSpeed(true);
+    if(encodeShoot.getVelocity() >= encodeVelocity - 500)
+      setDumpCollectSpeed(true, false);
+    // TODO: shooter needs to turn off when this method isn't called continuously
   }
 
   @Override

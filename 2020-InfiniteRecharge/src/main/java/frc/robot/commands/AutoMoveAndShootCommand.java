@@ -7,40 +7,52 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.AutoSubsystem;
+import frc.robot.subsystems.DriveTrainSubSystem;
+import frc.robot.subsystems.DumperSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
  * An example command that uses an example subsystem.
  */
-public class AutoCommand extends CommandBase {
+public class AutoMoveAndShootCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final AutoSubsystem m_subsystem;
+  private final DriveTrainSubSystem driveTrain;
+  private final DumperSubsystem shooter;
+  private boolean hasAligned = false;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public AutoCommand(AutoSubsystem subsystem) {
-    m_subsystem = subsystem;
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
+  public AutoMoveAndShootCommand(DriveTrainSubSystem driveTrain, DumperSubsystem shooter) {
+    this.driveTrain = driveTrain;
+    this.shooter = shooter;
+    addRequirements(driveTrain);
+    addRequirements(shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    hasAligned = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // TODO: steer with limelight, set isAligned to whether or not we're good to shoot
+
+    if(hasAligned)
+    {
+      shooter.shootBall();
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    driveTrain.tankDrive(0, 0, false);
   }
 
   // Returns true when the command should end.
