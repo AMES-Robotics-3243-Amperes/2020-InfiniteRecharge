@@ -10,7 +10,6 @@ import frc.robot.RobotContainer;
 public class ClimbExtendCommand extends CommandBase {
 
   private final ClimbSubsystem climber;
-  private boolean hasDeployed; // flag
 
   public ClimbExtendCommand(ClimbSubsystem climber) {
     addRequirements(climber);
@@ -19,30 +18,24 @@ public class ClimbExtendCommand extends CommandBase {
 
   @Override
   public void initialize() {
-    hasDeployed = false;
-    climber.setWinchIsDeployed(true);
   }
 
   @Override
   public void execute() {
-      if( ! hasDeployed && climber.isWinchDeployed())
+      if( ! climber.isWinchDeployed())
       {
-        climber.extendArmsForClimbing();
-        hasDeployed = true;
+        climber.setWinchIsDeployed(true);
+
       }
   }
 
   @Override
   public void end(boolean interrupted) {
-    //climber.stopAllMotors();
-    climber.climberWinch.stopMotor();
-    climber.climberL.stopMotor();
-    climber.climberR.stopMotor();
-            
+    climber.stopAllMotors();        
   }
 
   @Override
   public boolean isFinished() {
-    return climber.isWinchDeployed() && climber.isClimberArmExtended();
+    return climber.isWinchDeployed();
   }
 }
