@@ -95,8 +95,8 @@ public class DumperSubsystem extends SubsystemBase {
   public static void setDumpShootSpeed(boolean value)
   {
     if(value){
-      pidShoot.setReference(encodeVelocity, ControlType.kVelocity);
-      //dumpShoot.set(-1);
+      //pidShoot.setReference(encodeVelocity, ControlType.kVelocity);
+      dumpShoot.set(-1);
       System.err.println("#### Shoot works ####");
     } 
     else{

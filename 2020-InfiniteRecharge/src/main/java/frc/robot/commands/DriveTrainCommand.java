@@ -32,14 +32,15 @@ public class DriveTrainCommand extends CommandBase {
         RobotContainer.configureDriveLeft(), 
         RobotContainer.configureDriveRight(),
         RobotContainer.getTurbo(),
-        true // do smoot deceleration
+        RobotContainer.getShouldDriveSlow(),
+        true // do smooth deceleration
       );
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    DriveTrainSubSystem.tankDrive(0.0, 0.0, false); //Get rid of "false" later on
+    DriveTrainSubSystem.tankDrive(0.0, 0.0, false, false); //Get rid of "false" later on
   }
 
   // Returns true when the command should end.
