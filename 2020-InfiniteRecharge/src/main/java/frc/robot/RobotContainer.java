@@ -50,14 +50,14 @@ public class RobotContainer {
   public static ControlPanelSubsystem m_controlPanelSubsystem = new ControlPanelSubsystem();
   public final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
   public static DumperSubsystem m_dumperSubsystem = new DumperSubsystem();
-  public static ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
+  public static ClimbArmsSubsystem m_climbArmsSubsystem = new ClimbArmsSubsystem();
+  public static ClimbWinchSubsystem m_climbWinchSubsystem = new ClimbWinchSubsystem();
   //----------------------------------------------------------------------------------------------
   //----------------------------------------------------------- COMMANDS --------------------------------------------------------------
   public final static DriveTrainCommand m_robotDriveCommand = new DriveTrainCommand(m_robotDriveSubsystem);
   private final AutoMoveAndShootCommand m_autoCommand = new AutoMoveAndShootCommand(m_robotDriveSubsystem, m_dumperSubsystem);
   private final LimelightCommand m_limelightCommand = new LimelightCommand(m_robotDriveSubsystem, m_limelightSubsystem);
-  protected final ClimbCommand m_climbCommand = new ClimbCommand(m_climbSubsystem,
-      new ClimbExtendCommand(m_climbSubsystem), new ClimbRetractCommand(m_climbSubsystem));
+  protected final ClimbCommand m_climbCommand = new ClimbCommand(m_climbWinchSubsystem, m_climbArmsSubsystem);
   public static IntakeCommand m_IntakeCommand = new IntakeCommand(m_IntakeSubsystem);
   // -------------------------------------------------------------------------------------------------------------------------------------
   // ----------------------------------------------------------- CONTROL PANEL

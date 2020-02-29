@@ -1,39 +1,35 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
-import frc.robot.subsystems.ClimbSubsystem;
+import frc.robot.subsystems.ClimbArmsSubsystem;
 import frc.robot.RobotContainer;
 
-public class ClimbRetractCommand extends CommandBase {
+public class ClimbRetractArmsCommand extends CommandBase {
 
-  private final ClimbSubsystem climber;  
+  private final ClimbArmsSubsystem climber;  
 
-  public ClimbRetractCommand(ClimbSubsystem climber) {
+  public ClimbRetractArmsCommand(ClimbArmsSubsystem climber) {
     addRequirements(climber);
     this.climber = climber; // Set variable to the object
   }
 
   @Override
   public void initialize() {
+    climber.retractArms();
   }
 
   @Override
   public void execute() {
-    if( !climber.isWinchRetracted())
-    {
-      climber.setWinchIsDeployed(false);
-    }
-
   }
 
   @Override
   public void end(boolean interrupted) {
-    climber.stopAllMotors();
+    climber.stopArmLeft();
+    climber.stopArmRight();
   }
 
   @Override
   public boolean isFinished() {
-    return climber.isWinchRetracted();
+    return climber.isClimberArmRetracted();
   }
 }

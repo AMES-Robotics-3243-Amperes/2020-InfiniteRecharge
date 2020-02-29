@@ -3,15 +3,14 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
-import frc.robot.subsystems.ClimbSubsystem;
+import frc.robot.subsystems.ClimbWinchSubsystem;
 import frc.robot.RobotContainer;
 
-public class ClimbExtendCommand extends CommandBase {
+public class ClimbExtendWinchCommand extends CommandBase {
 
-  private final ClimbSubsystem climber;
+  private final ClimbWinchSubsystem climber;
 
-  public ClimbExtendCommand(ClimbSubsystem climber) {
+  public ClimbExtendWinchCommand(ClimbWinchSubsystem climber) {
     addRequirements(climber);
     this.climber = climber; // Set variable to the object
   }
@@ -22,16 +21,13 @@ public class ClimbExtendCommand extends CommandBase {
 
   @Override
   public void execute() {
-      if( ! climber.isWinchDeployed())
-      {
-        climber.setWinchIsDeployed(true);
-
-      }
+    if( ! climber.isWinchDeployed())
+      climber.winchPeriodic(true);
   }
 
   @Override
   public void end(boolean interrupted) {
-    climber.stopAllMotors();        
+    climber.stopWinch();       
   }
 
   @Override
