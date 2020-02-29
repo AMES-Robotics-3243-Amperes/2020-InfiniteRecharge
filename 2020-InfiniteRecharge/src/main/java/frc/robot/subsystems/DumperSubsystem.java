@@ -52,7 +52,7 @@ public class DumperSubsystem extends SubsystemBase {
   double kdShoot = 1e-2;
 
   static double encodePosition = 0.0;
-  static final double encodeVelocity = -3000;  // 5700 is max rpm
+  static final double encodeVelocity = -5700;  // 5700 is max rpm. Negative to invert motor
 
   public DumperSubsystem() {
     dumpCollect = new CANSparkMax(Constants.IndexerConstants.kIndexCollectID, MotorType.kBrushless);
@@ -73,12 +73,11 @@ public class DumperSubsystem extends SubsystemBase {
     pidShoot.setI(kiShoot);
     pidShoot.setD(kdShoot);
 
-
   }
 
   public static void setDumpCollectSpeed(boolean shoot, boolean backwards)
   {
-    
+    // Backwards not work? Not tested.
     if(shoot && !backwards){
       encodePosition = encodeCollect.getPosition() + ballRotation;
       pidCollect.setReference(encodePosition, ControlType.kPosition);
@@ -110,7 +109,8 @@ public class DumperSubsystem extends SubsystemBase {
     //Check for a certain period of time to pass
     //Move dumpCollect dumpCollect to a certain spot
     setDumpShootSpeed(true);
-    if(encodeShoot.getVelocity() >= encodeVelocity - 500)
+    // 5700 is the free speed limit of the shooter
+    if(encodeShoot.getVelocity() >= encodeVelocity - 500 && encodeShoot.getVelocity() <= 5700) 
       setDumpCollectSpeed(true, false);
     // TODO: shooter needs to turn off when this method isn't called continuously
   }
