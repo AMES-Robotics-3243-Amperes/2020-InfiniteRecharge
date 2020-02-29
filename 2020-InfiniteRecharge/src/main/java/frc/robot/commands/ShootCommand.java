@@ -28,13 +28,21 @@ public class ShootCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    DumperSubsystem.setDumpShootSpeed(RobotContainer.configureBallShoot());
+
+    if(RobotContainer.configureBallHighShoot()){
+      DumperSubsystem.setDumpHighSpeed();
+    } else if(RobotContainer.configureBallLowShoot()){
+      DumperSubsystem.setDumpLowSpeed();
+    } else {
+      DumperSubsystem.stopShoot();
+    }
+
+    //DumperSubsystem.setDumpShootSpeed(RobotContainer.configureBallHighShoot());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    DumperSubsystem.setDumpShootSpeed(false);
   }
 
   // Returns true when the command should end.
