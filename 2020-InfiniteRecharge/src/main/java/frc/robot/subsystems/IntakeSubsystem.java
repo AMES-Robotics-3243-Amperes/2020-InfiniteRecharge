@@ -42,7 +42,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void setExtend(){
-      if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentExtended) {
+      if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentExtended) { // This makes sense: if the output is less than the constant, it will continue to extend
         currentRetracted = false; 
         intakeActuator.set(-0.65);
       } else {
@@ -54,7 +54,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void setRetract(){
     
-    if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentRetracted) {
+    if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentRetracted) { 
       currentExtended = false;
       intakeActuator.set(0.65);
     } else{
