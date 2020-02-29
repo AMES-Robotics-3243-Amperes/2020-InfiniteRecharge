@@ -9,8 +9,6 @@ package frc.robot.commands;
 
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.*;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
@@ -28,13 +26,23 @@ public class DumperCommand extends CommandBase {
 
   @Override
   public void execute(){
-    DumperSubsystem.setDumpCollectSpeed(RobotContainer.configureBallCollect(),RobotContainer.configureBallCollectBackwards());
+
+    if(RobotContainer.configureBallCollect() && !RobotContainer.configureBallCollectBackwards()){
+      DumperSubsystem.setDumpForward();
+      System.err.println("############ Setting forward works #############");
+    } else if(RobotContainer.configureBallCollectBackwards() && !RobotContainer.configureBallCollect()){
+      DumperSubsystem.setDumpBackward();
+      System.err.println("############ Setting backward works #############");
+    } else {
+      DumperSubsystem.stopDump();
+    }
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    DumperSubsystem.setDumpCollectSpeed(false,false);
+    //DumperSubsystem.setDumpCollectSpeed(false,false);
   }
 
   // Returns true when the command should end.

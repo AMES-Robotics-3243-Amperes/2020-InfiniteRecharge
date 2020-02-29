@@ -79,7 +79,8 @@ public class RobotContainer {
   private final ControlPanelCommand.Manual manualPanelRight = new ControlPanelCommand.Manual(m_controlPanelSubsystem,
       0.5);
 
-  private final ShootCommand m_shootCommand = new ShootCommand(m_dumperSubsystem, m_limelightSubsystem);
+  private static DumperCommand m_dumperCommand = new DumperCommand();
+  private ShootCommand m_shootCommand = new ShootCommand(m_dumperSubsystem, m_limelightSubsystem);
 
   // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   // --------------------------------------------------------------------
@@ -151,6 +152,9 @@ public class RobotContainer {
     POVButton ctlPanelManualRight = new POVButton(driver, 90);
     ctlPanelManualLeft.whenHeld(manualPanelLeft, true);
     ctlPanelManualLeft.whenHeld(manualPanelRight, true);
+
+    JoystickButton dump = new JoystickButton(secondary, 6);
+    dump.whenPressed(m_dumperCommand);
 
     JoystickButton toggleIntake = new JoystickButton(secondary, 2);
     toggleIntake.toggleWhenPressed(m_IntakeCommand);
@@ -232,7 +236,11 @@ public class RobotContainer {
     return secondary.getRawButton(5);
   }
 
-  public static boolean configureBallShoot(){
+  public static boolean configureBallHighShoot(){
+    return secondary.getRawButton(6);
+  }
+
+  public static boolean configureBallLowShoot(){
     return secondary.getRawButton(8);
   }
 

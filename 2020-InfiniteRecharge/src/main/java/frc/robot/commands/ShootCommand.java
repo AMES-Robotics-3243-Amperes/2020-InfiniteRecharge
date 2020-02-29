@@ -32,11 +32,20 @@ public class ShootCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double inchesToHighGoal = limelight.getInchesFromHighGoal();
+    
 
-    double shootSpeed = 5700; // TODO
+    if(RobotContainer.configureBallHighShoot())
+    {
+      double inchesToHighGoal = limelight.getInchesFromHighGoal();
+      double shootSpeed = 5700; // TODO: limelight finds shoot speed
+      shooter.setShootSpeed(shootSpeed);
+    } else if(RobotContainer.configureBallLowShoot())
+    {
+      DumperSubsystem.setDumpLowSpeed();
+    } else
+      shooter.stopShoot();
 
-    shooter.setShootSpeed(RobotContainer.configureBallShoot() ?shootSpeed :0);
+    //DumperSubsystem.setDumpShootSpeed(RobotContainer.configureBallHighShoot());
   }
 
   // Called once the command ends or is interrupted.
