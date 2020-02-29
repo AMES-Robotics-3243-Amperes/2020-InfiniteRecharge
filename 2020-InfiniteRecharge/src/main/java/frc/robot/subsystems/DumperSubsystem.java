@@ -36,7 +36,7 @@ public class DumperSubsystem extends SubsystemBase {
   double kp = 0.7;
   double ki = 1.5e-3;
   double kd = 5e-7;
-  double min = 0.0;
+  double min = -0.99;
   double max = 0.99;
 
   // Still need to tune these constants 2/25/20
@@ -127,7 +127,7 @@ public class DumperSubsystem extends SubsystemBase {
     dumpShoot.stopMotor();
   }
 
-  public static void setDumpShootSpeed(boolean value)
+  /*public static void setDumpShootSpeed(boolean value)
   {
     if(value){
       //pidShoot.setReference(encodeVelocity, ControlType.kVelocity);
@@ -138,13 +138,13 @@ public class DumperSubsystem extends SubsystemBase {
     else{
       pidShoot.setReference(0, ControlType.kVelocity);
     }
-  }
+  }*/
   
   public static void shootBall(){
     //Make motor dumpShoot spin continously
     //Check for a certain period of time to pass
     //Move dumpCollect dumpCollect to a certain spot
-    setDumpShootSpeed(true);
+    //setDumpShootSpeed(true);
     // 5700 is the free speed limit of the shooter
     if(encodeShoot.getVelocity() >= encodeVelocity - 500 && encodeShoot.getVelocity() <= 5700) 
       //setDumpCollectSpeed(true, false);
