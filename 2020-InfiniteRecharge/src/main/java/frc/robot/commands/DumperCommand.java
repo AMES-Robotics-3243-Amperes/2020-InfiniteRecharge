@@ -26,7 +26,6 @@ public class DumperCommand extends CommandBase {
 
   @Override
   public void execute(){
-
     if(RobotContainer.configureBallCollect() && !RobotContainer.configureBallCollectBackwards()){
       DumperSubsystem.setDumpForward();
       System.err.println("############ Setting forward works #############");

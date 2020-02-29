@@ -75,7 +75,7 @@ public class DumperSubsystem extends SubsystemBase {
 
   }
 
-  /*public static void setDumpCollectSpeed(boolean shoot, boolean backwards)
+  public void setDumpCollectSpeed(boolean shoot, boolean backwards)
   {
     // Backwards not work? Not tested.
     if(shoot && !backwards){
@@ -90,7 +90,7 @@ public class DumperSubsystem extends SubsystemBase {
       dumpCollect.stopMotor();
     }
     
-  }*/
+  }
 
   public static void setDumpForward(){
     encodePosition = encodeCollect.getPosition() + ballRotation;
@@ -127,9 +127,9 @@ public class DumperSubsystem extends SubsystemBase {
     dumpShoot.stopMotor();
   }
 
-  /*public static void setDumpShootSpeed(boolean value)
+  public void setShootSpeedOnOrOff(boolean shooterOn)
   {
-    if(value){
+    if(shooterOn){
       //pidShoot.setReference(encodeVelocity, ControlType.kVelocity);
       dumpShoot.set(-1);
       System.err.println("###### RPM: " + encodeShoot.getVelocity() + "###### ");
@@ -138,13 +138,19 @@ public class DumperSubsystem extends SubsystemBase {
     else{
       pidShoot.setReference(0, ControlType.kVelocity);
     }
-  }*/
+  }
+
+  /** Call to set the PID target speed for the shooter. Positive speed = shoot */
+  public void setShootSpeed(double rpm)
+  {
+    pidShoot.setReference( - rpm, ControlType.kVelocity);
+  }
   
-  public static void shootBall(){
+  public void shootBall(){
     //Make motor dumpShoot spin continously
     //Check for a certain period of time to pass
     //Move dumpCollect dumpCollect to a certain spot
-    //setDumpShootSpeed(true);
+    setShootSpeedOnOrOff(true);
     // 5700 is the free speed limit of the shooter
     if(encodeShoot.getVelocity() >= encodeVelocity - 500 && encodeShoot.getVelocity() <= 5700) 
       //setDumpCollectSpeed(true, false);

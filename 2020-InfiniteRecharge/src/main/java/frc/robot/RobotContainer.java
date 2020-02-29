@@ -80,14 +80,14 @@ public class RobotContainer {
       0.5);
 
   private static DumperCommand m_dumperCommand = new DumperCommand();
-  private static ShootCommand m_shootCommand = new ShootCommand();
+  private ShootCommand m_shootCommand = new ShootCommand(m_dumperSubsystem, m_limelightSubsystem);
 
   // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   // --------------------------------------------------------------------
   // AUTONOMOUS
   // ---------------------------------------------------------------------------------------------------------------------------------------------------------------
   public static DriveForward m_driveForward = new DriveForward();
-  public static AutoDump m_AutoDump = new AutoDump();
+  public static AutoDump m_AutoDump = new AutoDump(m_dumperSubsystem);
   // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
   // Color Wheel variables. ALSO, YOU CAN PUT THIS INTO CONSTANTS TO MAKE THIS PLACE A LITTLE MORE NEAT?
@@ -153,8 +153,8 @@ public class RobotContainer {
     ctlPanelManualLeft.whenHeld(manualPanelLeft, true);
     ctlPanelManualLeft.whenHeld(manualPanelRight, true);
 
-/*    JoystickButton dump = new JoystickButton(secondary, 6);
-    dump.whenPressed(m_dumperCommand);*/
+    JoystickButton dump = new JoystickButton(secondary, 6);
+    dump.whenPressed(m_dumperCommand);
 
     JoystickButton toggleIntake = new JoystickButton(secondary, 2);
     toggleIntake.toggleWhenPressed(m_IntakeCommand);
@@ -281,10 +281,6 @@ public Command getLimelightCommand(){ // Limelight
 
   public Command getShootCommand(){
     return m_shootCommand;
-  }
-
-  public Command getDumperCommand(){
-    return m_dumperCommand;
   }
 
  

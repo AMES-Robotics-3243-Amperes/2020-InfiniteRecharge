@@ -13,14 +13,13 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DumperSubsystem;
 
 public class AutoDump extends CommandBase {
-  /**
-   * Creates a new AutoDump.
-   */
+  private DumperSubsystem shooter;
   double startTime = 3;
   double timeNow;
 
-  public AutoDump() {
-    // Use addRequirements() here to declare subsystem dependencies.
+  public AutoDump(DumperSubsystem shooter) {
+    addRequirements(shooter);
+    this.shooter = shooter;
   }
 
   // Called when the command is initially scheduled.
