@@ -36,7 +36,7 @@ public class DumperSubsystem extends SubsystemBase {
   double kp = 0.7;
   double ki = 1.5e-3;
   double kd = 5e-7;
-  double min = 0.0;
+  double min = -0.99;
   double max = 0.99;
 
   // Still need to tune these constants 2/25/20
