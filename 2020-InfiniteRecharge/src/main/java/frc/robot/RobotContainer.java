@@ -180,6 +180,12 @@ public class RobotContainer {
   public static boolean getTurbo() {
     return driver.getRawButton(5);
   }
+  private static boolean shouldDriveSlow = false;
+  public static boolean getShouldDriveSlow() {
+    if(driver.getRawButtonPressed(7))
+      shouldDriveSlow = !shouldDriveSlow; // This method is called periodically, so toggling logic  will work here.
+    return shouldDriveSlow;
+  }
 
   public static double configureDriveLeft() { // This passes in the axis steering for robot drive
     steerLeft = getJoystWithDead(true); // Should be the left axis
