@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // Wpilib imports
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -31,7 +32,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public static boolean currentExtended = false;
   public static boolean currentRetracted = true;
   public boolean shouldSpin = false;
-  static final double CURRENT_CONST = 20.0;
+  static final double CURRENT_CONST = 19.0;
   private double lastTimeWasExtended = -100;
 
   public IntakeSubsystem() {
@@ -62,9 +63,10 @@ public class IntakeSubsystem extends SubsystemBase {
       intakeActuator.stopMotor();
     }
   }
-
   @Override
   public void periodic() {
+
+    SmartDashboard.putNumber("intake amp draw", intakeActuator.getOutputCurrent());
 
     if(currentExtended)
       lastTimeWasExtended = Timer.getFPGATimestamp();

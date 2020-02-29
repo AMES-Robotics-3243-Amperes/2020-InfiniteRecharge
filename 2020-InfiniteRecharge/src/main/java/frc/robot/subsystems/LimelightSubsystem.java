@@ -36,8 +36,8 @@ public class LimelightSubsystem extends SubsystemBase {
   
   boolean target = false;
 
-  //static double refArea = 11.5; //This is for the big target
-  static double refArea = 5; //This is for the small target
+  static double refArea = 0;
+  static final int IS_TALL = 5; // Look for the height difference between the loading bay & shooting goal targets
 
   public LimelightSubsystem() {
     m_PIDSteer.setIntegratorRange(-0.9, 0.9);
@@ -55,7 +55,16 @@ public class LimelightSubsystem extends SubsystemBase {
     return m_PIDSteer.calculate(x, 0);
   }
 
-  public static double setPIDDist(){ // 
+  public static double setPIDDist(){
+    
+    if(y >= IS_TALL){
+      // Shooting goal's vision target
+      refArea = 11.5;
+    } else if(y < IS_TALL){
+      // Loading bay's vision target
+      refArea = 5;
+    }
+
     return m_PIDDist.calculate(area, refArea); // Deviance of area from refArea
   }
 
