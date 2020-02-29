@@ -132,8 +132,6 @@ public class DumperSubsystem extends SubsystemBase {
     if(shooterOn){
       //pidShoot.setReference(encodeVelocity, ControlType.kVelocity);
       dumpShoot.set(-1);
-      System.err.println("###### RPM: " + encodeShoot.getVelocity() + "###### ");
-      System.err.println("#### Shoot works ####");
     } 
     else{
       pidShoot.setReference(0, ControlType.kVelocity);
@@ -161,6 +159,7 @@ public class DumperSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Collect Encoder", encodeCollect.getPosition());
+    SmartDashboard.putNumber("Shooter RPM", encodeShoot.getVelocity());
   }
 
 }
