@@ -13,21 +13,20 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DumperSubsystem;
 
 public class AutoDump extends CommandBase {
-  /**
-   * Creates a new AutoDump.
-   */
+  private DumperSubsystem shooter;
   double startTime = 3;
   double timeNow;
 
-  public AutoDump() {
-    // Use addRequirements() here to declare subsystem dependencies.
+  public AutoDump(DumperSubsystem shooter) {
+    addRequirements(shooter);
+    this.shooter = shooter;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     timeNow = Timer.getFPGATimestamp();
-    DumperSubsystem.setDumpCollectSpeed(true,false);
+    shooter.setDumpCollectSpeed(true,false);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -39,7 +38,7 @@ public class AutoDump extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    DumperSubsystem.setDumpCollectSpeed(false, false);
+    shooter.setDumpCollectSpeed(false, false);
   }
 
   // Returns true when the command should end.

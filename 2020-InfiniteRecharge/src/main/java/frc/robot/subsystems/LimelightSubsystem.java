@@ -13,6 +13,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrainSubSystem;
 
 public class LimelightSubsystem extends SubsystemBase {
@@ -66,6 +67,13 @@ public class LimelightSubsystem extends SubsystemBase {
     }
 
     return m_PIDDist.calculate(area, refArea); // Deviance of area from refArea
+  }
+
+  /** Returns the distance from the front of the robot frame to the face of the high goal */
+  public double getInchesFromHighGoal()
+  {
+    return (Constants.FieldConstants.highGoalHeightInches - Constants.LimelightConstants.INCHES_TO_GROUND) / (Math.tan(x + Constants.LimelightConstants.PITCH_DEGREES))
+      - Constants.LimelightConstants.INCHES_TO_FRAME_FRONT;
   }
 
   @Override
