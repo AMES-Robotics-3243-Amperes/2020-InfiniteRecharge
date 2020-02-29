@@ -64,8 +64,8 @@ public class JoystUtil
   }
 
   public static double scaleZone(double scale) {
-    //return Math.pow(scale, 2) * Math.signum(scale); // Keeps negative input negative
-    return Math.pow(scale, 3);
+    return scale * Math.abs(scale); // ^2, Keeps negative input negative
+    //return Math.pow(scale, 3);
   }
 
   

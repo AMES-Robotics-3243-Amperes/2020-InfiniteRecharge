@@ -52,7 +52,7 @@ public class DumperSubsystem extends SubsystemBase {
   double kdShoot = 1e-2;
 
   static double encodePosition = 0.0;
-  static final double encodeVelocity = -4000;  // 5700 is max rpm
+  static final double encodeVelocity = -3000;  // 5700 is max rpm
 
   public DumperSubsystem() {
     dumpCollect = new CANSparkMax(Constants.IndexerConstants.kIndexCollectID, MotorType.kBrushless);

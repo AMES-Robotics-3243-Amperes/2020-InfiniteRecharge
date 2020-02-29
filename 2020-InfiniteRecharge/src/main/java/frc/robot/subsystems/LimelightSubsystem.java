@@ -44,19 +44,19 @@ public class LimelightSubsystem extends SubsystemBase {
     //this class's object "drive" is equal to the DriveTrainSubSystem's object "drive"
   }
 
-  public static void getLimeValues() {
+  public static void getLimeValues() { //  Gets values or sets a default of 0.
     x = tx.getDouble(0.0);
     y = ty.getDouble(0.0);
     v = tv.getDouble(0.0);
-    area = ta.getDouble(0.0);
+    area = ta.getDouble(0.0);  // Size of target in image: from 0-100
   }
 
-  public static double setPIDSteer(){
+  public static double setPIDSteer(){ // Determines amount to steer based on target deviance from center
     return m_PIDSteer.calculate(x, 0);
   }
 
-  public static double setPIDDist(){
-    return m_PIDDist.calculate(area, refArea);
+  public static double setPIDDist(){ // 
+    return m_PIDDist.calculate(area, refArea); // Deviance of area from refArea
   }
 
   @Override

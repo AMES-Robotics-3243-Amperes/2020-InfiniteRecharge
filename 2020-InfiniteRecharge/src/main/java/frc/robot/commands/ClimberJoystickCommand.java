@@ -9,20 +9,23 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ClimbSubsystem;
+import frc.robot.subsystems.ClimbArmsSubsystem;
+import frc.robot.subsystems.ClimbWinchSubsystem;
 import frc.robot.util.JoystUtil;
 
 public class ClimberJoystickCommand extends CommandBase {
 
-  private final ClimbSubsystem climber;
+  private final ClimbArmsSubsystem climbArms;
+  private final ClimbWinchSubsystem climbWinch;
   private final Joystick joystick;
 
   /**
    * Creates a new ClimberJoystickCommand.
    */
-  public ClimberJoystickCommand(ClimbSubsystem climber, Joystick joyst) {
+  public ClimberJoystickCommand(ClimbArmsSubsystem climbArms, ClimbWinchSubsystem climbWinch, Joystick joyst) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.climber = climber;
+    this.climbArms = climbArms;
+    this.climbWinch = climbWinch;
     this.joystick = joyst;
   }
 
@@ -40,8 +43,8 @@ public class ClimberJoystickCommand extends CommandBase {
     leftJoystick = JoystUtil.deadZone(leftJoystick);
     rightJoystick = JoystUtil.deadZone(rightJoystick);
 
-    climber.setLeftVelocity(leftJoystick);
-    climber.setRightVelocity(rightJoystick);
+    climbArms.setLeftVelocity(leftJoystick);
+    climbArms.setRightVelocity(rightJoystick);
     System.err.println("#### Left Climb ####: " + leftJoystick);
     System.err.println("#### Right Climb ####: " + rightJoystick);
   }

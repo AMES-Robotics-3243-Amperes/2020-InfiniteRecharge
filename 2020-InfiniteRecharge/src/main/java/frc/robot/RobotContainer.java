@@ -50,14 +50,14 @@ public class RobotContainer {
   public static ControlPanelSubsystem m_controlPanelSubsystem = new ControlPanelSubsystem();
   public final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
   public static DumperSubsystem m_dumperSubsystem = new DumperSubsystem();
-  public static ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
+  public static ClimbArmsSubsystem m_climbArmsSubsystem = new ClimbArmsSubsystem();
+  public static ClimbWinchSubsystem m_climbWinchSubsystem = new ClimbWinchSubsystem();
   //----------------------------------------------------------------------------------------------
   //----------------------------------------------------------- COMMANDS --------------------------------------------------------------
   public final static DriveTrainCommand m_robotDriveCommand = new DriveTrainCommand(m_robotDriveSubsystem);
   private final AutoMoveAndShootCommand m_autoCommand = new AutoMoveAndShootCommand(m_robotDriveSubsystem, m_dumperSubsystem);
   private final LimelightCommand m_limelightCommand = new LimelightCommand(m_robotDriveSubsystem, m_limelightSubsystem);
-  protected final ClimbCommand m_climbCommand = new ClimbCommand(m_climbSubsystem,
-      new ClimbExtendCommand(m_climbSubsystem), new ClimbRetractCommand(m_climbSubsystem));
+  protected final ClimbCommand m_climbCommand = new ClimbCommand(m_climbWinchSubsystem, m_climbArmsSubsystem);
   public static IntakeCommand m_IntakeCommand = new IntakeCommand(m_IntakeSubsystem);
   // -------------------------------------------------------------------------------------------------------------------------------------
   // ----------------------------------------------------------- CONTROL PANEL
@@ -208,7 +208,7 @@ public class RobotContainer {
   /** Gets a joystick value, with dead zone applied. */
   private static double getJoystWithDead(boolean isLeft) {
     // Silas: trying using the amount the stick is pressed in any direction times the sign of the vertical axis.
-    //     May help with perceived stick sensitivity issues.
+    //     Is more intuitive, and may help with perceived stick sensitivity issues.
     double steer = isLeft ? JoystUtil.getAxisMagnitude(driver, 0) * Math.signum(driver.getRawAxis(1))
       : JoystUtil.getAxisMagnitude(driver, 2) * Math.signum(driver.getRawAxis(3));
     steer = JoystUtil.deadZone(steer);
