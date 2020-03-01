@@ -19,7 +19,7 @@ import frc.robot.Constants;
 /*\\\     Packages and Imports      ///*/
 
 public class DumperSubsystem extends SubsystemBase {
-  
+
   static CANSparkMax dumpCollect; // Add IDs in Constants.DumperConstants to make more motors here
   static CANSparkMax dumpShoot;
 
@@ -43,21 +43,22 @@ public class DumperSubsystem extends SubsystemBase {
   // Shooter Constants
   // Todo:
   /*
-  - Lower RPM for new goal (currently -5500) - needs to go into low goal, rather than the high one
-  - tune PID constants to correct oscillation
-  - 
-  */
-  double kpShoot = 6e-4;
+   * - Lower RPM for new goal (currently -5500) - needs to go into low goal,
+   * rather than the high one - tune PID constants to correct oscillation -
+   */
+  static double kpShoot = 6e-3;
   double kiShoot = 0;
-  double kdShoot = 1e-2;
+  double kdShoot = 1e-1;
 
   static double encodePosition = 0.0;
-  static final double encodeVelocity = -5700;  // 5700 is max rpm. Negative to invert motor
+  static final double encodeVelocity = -5700; // 5700 is max rpm. Negative to invert motor
+  final double lowRPM = -1500;
 
   public DumperSubsystem() {
     dumpCollect = new CANSparkMax(Constants.IndexerConstants.kIndexCollectID, MotorType.kBrushless);
     dumpShoot = new CANSparkMax(Constants.IndexerConstants.kIndexShootID, MotorType.kBrushless);
-    
+    dumpShoot.setSmartCurrentLimit(37);
+
     encodeCollect = dumpCollect.getEncoder();
     pidCollect = dumpCollect.getPIDController();
 
@@ -69,89 +70,89 @@ public class DumperSubsystem extends SubsystemBase {
     pidCollect.setD(kd);
     pidCollect.setOutputRange(min, max);
 
-    pidShoot.setP(kpShoot);
+    // the .setP() is set in the two different High and Low shooting methods
     pidShoot.setI(kiShoot);
     pidShoot.setD(kdShoot);
+    pidShoot.setOutputRange(-1, 1);
 
   }
 
-  public void setDumpCollectSpeed(boolean shoot, boolean backwards)
-  {
+  public void setDumpCollectSpeed(boolean shoot, boolean backwards) {
     // Backwards not work? Not tested.
-    if(shoot && !backwards){
+    if (shoot && !backwards) {
       encodePosition = encodeCollect.getPosition() + ballRotation;
       pidCollect.setReference(encodePosition, ControlType.kPosition);
       System.err.println("### Forwards works ###");
-    } else if(backwards && !shoot){
+    } else if (backwards && !shoot) {
       encodePosition = encodeCollect.getPosition() - ballRotation;
       pidCollect.setReference(encodePosition, ControlType.kPosition);
       System.err.println("### Backwards works ###");
     } else {
       dumpCollect.stopMotor();
     }
-    
+
   }
 
-  public static void setDumpForward(){
+  public void setDumpForward() {
     encodePosition = encodeCollect.getPosition() + ballRotation;
     pidCollect.setReference(encodePosition, ControlType.kPosition);
     System.err.println("########## Collect Forward: " + encodePosition + " ##########");
   }
 
-  public static void setDumpBackward(){
+  public void setDumpBackward() {
     encodePosition = encodeCollect.getPosition() - ballRotation;
     pidCollect.setReference(encodePosition, ControlType.kPosition);
     System.err.println("########## Collect Backward: " + encodePosition + " ##########");
   }
 
-  public static void stopDump(){
+  public void stopDump() {
     dumpCollect.stopMotor();
   }
-  
+
   // WE STILL NEED TO SET THE PID LOOPS ON THIS.
   // ALSO, WE WOULD CHANGE THE SPD HERE W/ LIMELIGHT CODE
-  public static void setDumpHighSpeed(){
+  public static void setDumpHighSpeed() {
+    pidShoot.setP(kpShoot);
     pidShoot.setReference(encodeVelocity, ControlType.kVelocity);
-    //dumpShoot.set(-1);
+    // dumpShoot.set(-1);
     System.err.println("##### RPM: " + encodeShoot.getVelocity() + " ######");
   }
 
-  public static void setDumpLowSpeed(){
-    double lowRPM = -4000;
+  public void setDumpLowSpeed() {
+    pidShoot.setP(kpShoot / 10);
     pidShoot.setReference(lowRPM, ControlType.kVelocity);
-    //dumpShoot.set(-0.55);
+    // dumpShoot.set(-0.55);
     System.err.println("##### RPM: " + encodeShoot.getVelocity() + " ######");
   }
 
-  public static void stopShoot(){
+  public static void stopShoot() {
     dumpShoot.stopMotor();
   }
 
-  public void setShootSpeedOnOrOff(boolean shooterOn)
-  {
-    if(shooterOn){
-      //pidShoot.setReference(encodeVelocity, ControlType.kVelocity);
+  public void setShootSpeedOnOrOff(boolean shooterOn) {
+    if (shooterOn) {
+      // pidShoot.setReference(encodeVelocity, ControlType.kVelocity);
       dumpShoot.set(-1);
-    } 
-    else{
+    } else {
       pidShoot.setReference(0, ControlType.kVelocity);
+      System.err.println("#$#$#$#$# The Shooter doesn't work #$#$#$#$#");
     }
   }
 
   /** Call to set the PID target speed for the shooter. Positive speed = shoot */
-  public void setShootSpeed(double rpm)
-  {
-    pidShoot.setReference( - rpm, ControlType.kVelocity);
+  public void setShootSpeed(double rpm) {
+    pidShoot.setReference(-rpm, ControlType.kVelocity);
+
   }
-  
-  public void shootBall(){
-    //Make motor dumpShoot spin continously
-    //Check for a certain period of time to pass
-    //Move dumpCollect dumpCollect to a certain spot
+
+  public void shootBall() {
+    // Make motor dumpShoot spin continously
+    // Check for a certain period of time to pass
+    // Move dumpCollect dumpCollect to a certain spot
     setShootSpeedOnOrOff(true);
     // 5700 is the free speed limit of the shooter
-    if(encodeShoot.getVelocity() >= encodeVelocity - 500 && encodeShoot.getVelocity() <= 5700) 
-      //setDumpCollectSpeed(true, false);
+    if (encodeShoot.getVelocity() >= encodeVelocity - 500 && encodeShoot.getVelocity() <= 5700)
+      // setDumpCollectSpeed(true, false);
       setDumpForward();
     // TODO: shooter needs to turn off when this method isn't called continuously
   }
