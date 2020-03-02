@@ -125,12 +125,12 @@ public class DriveTrainSubSystem extends SubsystemBase {
     return rightSparkEncode;
   }
 
-  public static void tankDrive(double speedL, double speedR, boolean isTurbo)
+  public static void tankDrive(double speedL, double speedR, boolean isTurbo, boolean isSlow)
   {
-    tankDrive(speedL, speedR, isTurbo, false);
+    tankDrive(speedL, speedR, isTurbo, isSlow, false);
   }
 
-  public static void tankDrive(double varLeft, double varRight, boolean bumperLeft, boolean shouldSmoothDeceleration) {
+  public static void tankDrive(double varLeft, double varRight, boolean isTurbo, boolean isSlow, boolean shouldSmoothDeceleration) {
     double dTime = Timer.getFPGATimestamp() - timeAtLastTankDrive;
     timeAtLastTankDrive = Timer.getFPGATimestamp();
 
@@ -143,16 +143,14 @@ public class DriveTrainSubSystem extends SubsystemBase {
     else
       rightVector = varRight;
 
-    // Switched negative sign from right side to left side
-    if (bumperLeft) {
-      m_rightSide.setSetpoint(rightVector * 1.5);
-      m_leftSide.setSetpoint(-leftVector * 1.5);
-    } else {
-      m_rightSide.setSetpoint(rightVector);
-      m_leftSide.setSetpoint(-leftVector);
+    double speedMulti = 1;
+    if(isTurbo)
+      speedMulti = 1.5;
+    else if(isSlow)
+      speedMulti = 0.33;
 
-    }
-
+    m_rightSide.setSetpoint(rightVector * speedMulti);
+    m_leftSide.setSetpoint(-leftVector * speedMulti);
   }
 
   public static void setPosition(double leftSet, double rightSet) {

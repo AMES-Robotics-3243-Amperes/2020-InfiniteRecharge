@@ -45,8 +45,8 @@ public class ClimberJoystickCommand extends CommandBase {
 
     climbArms.setLeftVelocity(leftJoystick);
     climbArms.setRightVelocity(rightJoystick);
-    System.err.println("#### Left Climb ####: " + leftJoystick);
-    System.err.println("#### Right Climb ####: " + rightJoystick);
+    //System.err.println("#### Left Climb ####: " + leftJoystick);
+    //System.err.println("#### Right Climb ####: " + rightJoystick);
   }
 
   // Called once the command ends or is interrupted.

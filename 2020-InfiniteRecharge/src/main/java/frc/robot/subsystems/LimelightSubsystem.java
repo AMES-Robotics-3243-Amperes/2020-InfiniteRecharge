@@ -13,6 +13,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrainSubSystem;
 
 public class LimelightSubsystem extends SubsystemBase {
@@ -36,8 +37,8 @@ public class LimelightSubsystem extends SubsystemBase {
   
   boolean target = false;
 
-  //static double refArea = 11.5; //This is for the big target
-  static double refArea = 5; //This is for the small target
+  static double refArea = 0;
+  static final int IS_TALL = 5; // Look for the height difference between the loading bay & shooting goal targets
 
   public LimelightSubsystem() {
     m_PIDSteer.setIntegratorRange(-0.9, 0.9);
@@ -55,8 +56,24 @@ public class LimelightSubsystem extends SubsystemBase {
     return m_PIDSteer.calculate(x, 0);
   }
 
-  public static double setPIDDist(){ // 
+  public static double setPIDDist(){
+    
+    if(y >= IS_TALL){
+      // Shooting goal's vision target
+      refArea = 11.5;
+    } else if(y < IS_TALL){
+      // Loading bay's vision target
+      refArea = 5;
+    }
+
     return m_PIDDist.calculate(area, refArea); // Deviance of area from refArea
+  }
+
+  /** Returns the distance from the front of the robot frame to the face of the high goal */
+  public double getInchesFromHighGoal()
+  {
+    return (Constants.FieldConstants.highGoalHeightInches - Constants.LimelightConstants.INCHES_TO_GROUND) / (Math.tan(x + Constants.LimelightConstants.PITCH_DEGREES))
+      - Constants.LimelightConstants.INCHES_TO_FRAME_FRONT;
   }
 
   @Override

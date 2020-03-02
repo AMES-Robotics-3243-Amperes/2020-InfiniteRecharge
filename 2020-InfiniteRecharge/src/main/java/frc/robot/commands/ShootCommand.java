@@ -10,14 +10,18 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DumperSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 
 public class ShootCommand extends CommandBase {
-  /**
-   * Creates a new ShootCommand.
-   */
+  private DumperSubsystem shooter;
+  private LimelightSubsystem limelight;
 
-  public ShootCommand() {
-    // Use addRequirements() here to declare subsystem dependencies.
+  // full motor speed (no PID) = 101 inches to frame front
+
+
+  public ShootCommand(DumperSubsystem shooter, LimelightSubsystem limelight) {
+    this.shooter = shooter;
+    this.limelight = limelight;
   }
 
   // Called when the command is initially scheduled.
@@ -28,13 +32,28 @@ public class ShootCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    DumperSubsystem.setDumpShootSpeed(RobotContainer.configureBallShoot());
+    
+
+    if(RobotContainer.configureBallHighShoot())
+    {
+      double inchesToHighGoal = limelight.getInchesFromHighGoal();
+      double shootSpeed = 5700; // TODO: limelight finds shoot speed
+      shooter.setDumpHighSpeed();
+      //shooter.setShootSpeed(shootSpeed); // actual: 4300 rpm
+      //shooter.setShootSpeedOnOrOff(true); // actual: 5200 rpm
+    } else if(RobotContainer.configureBallLowShoot())
+    {
+      shooter.setDumpLowSpeed();
+    } else
+      shooter.stopShoot();
+
+    //DumperSubsystem.setDumpShootSpeed(RobotContainer.configureBallHighShoot());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    DumperSubsystem.setDumpShootSpeed(false);
+    shooter.setShootSpeedOnOrOff(false);
   }
 
   // Returns true when the command should end.

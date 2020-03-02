@@ -32,13 +32,13 @@ public class IntakeSubsystem extends SubsystemBase {
   public static boolean currentExtended = false;
   public static boolean currentRetracted = true;
   public boolean shouldSpin = false;
-  static final double CURRENT_CONST = 20.0;
+  static final double CURRENT_CONST = 19.0;
   private double lastTimeWasExtended = -100;
 
   public IntakeSubsystem() {
     intakeShaft = new CANSparkMax(Constants.BallCollectConstants.kSpinID, MotorType.kBrushless);
     intakeActuator = new CANSparkMax(Constants.BallCollectConstants.kActuateID, MotorType.kBrushed);
-    intakeShaft.setSmartCurrentLimit(25);
+    intakeShaft.setSmartCurrentLimit(30);
     intakeActuator.setSmartCurrentLimit(28); // Test for limit
   }
 
@@ -63,15 +63,16 @@ public class IntakeSubsystem extends SubsystemBase {
       intakeActuator.stopMotor();
     }
   }
-
   @Override
   public void periodic() {
+
+    SmartDashboard.putNumber("intake amp draw", intakeActuator.getOutputCurrent());
 
     if(currentExtended)
       lastTimeWasExtended = Timer.getFPGATimestamp();
 
     if(Timer.getFPGATimestamp() < lastTimeWasExtended+1)
-      intakeShaft.set(-0.6);  // Was 50% spd
+      intakeShaft.set(-0.7);
     else
       intakeShaft.stopMotor();
 
