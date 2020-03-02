@@ -119,7 +119,7 @@ public class ControlPanelSubsystem extends SubsystemBase {
     panelSpinnerPID.setOutputRange(-PANEL_SPINNER_SPEED, PANEL_SPINNER_SPEED);
 
     panelSpinnerEncoder = panelSpinner.getEncoder(); //Sets up the encoder in the motor;
-    panelSpinnerPID.dashboardPut();
+    //panelSpinnerPID.dashboardPut();
 
     // Set up color matcher
     for(Color cTargetBlue : CTARGETS_BLUE)
@@ -190,8 +190,8 @@ public class ControlPanelSubsystem extends SubsystemBase {
         sensedColor.blue/maxChannel
       );
     }
-    SmartDashboard.putNumber("Calibrate color sensor", 0);
-    SmartDashboard.putNumber("R", calibratedWhite.red);
+    //SmartDashboard.putNumber("Calibrate color sensor", 0);
+    //SmartDashboard.putNumber("R", calibratedWhite.red);
 
     mechanismLifter.set(isMechanismLifted ?LIFTER_UP_ANGLE :LIFTER_DOWN_ANGLE);
   }
@@ -225,11 +225,11 @@ public class ControlPanelSubsystem extends SubsystemBase {
     else if(CTARGETS_YELLOW.contains(match.color))
       panelCol = PanelColor.YELLOW;
 /// SmartDashboard Outputs \\\
-    SmartDashboard.putNumber("Red", detectedColor.red);
-    SmartDashboard.putNumber("Green", detectedColor.green);
-    SmartDashboard.putNumber("Blue", detectedColor.blue);
-    SmartDashboard.putNumber("Confidence", match.confidence);
-    SmartDashboard.putString("Detected Color", (panelCol==null) ?"Unknown :(" :panelCol.name);
+    //SmartDashboard.putNumber("Red", detectedColor.red);
+    //SmartDashboard.putNumber("Green", detectedColor.green);
+    //SmartDashboard.putNumber("Blue", detectedColor.blue);
+    //SmartDashboard.putNumber("Confidence", match.confidence);
+    //SmartDashboard.putString("Detected Color", (panelCol==null) ?"Unknown :(" :panelCol.name);
 
     return panelCol;
   }

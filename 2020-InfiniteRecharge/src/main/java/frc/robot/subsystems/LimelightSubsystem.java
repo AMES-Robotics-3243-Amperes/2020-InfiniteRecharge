@@ -93,5 +93,7 @@ public class LimelightSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Lime Area: ", area);
     SmartDashboard.putBoolean("See target?: ", target);
 
+    SmartDashboard.putNumber("Est. Target Dist", getInchesFromHighGoal());
+
   }
 }
