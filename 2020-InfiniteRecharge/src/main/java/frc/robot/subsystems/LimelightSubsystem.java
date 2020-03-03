@@ -72,7 +72,7 @@ public class LimelightSubsystem extends SubsystemBase {
   /** Returns the distance from the front of the robot frame to the face of the high goal */
   public double getInchesFromHighGoal()
   {
-    return (Constants.FieldConstants.highGoalHeightInches - Constants.LimelightConstants.INCHES_TO_GROUND) / (Math.tan(x + Constants.LimelightConstants.PITCH_DEGREES))
+    return (Constants.FieldConstants.highGoalHeightInches - Constants.LimelightConstants.INCHES_TO_GROUND) / (Math.tan(y + Constants.LimelightConstants.PITCH_DEGREES))
       - Constants.LimelightConstants.INCHES_TO_FRAME_FRONT;
   }
 
