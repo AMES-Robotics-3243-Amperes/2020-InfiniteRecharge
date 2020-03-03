@@ -38,10 +38,12 @@ public class ShootCommand extends CommandBase {
     {
       double inchesToHighGoal = limelight.getInchesFromHighGoal();
       double shootSpeed = 5700; // TODO: limelight finds shoot speed
-      shooter.setShootSpeed(shootSpeed);
+      shooter.setDumpHighSpeed();
+      //shooter.setShootSpeed(shootSpeed); // actual: 4300 rpm
+      //shooter.setShootSpeedOnOrOff(true); // actual: 5200 rpm
     } else if(RobotContainer.configureBallLowShoot())
     {
-      DumperSubsystem.setDumpLowSpeed();
+      shooter.setDumpLowSpeed();
     } else
       shooter.stopShoot();
 
