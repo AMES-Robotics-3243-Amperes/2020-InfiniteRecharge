@@ -37,6 +37,7 @@ public class DriveForward extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    DriveTrainSubSystem.resetEncode();
 /*
     if(m_encodeSparkLeft != null && m_encodeSparkRight != null){
       m_encodeSparkLeft.setPosition(0);

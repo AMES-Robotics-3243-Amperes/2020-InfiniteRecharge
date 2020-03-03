@@ -88,7 +88,7 @@ public class RobotContainer {
   private ShootCommandGroup m_shootAuto = new ShootCommandGroup(m_robotDriveSubsystem, m_limelightSubsystem, m_dumperSubsystem);
   private DumpCommandGroup m_dumpAuto = new DumpCommandGroup(m_dumperSubsystem);
   private DoNothingAuto m_doNothing = new DoNothingAuto();
-  private DriveForward m_driveForward = new DriveForward(10);
+  private DriveForward m_driveForward = new DriveForward(50);
 
   // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -11,6 +11,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.ClimbResetCommand;
@@ -77,6 +78,9 @@ public class Robot extends TimedRobot {
     m_chooser.addOption(kLineAuto, m_lineAutoCommand);
     m_chooser.addOption(kDumpAuto, m_dumpCommand);
     m_chooser.addOption(kNothingAuto, m_doNothingCommand);
+    
+    SmartDashboard.putData("Auto Choices", m_chooser);
+
   }
 
   /**
@@ -97,6 +101,7 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods. This must be called from the
     // robot's periodic
     // block in order for anything in the Command-based framework to work.
+    
     CommandScheduler.getInstance().run();
 
     // testMotor.set(0.25 * testJoyst.getRawAxis(1));

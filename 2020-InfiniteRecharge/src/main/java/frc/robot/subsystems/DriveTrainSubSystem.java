@@ -57,8 +57,8 @@ public class DriveTrainSubSystem extends SubsystemBase {
   // Encoder data objects
   private static DrivetrainPIDSubsystem m_rightSide;
   private static DrivetrainPIDSubsystem m_leftSide;
-  static PIDController m_PIDleft = new PIDController(1, 0, 0);
-  static PIDController m_PIDright = new PIDController(1, 0, 0);
+  static PIDController m_PIDleft = new PIDController(0.045, 0, 0.009);
+  static PIDController m_PIDright = new PIDController(0.045, 0, 0.009);
 
   // Command Based code requirement: enabling motors
   public DriveTrainSubSystem() {
@@ -82,6 +82,9 @@ public class DriveTrainSubSystem extends SubsystemBase {
       m_rightSide = new DrivetrainPIDSubsystem(m_rightmotors, null, rightVictorEncode);
       m_leftSide = new DrivetrainPIDSubsystem(m_leftmotors, null, leftVictorEncode);
 
+      leftVictorEncode.reset();
+      rightVictorEncode.reset();
+
     } else { // If competition robot, use CANSparkMax motors and encoders
       motorLT = new CANSparkMax(Constants.DriveConstants.kLTID, MotorType.kBrushless);
       motorLB = new CANSparkMax(Constants.DriveConstants.kLBID, MotorType.kBrushless);
@@ -101,6 +104,9 @@ public class DriveTrainSubSystem extends SubsystemBase {
       ((CANSparkMax) motorLB).setSmartCurrentLimit(39);
       ((CANSparkMax) motorRT).setSmartCurrentLimit(39);
       ((CANSparkMax) motorRB).setSmartCurrentLimit(39);
+
+      leftSparkEncode.setPosition(0);
+      rightSparkEncode.setPosition(0);
 
     }
 
@@ -153,17 +159,27 @@ public class DriveTrainSubSystem extends SubsystemBase {
     m_leftSide.setSetpoint(-leftVector * speedMulti);
   }
 
+  public static void resetEncode(){
+    if (leftSparkEncode != null && rightSparkEncode != null) {
+      leftSparkEncode.setPosition(0);
+      rightSparkEncode.setPosition(0);
+    } else if (leftVictorEncode != null && rightVictorEncode != null) {
+      leftVictorEncode.reset();
+      rightVictorEncode.reset();
+    }
+  }
+
   public static void setPosition(double leftSet, double rightSet) {
     double motorSpeedLeft;
     double motorSpeedRight;
 
     if (leftSparkEncode != null && rightSparkEncode != null) {
-      motorSpeedLeft = m_PIDleft.calculate(leftSparkEncode.getPosition(), -leftSet);
-      motorSpeedRight = m_PIDright.calculate(rightSparkEncode.getPosition(), rightSet);
+      motorSpeedLeft = m_PIDleft.calculate(leftSparkEncode.getPosition(), leftSet);
+      motorSpeedRight = m_PIDright.calculate(rightSparkEncode.getPosition(), -rightSet);
 
     } else if (leftVictorEncode != null && rightVictorEncode != null) {
-      motorSpeedLeft = m_PIDleft.calculate(leftVictorEncode.getDistance(), -leftSet);
-      motorSpeedRight = m_PIDright.calculate(rightVictorEncode.getDistance(), rightSet);
+      motorSpeedLeft = m_PIDleft.calculate(leftVictorEncode.getDistance(), leftSet);
+      motorSpeedRight = m_PIDright.calculate(rightVictorEncode.getDistance(), -rightSet);
 
     } else {
       motorSpeedLeft = 0;
@@ -186,6 +202,9 @@ public class DriveTrainSubSystem extends SubsystemBase {
       SmartDashboard.getNumber("VelocityMotorLB: ", ((CANSparkMax) motorLB).getEncoder().getVelocity());
       SmartDashboard.getNumber("VelocityMotorRT: ", ((CANSparkMax) motorRT).getEncoder().getVelocity());
       SmartDashboard.getNumber("VelocityMotorRB: ", ((CANSparkMax) motorRB).getEncoder().getVelocity());
+
+      SmartDashboard.putNumber("Encode Left", ((CANSparkMax) motorLT).getEncoder().getPosition());
+      SmartDashboard.putNumber("Encode Right", ((CANSparkMax) motorRT).getEncoder().getPosition());
 
       // Prints current in amps
       SmartDashboard.getNumber("CurrentMotorLT: ", ((CANSparkMax) motorLT).getOutputCurrent());

@@ -22,7 +22,7 @@ public class DumpCommandGroup extends SequentialCommandGroup {
     // super(new FooCommand(), new BarCommand());
     addCommands(
       // Goes forward until we hit(?) the low goal
-      new DriveForward(10),
+      new DriveForward(50),
 
       // Runs the auto dumping command
       new AutoDump(dump),
