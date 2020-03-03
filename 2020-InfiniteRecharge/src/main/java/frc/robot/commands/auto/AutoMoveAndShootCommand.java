@@ -5,10 +5,11 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.auto;
 
 import frc.robot.subsystems.DriveTrainSubSystem;
 import frc.robot.subsystems.DumperSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
@@ -17,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class AutoMoveAndShootCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveTrainSubSystem driveTrain;
+  private final LimelightSubsystem limeAlign;
   private final DumperSubsystem shooter;
   private boolean hasAligned = false;
 
@@ -25,8 +27,9 @@ public class AutoMoveAndShootCommand extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public AutoMoveAndShootCommand(DriveTrainSubSystem driveTrain, DumperSubsystem shooter) {
+  public AutoMoveAndShootCommand(DriveTrainSubSystem driveTrain, LimelightSubsystem limeAlign, DumperSubsystem shooter) {
     this.driveTrain = driveTrain;
+    this.limeAlign = limeAlign;
     this.shooter = shooter;
     addRequirements(driveTrain);
     addRequirements(shooter);
@@ -36,6 +39,12 @@ public class AutoMoveAndShootCommand extends CommandBase {
   @Override
   public void initialize() {
     hasAligned = false;
+
+    limeAlign.setPIDSteer();
+    limeAlign.setPIDDist();
+
+    if(limeAlign.setPIDSteer() == 0.0 && limeAlign.setPIDDist() == 0.0)
+      hasAligned = true;
   }
 
   // Called every time the scheduler runs while the command is scheduled.

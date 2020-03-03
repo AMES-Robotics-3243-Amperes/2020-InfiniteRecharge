@@ -20,7 +20,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.*;
 import frc.robot.util.JoystUtil;
 import frc.robot.commands.*;
-import frc.robot.autonomous.*;
+import frc.robot.commands.auto.AutoMoveAndShootCommand;
+import frc.robot.commands.auto.DoNothingAuto;
+import frc.robot.commands.auto.DriveForward;
+import frc.robot.commands.auto.DumpCommandGroup;
+import frc.robot.commands.auto.ShootCommandGroup;
 //--------------------------------------------------------
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -52,16 +56,16 @@ public class RobotContainer {
   public static DumperSubsystem m_dumperSubsystem = new DumperSubsystem();
   public static ClimbArmsSubsystem m_climbArmsSubsystem = new ClimbArmsSubsystem();
   public static ClimbWinchSubsystem m_climbWinchSubsystem = new ClimbWinchSubsystem();
-  //----------------------------------------------------------------------------------------------
-  //----------------------------------------------------------- COMMANDS --------------------------------------------------------------
+
+  //-------------------------------------- COMMANDS -----------------------------------------------
   public final static DriveTrainCommand m_robotDriveCommand = new DriveTrainCommand(m_robotDriveSubsystem);
-  private final AutoMoveAndShootCommand m_autoCommand = new AutoMoveAndShootCommand(m_robotDriveSubsystem, m_dumperSubsystem);
   private final LimelightCommand m_limelightCommand = new LimelightCommand(m_robotDriveSubsystem, m_limelightSubsystem);
   protected final ClimbCommand m_climbCommand = new ClimbCommand(m_climbWinchSubsystem, m_climbArmsSubsystem);
   public static IntakeCommand m_IntakeCommand = new IntakeCommand(m_IntakeSubsystem);
-  // -------------------------------------------------------------------------------------------------------------------------------------
-  // ----------------------------------------------------------- CONTROL PANEL
-  // ------------------------------------------------------------------------------------------------------
+  private static DumperCommand m_dumperCommand = new DumperCommand();
+  private ShootCommand m_shootCommand = new ShootCommand(m_dumperSubsystem, m_limelightSubsystem);
+
+  //------------------------------------ CONTROL PANEL --------------------------------------------
   private final ControlPanelCommand.TurnNumTimes turn4Times = new ControlPanelCommand.TurnNumTimes(
       m_controlPanelSubsystem, 3.5, 4);
   private final ControlPanelCommand.TurnToColor turnToColorBlue = new ControlPanelCommand.TurnToColor(
@@ -79,15 +83,13 @@ public class RobotContainer {
   private final ControlPanelCommand.Manual manualPanelRight = new ControlPanelCommand.Manual(m_controlPanelSubsystem,
       0.5);
 
-  private static DumperCommand m_dumperCommand = new DumperCommand();
-  private ShootCommand m_shootCommand = new ShootCommand(m_dumperSubsystem, m_limelightSubsystem);
+  //------------------------------------- AUTONOMOUS ----------------------------------------------------
+  
+  private ShootCommandGroup m_shootAuto = new ShootCommandGroup(m_robotDriveSubsystem, m_limelightSubsystem, m_dumperSubsystem);
+  private DumpCommandGroup m_dumpAuto = new DumpCommandGroup(m_dumperSubsystem);
+  private DoNothingAuto m_doNothing = new DoNothingAuto();
+  private DriveForward m_driveForward = new DriveForward(10);
 
-  // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  // --------------------------------------------------------------------
-  // AUTONOMOUS
-  // ---------------------------------------------------------------------------------------------------------------------------------------------------------------
-  public static DriveForward m_driveForward = new DriveForward();
-  public static AutoDump m_AutoDump = new AutoDump(m_dumperSubsystem);
   // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
   // Color Wheel variables. ALSO, YOU CAN PUT THIS INTO CONSTANTS TO MAKE THIS PLACE A LITTLE MORE NEAT?
@@ -169,14 +171,16 @@ public class RobotContainer {
     climberButton.whenPressed(m_climbCommand);
   }
 
-  // -------------------- PRIMARY: LIMELIGHT SECTION OF JOYSTICK
-  // ---------------------
+  public static boolean getWinchStop(){
+    return secondary.getRawButton(1);
+  }
+
+  // -------------------- PRIMARY: LIMELIGHT SECTION OF JOYSTICK ---------------------
   public static boolean driveLime() {
     return driver.getRawButton(6);
   }
 
-  // -------------------- PRIMARY: DRIVING SECTION OF JOYSTICK
-  // -----------------------
+  // -------------------- PRIMARY: DRIVING SECTION OF JOYSTICK -----------------------
   public static boolean getTurbo() {
     return driver.getRawButton(5);
   }
@@ -226,8 +230,7 @@ public class RobotContainer {
     return secondary.getRawButton(3);
   }
 
-  // ----------------- SECONDARY: SHOOTER / INDEX SECTION OF JOYSTICK
-  // --------------------
+  // ----------------- SECONDARY: SHOOTER / INDEX SECTION OF JOYSTICK --------------------
   public static boolean configureBallCollect() {
     return secondary.getRawButton(7);
   }
@@ -250,22 +253,25 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
 
-  // ----------------------------- AUTONOMOUS COMMANDS
-  // ----------------------------
-  public Command getDriveForwardCommand() {
+  // ----------------------------- AUTONOMOUS COMMANDS ----------------------------
+
+  public Command getShootAutoCommand(){
+    return m_shootAuto;
+  }
+
+  public Command getDumpAutoCommand(){
+    return m_dumpAuto;
+  }
+
+  public Command getDoNothingCommand() {
+    return m_doNothing;
+  }
+
+  public Command getDriveForwardCommand(){
     return m_driveForward;
   }
 
-  public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return m_autoCommand;
-  }
-
-  public Command getAutoDumpCommand() {
-
-    return m_AutoDump;
-  }
-  // --------------------------------------------------------------------------------
+  // ------------------------------------ DRIVING ---------------------------------------
 
   public static Command getDriveCommand() { // Drive Train
 
@@ -289,4 +295,3 @@ public Command getLimelightCommand(){ // Limelight
     return m_IntakeCommand;
   }
 }
-//--------------------------------------------------------------------------------

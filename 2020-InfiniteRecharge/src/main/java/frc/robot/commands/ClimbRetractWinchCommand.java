@@ -1,7 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.ClimbWinchSubsystem;
 
 public class ClimbRetractWinchCommand extends CommandBase {
@@ -19,7 +19,7 @@ public class ClimbRetractWinchCommand extends CommandBase {
 
   @Override
   public void execute() {
-    if( !climber.isWinchRetracted())
+    if( !climber.isWinchRetracted() && ! RobotContainer.getWinchStop())
     {
       climber.winchPeriodic(false);
     }
@@ -33,6 +33,6 @@ public class ClimbRetractWinchCommand extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return climber.isWinchRetracted();
+    return climber.isWinchRetracted() || RobotContainer.getWinchStop();
   }
 }

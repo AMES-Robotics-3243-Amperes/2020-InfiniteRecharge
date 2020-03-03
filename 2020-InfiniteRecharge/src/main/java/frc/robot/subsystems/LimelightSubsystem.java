@@ -36,6 +36,7 @@ public class LimelightSubsystem extends SubsystemBase {
   static PIDController m_PIDDist = new PIDController(0.15, 0, 7.5e-10);
   
   boolean target = false;
+  boolean alignDone = false;
 
   static double refArea = 0;
   static final int IS_TALL = 5; // Look for the height difference between the loading bay & shooting goal targets
@@ -53,11 +54,16 @@ public class LimelightSubsystem extends SubsystemBase {
   }
 
   public static double setPIDSteer(){ // Determines amount to steer based on target deviance from center
-    return m_PIDSteer.calculate(x, 0);
+    if(m_PIDSteer.calculate(x, 0) >= -0.001 || m_PIDSteer.calculate(x, 0) <= 0.001){
+      return 0.0;
+    } else {
+      return m_PIDSteer.calculate(x, 0);  
+    }
+
   }
 
   public static double setPIDDist(){
-    
+    // We may need to get rid of this, because we can just ram into the loading bay wall and gather balls
     if(y >= IS_TALL){
       // Shooting goal's vision target
       refArea = 11.5;
@@ -66,7 +72,12 @@ public class LimelightSubsystem extends SubsystemBase {
       refArea = 5;
     }
 
-    return m_PIDDist.calculate(area, refArea); // Deviance of area from refArea
+    if(m_PIDDist.calculate(area, refArea) >= -0.001 || m_PIDDist.calculate(area, refArea) <= 0.001){
+      return 0.0;
+    } else {
+      return m_PIDDist.calculate(area, refArea); // Deviance of area from refArea
+    }
+
   }
 
   /** Returns the distance from the front of the robot frame to the face of the high goal */
@@ -82,6 +93,12 @@ public class LimelightSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     getLimeValues();
 
+    if(setPIDSteer() == 0.0 && setPIDDist() == 0.0){
+      alignDone = true;
+    } else {
+      alignDone = false;
+    }
+
     if(v > 0){
       target = true;
     } else if (v == 0){
@@ -92,6 +109,8 @@ public class LimelightSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Lime Y: ", y);
     SmartDashboard.putNumber("Lime Area: ", area);
     SmartDashboard.putBoolean("See target?: ", target);
+
+    SmartDashboard.putBoolean("Limelight Align Done?", alignDone);
 
   }
 }

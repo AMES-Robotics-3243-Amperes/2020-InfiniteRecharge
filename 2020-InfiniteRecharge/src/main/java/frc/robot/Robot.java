@@ -29,21 +29,28 @@ import edu.wpi.first.networktables.NetworkTableInstance;
  */
 public class Robot extends TimedRobot {
 
+  // Auto
   private Command m_autonomousCommand;
+  private Command m_shootAutoCommand;
+  private Command m_dumpAutoCommand;
+  private Command m_doNothingCommand;
+  private Command m_lineAutoCommand;
+  
+
+  // Tele-op
   private Command m_driveCommand;
   private Command m_dumpCommand;
   private Command m_limelightCommand;
-  private Command m_driveForwardCommand;
   private Command m_shootCommand;
   private Command m_climbManualCommand;
 
   private Command m_climbResetCommand;
 
-  private static final String kDefaultAuto = "No Auto";
-  private static final String kCustomAuto = "Auto Line";
+  private static final String kLineAuto = "Auto Line";
   private static final String kShootAuto = "Auto Shoot";
-  private String m_autoSelected;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  private static final String kDumpAuto = "Auto Dump";
+  private static final String kNothingAuto = "No Auto";
+  private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   private RobotContainer m_robotContainer;
 
@@ -60,6 +67,16 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
 
     m_climbResetCommand = new ClimbResetCommand(m_robotContainer.m_climbArmsSubsystem, m_robotContainer.m_climbWinchSubsystem);
+
+    m_shootAutoCommand = m_robotContainer.getShootAutoCommand();  // Shoots and then backs up
+    m_dumpAutoCommand = m_robotContainer.getDumpAutoCommand();  // Dumps and then backs up
+    m_lineAutoCommand = m_robotContainer.getDriveForwardCommand();  // Drives forward only
+    m_doNothingCommand = m_robotContainer.getDoNothingCommand();  // Doesn't do anything for autonomous
+
+    m_chooser.setDefaultOption(kShootAuto, m_shootAutoCommand); // This is the default auto
+    m_chooser.addOption(kLineAuto, m_lineAutoCommand);
+    m_chooser.addOption(kDumpAuto, m_dumpCommand);
+    m_chooser.addOption(kNothingAuto, m_doNothingCommand);
   }
 
   /**
@@ -102,8 +119,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    // schedule the autonomous command (example)
+
+    // Sets the blank command to whatever is chosen in Shuffleboard
+    m_autonomousCommand = m_chooser.getSelected();
+    
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
@@ -115,9 +134,7 @@ public class Robot extends TimedRobot {
    * This function is called periodically during autonomous.
    */
   @Override
-  public void autonomousPeriodic() {
-    m_driveForwardCommand = m_robotContainer.getDriveForwardCommand();
-    
+  public void autonomousPeriodic() {    
   }
 
   @Override
@@ -151,16 +168,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-
-    // Makes sure that when the limelight code runs, the driving code doesn't run
-    /*if (RobotContainer.driveLime()) {
-      m_limelightCommand.schedule();
-      m_driveCommand.cancel();
-    } else if (!RobotContainer.driveLime()) {
-      m_driveCommand.schedule();
-      m_limelightCommand.cancel();
-    }*/
-
     CommandScheduler.getInstance().run();
   }
 

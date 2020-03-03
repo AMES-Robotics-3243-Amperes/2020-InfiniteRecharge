@@ -5,17 +5,15 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.autonomous;
+package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-import frc.robot.subsystems.DriveTrainSubSystem;
-
-public class DriveTurn extends CommandBase {
+public class DoNothingAuto extends CommandBase {
   /**
-   * Creates a new DriveTurn.
+   * Creates a new DoNothingAuto.
    */
-  public DriveTurn() {
+  public DoNothingAuto() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -27,14 +25,11 @@ public class DriveTurn extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Don't know how many rotations to turn yet
-    DriveTrainSubSystem.setPosition(7, -7);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    DriveTrainSubSystem.tankDrive(0.0, 0.0, false, false);
   }
 
   // Returns true when the command should end.
