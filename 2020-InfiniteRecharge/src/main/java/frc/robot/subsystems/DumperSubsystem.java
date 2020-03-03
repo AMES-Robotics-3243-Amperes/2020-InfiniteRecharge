@@ -161,6 +161,7 @@ public class DumperSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Collect Encoder", encodeCollect.getPosition());
+    SmartDashboard.putNumber("shooter rpm", encodeShoot.getVelocity());
   }
 
 }
