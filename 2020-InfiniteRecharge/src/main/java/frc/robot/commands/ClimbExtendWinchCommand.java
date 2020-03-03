@@ -21,7 +21,7 @@ public class ClimbExtendWinchCommand extends CommandBase {
 
   @Override
   public void execute() {
-    if( ! climber.isWinchDeployed())
+    if( ! climber.isWinchDeployed() && ! RobotContainer.getWinchStop())
       climber.winchPeriodic(true);
   }
 
@@ -32,6 +32,6 @@ public class ClimbExtendWinchCommand extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return climber.isWinchDeployed();
+    return climber.isWinchDeployed() || RobotContainer.getWinchStop();
   }
 }

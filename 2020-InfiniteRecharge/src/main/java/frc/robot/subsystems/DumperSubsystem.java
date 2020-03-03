@@ -30,6 +30,8 @@ public class DumperSubsystem extends SubsystemBase {
   static CANPIDController pidShoot;
 
   private static final double ballRotation = 2; // We don't know the correct rotations yet
+  private double rotateStop = 0.0;
+  private final double ROTATE_LIMIT = 10.0;
 
   // Good enough 2/25/20
   // Collector Constants
@@ -145,15 +147,23 @@ public class DumperSubsystem extends SubsystemBase {
 
   }
 
-  public void shootBall() {
+  public void shootBall() { // For autonomous
     // Make motor dumpShoot spin continously
     // Check for a certain period of time to pass
     // Move dumpCollect dumpCollect to a certain spot
-    setShootSpeedOnOrOff(true);
-    // 5700 is the free speed limit of the shooter
-    if (encodeShoot.getVelocity() >= encodeVelocity - 500 && encodeShoot.getVelocity() <= 5700)
-      // setDumpCollectSpeed(true, false);
+
+    rotateStop = encodeCollect.getPosition();
+
+    setDumpHighSpeed();
+
+    // If the shooter rpm is within 4800 to 5700 and the indexer hasn't pushed all of the balls through the shooter
+    if (encodeShoot.getVelocity() <= encodeVelocity + 900 && encodeShoot.getVelocity() >= encodeVelocity
+        && rotateStop <= encodeCollect.getPosition() + ROTATE_LIMIT){
       setDumpForward();
+    } else {
+      stopDump();
+    }
+    
     // TODO: shooter needs to turn off when this method isn't called continuously
   }
 

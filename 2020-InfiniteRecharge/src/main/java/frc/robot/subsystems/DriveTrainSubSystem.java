@@ -158,11 +158,11 @@ public class DriveTrainSubSystem extends SubsystemBase {
     double motorSpeedRight;
 
     if (leftSparkEncode != null && rightSparkEncode != null) {
-      motorSpeedLeft = m_PIDleft.calculate(leftSparkEncode.getPosition(), leftSet);
+      motorSpeedLeft = m_PIDleft.calculate(leftSparkEncode.getPosition(), -leftSet);
       motorSpeedRight = m_PIDright.calculate(rightSparkEncode.getPosition(), rightSet);
 
     } else if (leftVictorEncode != null && rightVictorEncode != null) {
-      motorSpeedLeft = m_PIDleft.calculate(leftVictorEncode.getDistance(), leftSet);
+      motorSpeedLeft = m_PIDleft.calculate(leftVictorEncode.getDistance(), -leftSet);
       motorSpeedRight = m_PIDright.calculate(rightVictorEncode.getDistance(), rightSet);
 
     } else {
@@ -170,7 +170,7 @@ public class DriveTrainSubSystem extends SubsystemBase {
       motorSpeedRight = 0;
     }
     m_leftSide.setSetpoint(motorSpeedLeft);
-    m_leftSide.setSetpoint(motorSpeedRight);
+    m_rightSide.setSetpoint(motorSpeedRight);
 
   }
 

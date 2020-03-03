@@ -5,15 +5,11 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.autonomous;
+package frc.robot.commands.auto;
 
-import com.revrobotics.CANEncoder;
-
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.subsystems.DriveTrainSubSystem;
-import frc.robot.subsystems.DrivetrainPIDSubsystem;
 
 public class DriveForward extends CommandBase {
   /**
@@ -26,14 +22,16 @@ public class DriveForward extends CommandBase {
    private static Encoder m_encodeVictorRight;
    private static Encoder m_encodeVictorLeft; */
 
-  public DriveForward(/*DriveTrainSubSystem driver, CANEncoder encodeSparkLeft, CANEncoder encodeSparkRight, Encoder encodeVictorLeft, Encoder encodeVictorRight*/) {
+   int rotations = 0;
+
+  public DriveForward(int rotations){/*DriveTrainSubSystem driver, CANEncoder encodeSparkLeft, CANEncoder encodeSparkRight, Encoder encodeVictorLeft, Encoder encodeVictorRight) {*/
     // Use addRequirements() here to declare subsystem dependencies.
     /*m_driver = driver;
     m_encodeSparkLeft = encodeSparkLeft;
     m_encodeVictorLeft = encodeVictorLeft;
     m_encodeSparkRight = encodeSparkRight;
     m_encodeVictorRight = encodeVictorRight; */
-
+    this.rotations = rotations;
   }
 
   // Called when the command is initially scheduled.
@@ -67,7 +65,7 @@ public class DriveForward extends CommandBase {
   @Override
   public void execute() {
     // Want to move 5 ft fwd, but don't know how many rotations, so used "35" as place holder
-    DriveTrainSubSystem.setPosition(35, 35);
+    DriveTrainSubSystem.setPosition(rotations, rotations);
   }
 
   // Called once the command ends or is interrupted.

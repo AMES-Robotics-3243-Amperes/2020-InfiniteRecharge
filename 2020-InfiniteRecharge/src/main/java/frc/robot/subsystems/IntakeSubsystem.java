@@ -75,5 +75,8 @@ public class IntakeSubsystem extends SubsystemBase {
       intakeShaft.set(-0.5);
     else
       intakeShaft.stopMotor();
+
+      SmartDashboard.putBoolean("currentExtended", currentExtended);
+      SmartDashboard.putBoolean("currentRetracted", currentRetracted);
   }
 }

@@ -5,64 +5,46 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.auto;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-import frc.robot.RobotContainer;
-import frc.robot.subsystems.IntakeSubsystem;
-public class IntakeCommand extends CommandBase {
-  private IntakeSubsystem intake;
-  private boolean retract = false;
-   
-  public IntakeCommand(IntakeSubsystem intake) {
-    addRequirements(intake);
-    this.intake = intake;
+import frc.robot.subsystems.DumperSubsystem;
+
+public class AutoDump extends CommandBase {
+  private DumperSubsystem shooter;
+  double startTime = 3;
+  double timeNow;
+
+  public AutoDump(DumperSubsystem shooter) {
+    addRequirements(shooter);
+    this.shooter = shooter;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    retract = !retract;
-    /*if(IntakeSubsystem.currentExtended){
-      retract = true;
-    } else if(IntakeSubsystem.currentRetracted){
-      retract = false;
-    } else {
-      retract = true;
-    }*/
-
+    timeNow = Timer.getFPGATimestamp();
+    shooter.setDumpForward();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    if(retract){
-      intake.setRetract();
-    } else{
-      intake.setExtend();
-    }
-
-
+    
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    shooter.stopDump();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-
-    if(IntakeSubsystem.currentExtended && !retract){
-      return true;
-    } else if(IntakeSubsystem.currentRetracted && retract){
-      return true;
-    } else {
-      return false;
-    }
-
+    // Once this has run for 3 seconds, then stop the program
+    return Timer.getFPGATimestamp() >= timeNow + startTime;
   }
 }
