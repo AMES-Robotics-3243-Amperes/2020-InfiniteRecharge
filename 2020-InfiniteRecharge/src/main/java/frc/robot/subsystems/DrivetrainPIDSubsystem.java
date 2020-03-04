@@ -15,9 +15,7 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 
 public class DrivetrainPIDSubsystem extends PIDSubsystem {
-  /**
-   * Creates a new DrivetrainPID.
-   */
+
   SpeedControllerGroup m_group;
   CANEncoder m_encoderSpark;
   Encoder m_encoderVictor;
@@ -28,10 +26,7 @@ public class DrivetrainPIDSubsystem extends PIDSubsystem {
   public DrivetrainPIDSubsystem(SpeedControllerGroup group, CANEncoder encoderSpark, Encoder encoderVictor) {
     super(
         // The PIDController used by the subsystem
-        new PIDController(0.75, 1e-6, 1e-4)); // P I D // P In PID being used for correcting oscillation
-        //0.8, 9e-5, 9e-4
-        //0.6, 9e-10, 9e-5  What we're using right now. A tad slow
-        // Latest: 0.75, 1e-6, 1e-4
+        new PIDController(0.75, 1e-6, 1e-4));
       
     m_group = group;
     m_encoderSpark = encoderSpark;

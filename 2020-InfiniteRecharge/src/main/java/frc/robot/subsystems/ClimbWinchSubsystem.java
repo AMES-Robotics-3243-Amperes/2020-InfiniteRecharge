@@ -36,7 +36,6 @@ public class ClimbWinchSubsystem extends SubsystemBase {
   private final double WINCH_DEPLOYED_ROTS = -9 * 100; // 100:1 gearbox ratio  CHANGED FROM 3 TO 5 ROTATIONS
   private final double WINCH_TARGET_MARGIN_ROTS = 0.25 * 100;
 
-  // NOT YET TUNED TO THE ROBOT! 2/5/20
   double kp = 0.65;
   double ki = 0.0;
   double kd = 1e-8;
@@ -86,8 +85,6 @@ public class ClimbWinchSubsystem extends SubsystemBase {
 
     enforceMotorRangeSafeguards();
 
-    //SmartDashboard.putNumber("ClimberADJ Current: ", climberWinch.getOutputCurrent()); // Prints current in amps
-
     SmartDashboard.putBoolean("isWinchDeployed()", isWinchDeployed());
     SmartDashboard.putBoolean("isWinchRetracted()", isWinchRetracted());
     SmartDashboard.putBoolean("limitSwitch WinchBottom", limitSwitchWinchBottom.get());
@@ -97,7 +94,6 @@ public class ClimbWinchSubsystem extends SubsystemBase {
 
   private void enforceMotorRangeSafeguards()
   {
-
       // Limit switch-only safeguards
     if(climberWinchPID.encoder.getVelocity() < -1 && limitSwitchWinchTop.get())
       climberWinch.stopMotor();

@@ -1,7 +1,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.ClimbWinchSubsystem;
 
 public class ClimbRetractWinchCommand extends CommandBase {
@@ -23,7 +22,6 @@ public class ClimbRetractWinchCommand extends CommandBase {
     {
       climber.winchPeriodic(false);
     }
-    System.err.println("######## Retracting #########");
 
   }
 

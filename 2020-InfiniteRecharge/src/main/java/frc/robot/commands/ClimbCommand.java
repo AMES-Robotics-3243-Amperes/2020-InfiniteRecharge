@@ -3,7 +3,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ClimbArmsSubsystem;
 import frc.robot.subsystems.ClimbWinchSubsystem;
-import frc.robot.RobotContainer;
 
 public class ClimbCommand extends CommandBase {
 
@@ -15,6 +14,7 @@ public class ClimbCommand extends CommandBase {
   public final ClimbRetractWinchCommand retractWinch;
   private boolean isInDeployMode = false; // Start on false, so the first activation sets it to true and schedules a ClimbExtendCommand
   private boolean areArmsScheduled = false; // makes sure arms are scheduled to extend
+
   public ClimbCommand(ClimbWinchSubsystem climbWinch, ClimbArmsSubsystem climbArms) {
     // This command does NOT declare requirements. extendsArms, extendsWinch, etc. declare their own requirements.
     this.climbWinch = climbWinch; // Set variable to the object
@@ -37,7 +37,6 @@ public class ClimbCommand extends CommandBase {
       retractWinch.schedule();
     }
 
-    System.err.println(" @@@@@@@@@@@@@@ Initialize Winch");
   }
 
   @Override
@@ -48,7 +47,6 @@ public class ClimbCommand extends CommandBase {
     
     }
 
-    System.err.println(" @@@@@@@@@@@@@@@@@@ Executing Winch @@@@@@@");
   }
 
  @Override

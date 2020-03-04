@@ -1,11 +1,9 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ClimbArmsSubsystem;
 import frc.robot.subsystems.ClimbWinchSubsystem;
-import frc.robot.RobotContainer;
 
 /** Run at robot startup to move arms & winch to their starting positions, based on limit switch input.
  * Resets encoder positions once starting positions are reached.

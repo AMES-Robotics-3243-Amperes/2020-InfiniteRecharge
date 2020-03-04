@@ -12,9 +12,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrainSubSystem;
 
 public class DriveTurn extends CommandBase {
-  /**
-   * Creates a new DriveTurn.
-   */
+
   public DriveTurn() {
     // Use addRequirements() here to declare subsystem dependencies.
   }

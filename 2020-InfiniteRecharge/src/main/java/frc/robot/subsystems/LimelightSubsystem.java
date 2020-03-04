@@ -14,7 +14,6 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
-import frc.robot.subsystems.DriveTrainSubSystem;
 
 public class LimelightSubsystem extends SubsystemBase {
   /**
@@ -63,14 +62,6 @@ public class LimelightSubsystem extends SubsystemBase {
   }
 
   public static double setPIDDist(){
-    // We may need to get rid of this, because we can just ram into the loading bay wall and gather balls
-    if(y >= IS_TALL){
-      // Shooting goal's vision target
-      refArea = 11.5;
-    } else if(y < IS_TALL){
-      // Loading bay's vision target
-      refArea = 5;
-    }
 
     if(m_PIDDist.calculate(area, refArea) >= -0.001 || m_PIDDist.calculate(area, refArea) <= 0.001){
       return 0.0;

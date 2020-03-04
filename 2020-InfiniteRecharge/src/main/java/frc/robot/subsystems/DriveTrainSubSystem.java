@@ -14,7 +14,6 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -35,12 +34,11 @@ public class DriveTrainSubSystem extends SubsystemBase {
   static SpeedController motorRT;
   static SpeedController motorRB;
 
+  // New Encoder Objects \\
   static Encoder leftVictorEncode;
   static Encoder rightVictorEncode;
   static CANEncoder leftSparkEncode;
   static CANEncoder rightSparkEncode;
-
-  // New Encoder Objects \\
 
   // Left and right side drive
   public static SpeedControllerGroup m_leftmotors; // Classifying left side motors
@@ -51,9 +49,6 @@ public class DriveTrainSubSystem extends SubsystemBase {
   static double rightVector = 0.0;
   static double timeAtLastTankDrive = -1;
   static final double SMOOTH_DECELERATION_COEFF = 5;
-
-  // m_drive is a combination of both left and right motors
-  // private DifferentialDrive m_drive;
 
   // Encoder data objects
   private static DrivetrainPIDSubsystem m_rightSide;
@@ -207,19 +202,19 @@ public class DriveTrainSubSystem extends SubsystemBase {
 
     if (!RobotContainer.isPractice) {
       // Prints speed of encoder
-      SmartDashboard.getNumber("VelocityMotorLT: ", ((CANSparkMax) motorLT).getEncoder().getVelocity());
-      SmartDashboard.getNumber("VelocityMotorLB: ", ((CANSparkMax) motorLB).getEncoder().getVelocity());
-      SmartDashboard.getNumber("VelocityMotorRT: ", ((CANSparkMax) motorRT).getEncoder().getVelocity());
-      SmartDashboard.getNumber("VelocityMotorRB: ", ((CANSparkMax) motorRB).getEncoder().getVelocity());
+      SmartDashboard.putNumber("VelocityMotorLT: ", ((CANSparkMax) motorLT).getEncoder().getVelocity());
+      SmartDashboard.putNumber("VelocityMotorLB: ", ((CANSparkMax) motorLB).getEncoder().getVelocity());
+      SmartDashboard.putNumber("VelocityMotorRT: ", ((CANSparkMax) motorRT).getEncoder().getVelocity());
+      SmartDashboard.putNumber("VelocityMotorRB: ", ((CANSparkMax) motorRB).getEncoder().getVelocity());
 
       SmartDashboard.putNumber("Encode Left", ((CANSparkMax) motorLT).getEncoder().getPosition());
       SmartDashboard.putNumber("Encode Right", ((CANSparkMax) motorRT).getEncoder().getPosition());
 
       // Prints current in amps
-      SmartDashboard.getNumber("CurrentMotorLT: ", ((CANSparkMax) motorLT).getOutputCurrent());
-      SmartDashboard.getNumber("CurrentMotorLB: ", ((CANSparkMax) motorLB).getOutputCurrent());
-      SmartDashboard.getNumber("CurrentMotorRT: ", ((CANSparkMax) motorRT).getOutputCurrent());
-      SmartDashboard.getNumber("CurrentMotorRB: ", ((CANSparkMax) motorRB).getOutputCurrent());
+      SmartDashboard.putNumber("CurrentMotorLT: ", ((CANSparkMax) motorLT).getOutputCurrent());
+      SmartDashboard.putNumber("CurrentMotorLB: ", ((CANSparkMax) motorLB).getOutputCurrent());
+      SmartDashboard.putNumber("CurrentMotorRT: ", ((CANSparkMax) motorRT).getOutputCurrent());
+      SmartDashboard.putNumber("CurrentMotorRB: ", ((CANSparkMax) motorRB).getOutputCurrent());
 
     } else {
       SmartDashboard.putNumber("Prac Encode Right: ", rightVictorEncode.getDistance());

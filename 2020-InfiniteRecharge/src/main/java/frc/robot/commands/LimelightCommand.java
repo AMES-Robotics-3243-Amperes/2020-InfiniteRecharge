@@ -15,9 +15,7 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveTrainSubSystem;
 
 public class LimelightCommand extends CommandBase {
-  /**
-   * Creates a new LimelightCommand.
-   */
+
   private final DriveTrainSubSystem m_drive;
   private final LimelightSubsystem m_adjust;
 
@@ -59,7 +57,7 @@ public class LimelightCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    DriveTrainSubSystem.tankDrive(0, 0, false, false);  //Get rid of "false" later on
+    DriveTrainSubSystem.tankDrive(0, 0, false, false);
   }
 
   // Returns true when the command should end.

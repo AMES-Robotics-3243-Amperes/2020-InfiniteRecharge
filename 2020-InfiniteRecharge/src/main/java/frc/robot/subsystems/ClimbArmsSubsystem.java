@@ -39,7 +39,6 @@ public class ClimbArmsSubsystem extends SubsystemBase {
   private final double ARM_CONTROL_PANEL_POSITION_ROTS = 5;
   private final double ARM_TARGET_MARGIN_ROTS = 0.1 * 64; // Changed from 0.25 to 0.1
 
-  // NOT YET TUNED TO THE ROBOT! 2/5/20
   double kp = 0.65;
   double ki = 0.0;
   double kd = 1e-8;
@@ -52,9 +51,6 @@ public class ClimbArmsSubsystem extends SubsystemBase {
   public boolean areEncodersReset = false;
 
   public ClimbArmsSubsystem() {
-    //pidControlRight.setOutputRange(min, max);
-
-    //pidControlLeft.setOutputRange(min, max);
 
     pidControlLeft.setP(kp);
     pidControlLeft.setI(ki);
@@ -63,10 +59,6 @@ public class ClimbArmsSubsystem extends SubsystemBase {
     pidControlRight.setP(kp);
     pidControlRight.setI(ki);
     pidControlRight.setD(kd);
-
-    //climberWinch.getEncoder().setPosition(0);
-    //climberR.getEncoder().setPosition(0);
-    //climberL.getEncoder().setPosition(0);
 
     climberR.setSmartCurrentLimit(39);
     climberL.setSmartCurrentLimit(39);
@@ -140,10 +132,6 @@ public class ClimbArmsSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("isClimberArmExtended", isClimberArmExtended());
 
     enforceMotorRangeSafeguards();
-
-    //SmartDashboard.putNumber("ClimberADJ Current: ", climberWinch.getOutputCurrent()); // Prints current in amps
-    //SmartDashboard.putNumber("ClimberR Current: ", climberR.getOutputCurrent());
-    //SmartDashboard.putNumber("ClimberL Current: ", climberL.getOutputCurrent());
 
     SmartDashboard.putBoolean("isLeftArmExtended()", isLeftArmExtended());
     SmartDashboard.putBoolean("isLeftArmRetracted()", isLeftarmRetracted());

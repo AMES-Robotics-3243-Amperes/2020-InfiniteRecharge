@@ -61,8 +61,7 @@ public class AutoMoveAndShootCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    // Uncomment later 2/29/20
-    //driveTrain.tankDrive(0, 0, false);
+    driveTrain.tankDrive(0, 0, false, false);
   }
 
   // Returns true when the command should end.

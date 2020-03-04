@@ -45,8 +45,6 @@ public class ClimberJoystickCommand extends CommandBase {
 
     climbArms.setLeftVelocity(leftJoystick);
     climbArms.setRightVelocity(rightJoystick);
-    //System.err.println("#### Left Climb ####: " + leftJoystick);
-    //System.err.println("#### Right Climb ####: " + rightJoystick);
   }
 
   // Called once the command ends or is interrupted.
@@ -54,7 +52,6 @@ public class ClimberJoystickCommand extends CommandBase {
   public void end(boolean interrupted) {
   }
 
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;

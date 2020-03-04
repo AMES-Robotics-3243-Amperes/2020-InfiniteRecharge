@@ -20,7 +20,7 @@ import frc.robot.Constants;
 
 public class DumperSubsystem extends SubsystemBase {
 
-  static CANSparkMax dumpCollect; // Add IDs in Constants.DumperConstants to make more motors here
+  static CANSparkMax dumpCollect;
   static CANSparkMax dumpShoot;
 
   static CANEncoder encodeCollect;
@@ -33,7 +33,6 @@ public class DumperSubsystem extends SubsystemBase {
   private double rotateStop = 0.0;
   private final double ROTATE_LIMIT = 10.0;
 
-  // Good enough 2/25/20
   // Collector Constants
   double kp = 0.7;
   double ki = 1.5e-3;
@@ -41,7 +40,6 @@ public class DumperSubsystem extends SubsystemBase {
   double min = -0.99;
   double max = 0.99;
 
-  // Still need to tune these constants 2/25/20
   // Shooter Constants
   // Todo:
   /*
@@ -81,7 +79,6 @@ public class DumperSubsystem extends SubsystemBase {
   }
 
   public void setDumpCollectSpeed(boolean shoot, boolean backwards) {
-    // Backwards not work? Not tested.
     if (shoot && !backwards) {
       encodePosition = encodeCollect.getPosition() + ballRotation;
       pidCollect.setReference(encodePosition, ControlType.kPosition);
@@ -117,18 +114,14 @@ public class DumperSubsystem extends SubsystemBase {
     dumpCollect.stopMotor();
   }
 
-  // WE STILL NEED TO SET THE PID LOOPS ON THIS.
-  // ALSO, WE WOULD CHANGE THE SPD HERE W/ LIMELIGHT CODE
   public static void setDumpHighSpeed() {
     pidShoot.setP(kpShoot);
     pidShoot.setReference(encodeVelocity, ControlType.kVelocity);
-    // dumpShoot.set(-1);
   }
 
   public void setDumpLowSpeed() {
     pidShoot.setP(kpShoot / 10);
     pidShoot.setReference(lowRPM, ControlType.kVelocity);
-    // dumpShoot.set(-0.55);
   }
 
   public static void stopShoot() {

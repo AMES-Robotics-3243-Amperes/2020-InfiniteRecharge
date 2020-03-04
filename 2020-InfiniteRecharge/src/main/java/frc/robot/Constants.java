@@ -60,17 +60,12 @@ public final class Constants {
         public static final int kClimbRID = 12;
         public static final int kClimbLID = 9;
 
-        // Limit switches DON'T KNOW THE CORRECT IDs YET 2/24/20
+        // Limit switches
         public static final int kBottomWinchLimitID = 3;
         public static final int kTopWinchLimitID = 4;
         public static final int kLeftLimitID = 0;
         public static final int kRightLimitID = 1;
 
-
-        // Servo
-        public static final int kServoID = 2;
-        public static final int kStopServo = 0;
-        public static final int kMoveServo = 100;
     }
 
     public static final class ControlPanelConstants {
@@ -81,6 +76,7 @@ public final class Constants {
     public static final class BallCollectConstants {
         public static final int kSpinID = 7;
         public static final int kActuateID = 6;
+        public static final int kCameraServo = 5;
     }
 
 }

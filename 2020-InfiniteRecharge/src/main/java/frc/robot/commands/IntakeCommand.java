@@ -8,9 +8,9 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.IntakeSubsystem;
+
 public class IntakeCommand extends CommandBase {
   private IntakeSubsystem intake;
   private boolean retract = false;
@@ -24,13 +24,6 @@ public class IntakeCommand extends CommandBase {
   @Override
   public void initialize() {
     retract = !retract;
-    /*if(IntakeSubsystem.currentExtended){
-      retract = true;
-    } else if(IntakeSubsystem.currentRetracted){
-      retract = false;
-    } else {
-      retract = true;
-    }*/
 
   }
 
@@ -44,7 +37,7 @@ public class IntakeCommand extends CommandBase {
       intake.setExtend();
     }
 
-    
+    intake.setCamera(RobotContainer.cameraPOV());
 
   }
 

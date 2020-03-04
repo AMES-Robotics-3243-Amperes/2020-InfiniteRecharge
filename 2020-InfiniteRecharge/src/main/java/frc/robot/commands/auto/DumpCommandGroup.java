@@ -14,9 +14,7 @@ import frc.robot.subsystems.DumperSubsystem;
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class DumpCommandGroup extends SequentialCommandGroup {
-  /**
-   * Creates a new DumpCommandGroup.
-   */
+  
   public DumpCommandGroup(DumperSubsystem dump) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());

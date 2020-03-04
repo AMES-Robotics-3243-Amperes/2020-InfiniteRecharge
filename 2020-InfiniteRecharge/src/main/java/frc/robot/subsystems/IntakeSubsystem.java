@@ -19,13 +19,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-
-// ------------------- THIS WAS CHANGED FROM ASSIMILATOR SUBSYSTEM TO INTAKE SUBSYSTEM ---------------------- //
-
 public class IntakeSubsystem extends SubsystemBase {
-  /**
-   * Creates a new AssimilatorSubsystem.
-   */
+
   static CANSparkMax intakeShaft;
   static CANSparkMax intakeActuator;
   static CANSparkMax polyLoop;
@@ -35,20 +30,21 @@ public class IntakeSubsystem extends SubsystemBase {
   public static boolean currentExtended = false;
   public static boolean currentRetracted = true;
   public boolean shouldSpin = false;
-  static final double CURRENT_CONST = 19.0; // Previously was 19, but current limit was too small to move out entirely
+  static final double CURRENT_CONST = 19.0;
   private double lastTimeWasExtended = -100;
 
   public IntakeSubsystem() {
     intakeShaft = new CANSparkMax(Constants.BallCollectConstants.kSpinID, MotorType.kBrushless);
     intakeActuator = new CANSparkMax(Constants.BallCollectConstants.kActuateID, MotorType.kBrushed);
-    cameraIntake = new Servo(5);
+    cameraIntake = new Servo(Constants.BallCollectConstants.kCameraServo);
     
     intakeShaft.setSmartCurrentLimit(30);
-    intakeActuator.setSmartCurrentLimit(28); // Test for limit
+    intakeActuator.setSmartCurrentLimit(28);
   }
 
   public void setExtend(){
-      if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentExtended) { // This makes sense: if the output is less than the constant, it will continue to extend
+      // This makes sense: if the output is less than the constant, it will continue to extend
+      if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentExtended) {
         currentRetracted = false; 
         intakeActuator.set(-0.65);
       } else {

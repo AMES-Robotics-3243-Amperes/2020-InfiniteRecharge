@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.*;
 import frc.robot.util.JoystUtil;
 import frc.robot.commands.*;
-import frc.robot.commands.auto.AutoMoveAndShootCommand;
 import frc.robot.commands.auto.DoNothingAuto;
 import frc.robot.commands.auto.DriveForward;
 import frc.robot.commands.auto.DumpCommandGroup;
@@ -41,7 +40,8 @@ public class RobotContainer {
   static double steerRight;
 
   // This helps the code know if we're using the practice robot or the competition robot
-  public static boolean isPractice = false; // TODO Silas: I don't know how to set preferences, hardcoded for now.  //Preferences.getInstance().getBoolean("Is Practice", false);
+  // DO NOT CHANGE isPractice TO ANYTHING ELSE OTHER THAN false FOR THE COMPETITION
+  public static boolean isPractice = false; //Preferences.getInstance().getBoolean("Is Practice", false);
   static boolean toggleActOn = false;
   static boolean toggleActPressed = false;
   
@@ -92,7 +92,7 @@ public class RobotContainer {
 
   // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-  // Color Wheel variables. ALSO, YOU CAN PUT THIS INTO CONSTANTS TO MAKE THIS PLACE A LITTLE MORE NEAT?
+  // Color Wheel variables.
   private static final int B_BLUE = 1;
   private static final int B_GREEN = 2;
   private static final int B_RED = 3;
@@ -107,10 +107,10 @@ public class RobotContainer {
   public RobotContainer() {
 
     // This sets the practice robot you're on to true
+    // This says that the robot we're on will pass in true (if it's the prac robot)
+    // and false (if it's the comp robot)
     // Preferences.getInstance().putBoolean("Is Practice", true);
 
-    // This says that the robot we're on will pass in true (if it's the prac robot)
-    // and falst (if it's the comp robot)
 
     // Setup Commands
     turnToColorBlue.addRequirements(m_controlPanelSubsystem); // Keep panel rotation cmds from running simultaneously
@@ -176,9 +176,9 @@ public class RobotContainer {
     winchButton.cancelWhenPressed(m_climbCommand);
   }
 
- /* public static boolean getWinchStop(){
-    return secondary.getRawButton(1);
-  }*/
+  public static int cameraPOV(){
+    return driver.getPOV();
+  }
 
   // -------------------- PRIMARY: LIMELIGHT SECTION OF JOYSTICK ---------------------
   public static boolean driveLime() {
@@ -278,12 +278,12 @@ public class RobotContainer {
 
   // ------------------------------------ DRIVING ---------------------------------------
 
-  public static Command getDriveCommand() { // Drive Train
+  public static Command getDriveCommand() {
 
     return m_robotDriveCommand;
 }
 
-public Command getLimelightCommand(){ // Limelight
+public Command getLimelightCommand(){
 
   return m_limelightCommand;
 }
@@ -293,7 +293,6 @@ public Command getLimelightCommand(){ // Limelight
   public Command getShootCommand(){
     return m_shootCommand;
   }
-
  
   public Command getIntakeCommand(){
 

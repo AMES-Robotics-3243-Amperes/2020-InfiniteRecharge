@@ -19,9 +19,6 @@ import frc.robot.subsystems.LimelightSubsystem;
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class ShootCommandGroup extends SequentialCommandGroup {
-  /**
-   * Creates a new AlignAndShoot.
-   */
 
   public ShootCommandGroup(DriveTrainSubSystem drive, LimelightSubsystem align, DumperSubsystem dump) {
     // Add your commands in the super() call, e.g.

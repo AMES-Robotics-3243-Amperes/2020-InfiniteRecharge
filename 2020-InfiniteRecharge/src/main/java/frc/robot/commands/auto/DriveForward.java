@@ -12,17 +12,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrainSubSystem;
 
 public class DriveForward extends CommandBase {
-  /**
-   * Creates a new DriveForward.
-   */
 
-   /*private static DriveTrainSubSystem m_driver;
-   private static CANEncoder m_encodeSparkLeft;
-   private static CANEncoder m_encodeSparkRight;
-   private static Encoder m_encodeVictorRight;
-   private static Encoder m_encodeVictorLeft; */
-
-   int rotations = 0;
+  int rotations = 0;
 
   public DriveForward(int rotations){
     // Use addRequirements() here to declare subsystem dependencies.

@@ -47,7 +47,6 @@ public class ShootCommand extends CommandBase {
     } else
       shooter.stopShoot();
 
-    //DumperSubsystem.setDumpShootSpeed(RobotContainer.configureBallHighShoot());
   }
 
   // Called once the command ends or is interrupted.
