@@ -14,7 +14,7 @@ import frc.robot.subsystems.DumperSubsystem;
 
 public class AutoDump extends CommandBase {
   private DumperSubsystem shooter;
-  double startTime = 3;
+  double startTime = 10;
   double timeNow;
 
   public AutoDump(DumperSubsystem shooter) {
@@ -26,7 +26,9 @@ public class AutoDump extends CommandBase {
   @Override
   public void initialize() {
     timeNow = Timer.getFPGATimestamp();
-    shooter.setDumpForward();
+    shooter.resetIndexer();
+    shooter.setDumpLowSpeed();
+    shooter.setDumpForward(true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -170,6 +170,14 @@ public class DriveTrainSubSystem extends SubsystemBase {
     }
   }
 
+  public static double readLeftEncode(){
+    return leftSparkEncode.getPosition();
+  }
+
+  public static double readRightEncode(){
+    return rightSparkEncode.getPosition();
+  }
+
   public static void setPosition(double leftSet, double rightSet) {
     double motorSpeedLeft;
     double motorSpeedRight;

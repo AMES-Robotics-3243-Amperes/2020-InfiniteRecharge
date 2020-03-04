@@ -31,7 +31,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 public class Robot extends TimedRobot {
 
   // Auto
-  private Command m_autonomousCommand;
+  private Command m_autonomousCommand;  // This is a blank command.
   private Command m_shootAutoCommand;
   private Command m_dumpAutoCommand;
   private Command m_doNothingCommand;
@@ -76,7 +76,7 @@ public class Robot extends TimedRobot {
 
     m_chooser.setDefaultOption(kShootAuto, m_shootAutoCommand); // This is the default auto
     m_chooser.addOption(kLineAuto, m_lineAutoCommand);
-    m_chooser.addOption(kDumpAuto, m_dumpCommand);
+    m_chooser.addOption(kDumpAuto, m_dumpAutoCommand);
     m_chooser.addOption(kNothingAuto, m_doNothingCommand);
     
     SmartDashboard.putData("Auto Choices", m_chooser);
