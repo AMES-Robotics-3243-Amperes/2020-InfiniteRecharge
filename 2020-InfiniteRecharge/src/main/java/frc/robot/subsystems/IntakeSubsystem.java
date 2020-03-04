@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // Wpilib imports
@@ -29,6 +30,8 @@ public class IntakeSubsystem extends SubsystemBase {
   static CANSparkMax intakeActuator;
   static CANSparkMax polyLoop;
   static CANEncoder indexEncoder;
+  public static Servo cameraIntake;
+
   public static boolean currentExtended = false;
   public static boolean currentRetracted = true;
   public boolean shouldSpin = false;
@@ -38,6 +41,8 @@ public class IntakeSubsystem extends SubsystemBase {
   public IntakeSubsystem() {
     intakeShaft = new CANSparkMax(Constants.BallCollectConstants.kSpinID, MotorType.kBrushless);
     intakeActuator = new CANSparkMax(Constants.BallCollectConstants.kActuateID, MotorType.kBrushed);
+    cameraIntake = new Servo(5);
+    
     intakeShaft.setSmartCurrentLimit(30);
     intakeActuator.setSmartCurrentLimit(28); // Test for limit
   }
@@ -63,6 +68,18 @@ public class IntakeSubsystem extends SubsystemBase {
       intakeActuator.stopMotor();
     }
   }
+
+  // ADJUST THE ANGLE TO DRIVERS' PREFERENCE 3/4/20
+  public void setCamera(int angle){
+    if(angle == 180){
+      cameraIntake.setAngle(15);
+    } else if(angle == 0){
+      cameraIntake.setAngle(90);
+    } else {
+      cameraIntake.setAngle(40);
+    }
+  }
+
   @Override
   public void periodic() {
 
