@@ -169,11 +169,16 @@ public class RobotContainer {
     JoystickButton climberButton = new JoystickButton(secondary, 4);
     // Starts running ClimbCommand when button 4 is pressed
     climberButton.whenPressed(m_climbCommand);
+    
+    JoystickButton winchButton = new JoystickButton(secondary, 1);
+    winchButton.cancelWhenPressed(m_climbCommand.extendWinch);
+    winchButton.cancelWhenPressed(m_climbCommand.retractWinch);
+    winchButton.cancelWhenPressed(m_climbCommand);
   }
 
-  public static boolean getWinchStop(){
+ /* public static boolean getWinchStop(){
     return secondary.getRawButton(1);
-  }
+  }*/
 
   // -------------------- PRIMARY: LIMELIGHT SECTION OF JOYSTICK ---------------------
   public static boolean driveLime() {

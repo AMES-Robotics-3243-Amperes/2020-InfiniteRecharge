@@ -10,9 +10,9 @@ public class ClimbCommand extends CommandBase {
   private ClimbWinchSubsystem climbWinch;
   private ClimbArmsSubsystem climbArms;
   private final ClimbExtendArmsCommand extendArms;
-  private final ClimbExtendWinchCommand extendWinch;
+  public final ClimbExtendWinchCommand extendWinch;
   private final ClimbRetractArmsCommand retractArms;
-  private final ClimbRetractWinchCommand retractWinch;
+  public final ClimbRetractWinchCommand retractWinch;
   private boolean isInDeployMode = false; // Start on false, so the first activation sets it to true and schedules a ClimbExtendCommand
   private boolean areArmsScheduled = false; // makes sure arms are scheduled to extend
   public ClimbCommand(ClimbWinchSubsystem climbWinch, ClimbArmsSubsystem climbArms) {
@@ -34,9 +34,10 @@ public class ClimbCommand extends CommandBase {
       extendWinch.schedule();
       areArmsScheduled = false;  //setting arms scheduled to false after exectue runs
     } else {
-      
       retractWinch.schedule();
     }
+
+    System.err.println(" @@@@@@@@@@@@@@ Initialize Winch");
   }
 
   @Override
@@ -46,6 +47,8 @@ public class ClimbCommand extends CommandBase {
       areArmsScheduled = true;
     
     }
+
+    System.err.println(" @@@@@@@@@@@@@@@@@@ Executing Winch @@@@@@@");
   }
 
  @Override

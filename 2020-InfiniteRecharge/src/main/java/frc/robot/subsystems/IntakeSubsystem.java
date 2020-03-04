@@ -32,7 +32,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public static boolean currentExtended = false;
   public static boolean currentRetracted = true;
   public boolean shouldSpin = false;
-  static final double CURRENT_CONST = 19.0;
+  static final double CURRENT_CONST = 19.0; // Previously was 19, but current limit was too small to move out entirely
   private double lastTimeWasExtended = -100;
 
   public IntakeSubsystem() {

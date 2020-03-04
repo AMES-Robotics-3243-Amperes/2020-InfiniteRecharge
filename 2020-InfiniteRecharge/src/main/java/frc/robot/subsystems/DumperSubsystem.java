@@ -53,6 +53,7 @@ public class DumperSubsystem extends SubsystemBase {
   double kdShoot = 1e-1;
 
   static double encodePosition = 0.0;
+  static final double autoPosition = 200;
   static final double encodeVelocity = -5700; // 5700 is max rpm. Negative to invert motor
   final double lowRPM = -1500;
 
@@ -84,27 +85,32 @@ public class DumperSubsystem extends SubsystemBase {
     if (shoot && !backwards) {
       encodePosition = encodeCollect.getPosition() + ballRotation;
       pidCollect.setReference(encodePosition, ControlType.kPosition);
-      System.err.println("### Forwards works ###");
     } else if (backwards && !shoot) {
       encodePosition = encodeCollect.getPosition() - ballRotation;
       pidCollect.setReference(encodePosition, ControlType.kPosition);
-      System.err.println("### Backwards works ###");
     } else {
       dumpCollect.stopMotor();
     }
 
   }
 
-  public void setDumpForward() {
-    encodePosition = encodeCollect.getPosition() + ballRotation;
-    pidCollect.setReference(encodePosition, ControlType.kPosition);
-    System.err.println("########## Collect Forward: " + encodePosition + " ##########");
+  public void setDumpForward(boolean auto) {
+    if( ! auto){
+      encodePosition = encodeCollect.getPosition() + ballRotation;
+      pidCollect.setReference(encodePosition, ControlType.kPosition);
+    } else {
+      pidCollect.setReference(autoPosition, ControlType.kPosition);
+    }
+
   }
 
   public void setDumpBackward() {
     encodePosition = encodeCollect.getPosition() - ballRotation;
     pidCollect.setReference(encodePosition, ControlType.kPosition);
-    System.err.println("########## Collect Backward: " + encodePosition + " ##########");
+  }
+
+  public void resetIndexer(){
+    encodeCollect.setPosition(0);
   }
 
   public void stopDump() {
@@ -117,14 +123,12 @@ public class DumperSubsystem extends SubsystemBase {
     pidShoot.setP(kpShoot);
     pidShoot.setReference(encodeVelocity, ControlType.kVelocity);
     // dumpShoot.set(-1);
-    System.err.println("##### RPM: " + encodeShoot.getVelocity() + " ######");
   }
 
   public void setDumpLowSpeed() {
     pidShoot.setP(kpShoot / 10);
     pidShoot.setReference(lowRPM, ControlType.kVelocity);
     // dumpShoot.set(-0.55);
-    System.err.println("##### RPM: " + encodeShoot.getVelocity() + " ######");
   }
 
   public static void stopShoot() {
@@ -137,7 +141,6 @@ public class DumperSubsystem extends SubsystemBase {
       dumpShoot.set(-1);
     } else {
       pidShoot.setReference(0, ControlType.kVelocity);
-      System.err.println("#$#$#$#$# The Shooter doesn't work #$#$#$#$#");
     }
   }
 
@@ -159,7 +162,7 @@ public class DumperSubsystem extends SubsystemBase {
     // If the shooter rpm is within 4800 to 5700 and the indexer hasn't pushed all of the balls through the shooter
     if (encodeShoot.getVelocity() <= encodeVelocity + 900 && encodeShoot.getVelocity() >= encodeVelocity
         && rotateStop <= encodeCollect.getPosition() + ROTATE_LIMIT){
-      setDumpForward();
+      setDumpForward(true);
     } else {
       stopDump();
     }

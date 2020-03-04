@@ -9,15 +9,10 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Servo;
-import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.CANEncoder;
-import com.revrobotics.CANPIDController;
 
 import frc.robot.Constants;
 import frc.robot.util.PIDMotor;
@@ -63,7 +58,7 @@ public class ClimbWinchSubsystem extends SubsystemBase {
     enforceMotorRangeSafeguards();
   }
 
-  /** Ccall once to control the winch with PID */
+  /** Call once to control the winch with PID */
   public void setWinchIsDeployed(boolean shouldDeploy) {
     setWinchTarget(shouldDeploy ?WINCH_DEPLOYED_ROTS :0);
   }
@@ -97,16 +92,11 @@ public class ClimbWinchSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("isWinchRetracted()", isWinchRetracted());
     SmartDashboard.putBoolean("limitSwitch WinchBottom", limitSwitchWinchBottom.get());
     SmartDashboard.putBoolean("limitSwitch WinchTop", limitSwitchWinchTop.get());
+
   }
 
   private void enforceMotorRangeSafeguards()
   {
-    
-    /*if((climberWinchPID.encoder.getVelocity() < -1 && isWinchRetracted())
-      || (climberWinchPID.encoder.getVelocity() > 1 && isWinchDeployed())){
-      System.err.println(" #### THE WINCH DOES STOP ##### ");
-      climberWinch.stopMotor();
-      }*/
 
       // Limit switch-only safeguards
     if(climberWinchPID.encoder.getVelocity() < -1 && limitSwitchWinchTop.get())

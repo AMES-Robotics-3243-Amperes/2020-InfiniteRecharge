@@ -24,13 +24,8 @@ public class DriveForward extends CommandBase {
 
    int rotations = 0;
 
-  public DriveForward(int rotations){/*DriveTrainSubSystem driver, CANEncoder encodeSparkLeft, CANEncoder encodeSparkRight, Encoder encodeVictorLeft, Encoder encodeVictorRight) {*/
+  public DriveForward(int rotations){
     // Use addRequirements() here to declare subsystem dependencies.
-    /*m_driver = driver;
-    m_encodeSparkLeft = encodeSparkLeft;
-    m_encodeVictorLeft = encodeVictorLeft;
-    m_encodeSparkRight = encodeSparkRight;
-    m_encodeVictorRight = encodeVictorRight; */
     this.rotations = rotations;
   }
 
@@ -38,34 +33,11 @@ public class DriveForward extends CommandBase {
   @Override
   public void initialize() {
     DriveTrainSubSystem.resetEncode();
-/*
-    if(m_encodeSparkLeft != null && m_encodeSparkRight != null){
-      m_encodeSparkLeft.setPosition(0);
-      m_encodeSparkRight.setPosition(0);
-
-      if(m_encodeSparkLeft.getPosition() < 35 && m_encodeSparkRight.getPosition() < 35)
-        DriveTrainSubSystem.tankDrive(0.55, 0.55, false);
-      else if(m_encodeSparkLeft.getPosition() > 35 && m_encodeSparkRight.getPosition() > 35)
-        DriveTrainSubSystem.tankDrive(-0.55, -0.55, false);
-      
-    } else if(m_encodeVictorLeft != null && m_encodeVictorRight != null){
-      m_encodeVictorLeft.reset();
-      m_encodeVictorRight.reset();
-
-      if(m_encodeVictorLeft.getDistance() < 35 && m_encodeVictorRight.getDistance() < 35)
-        DriveTrainSubSystem.tankDrive(0.55, 0.55, false);
-      else if(m_encodeVictorLeft.getDistance() > 35 && m_encodeVictorRight.getDistance() > 35)
-        DriveTrainSubSystem.tankDrive(-0.55, -0.55, false);
-    } else{
-      DriveTrainSubSystem.tankDrive(0.0, 0.0, false);
-    }
-      */
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Want to move 5 ft fwd, but don't know how many rotations, so used "35" as place holder
     DriveTrainSubSystem.setPosition(rotations, rotations);
   }
 
@@ -79,6 +51,7 @@ public class DriveForward extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() { 
-    return false;
+    return Math.abs(DriveTrainSubSystem.readLeftEncode()) >= Math.abs(rotations) - 2 
+      && - Math.abs(DriveTrainSubSystem.readRightEncode()) <= - Math.abs(rotations) + 2;
   }
 }

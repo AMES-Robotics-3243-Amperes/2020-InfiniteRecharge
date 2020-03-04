@@ -19,10 +19,11 @@ public class ClimbRetractWinchCommand extends CommandBase {
 
   @Override
   public void execute() {
-    if( !climber.isWinchRetracted() && ! RobotContainer.getWinchStop())
+    if( ! climber.isWinchRetracted())
     {
       climber.winchPeriodic(false);
     }
+    System.err.println("######## Retracting #########");
 
   }
 
@@ -33,6 +34,6 @@ public class ClimbRetractWinchCommand extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return climber.isWinchRetracted() || RobotContainer.getWinchStop();
+    return climber.isWinchRetracted();
   }
 }
