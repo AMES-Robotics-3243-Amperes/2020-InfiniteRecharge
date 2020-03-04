@@ -118,7 +118,7 @@ public class ClimbWinchSubsystem extends SubsystemBase {
 
   public boolean isWinchHalfRetracted()
   {
-    return climberWinchPID.encoder.getPosition() >= - WINCH_DEPLOYED_ROTS/2.0 && areEncodersReset; // Don't let the encoders stop motors while resetting is happening
+    return (climberWinchPID.encoder.getPosition() >= - WINCH_DEPLOYED_ROTS/2.0 && areEncodersReset) || isWinchRetracted(); // Don't let the encoders stop motors while resetting is happening
   }
 
   public boolean resetRetractWinch()
