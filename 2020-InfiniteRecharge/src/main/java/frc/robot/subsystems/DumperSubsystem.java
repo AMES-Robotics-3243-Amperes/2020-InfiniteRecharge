@@ -31,7 +31,7 @@ public class DumperSubsystem extends SubsystemBase {
 
   private static final double ballRotation = 2; // We don't know the correct rotations yet
   private double rotateStop = 0.0;
-  private final double ROTATE_LIMIT = 10.0;
+  private final double ROTATE_LIMIT = 200.0;
 
   // Collector Constants
   double kp = 0.7;
@@ -110,6 +110,10 @@ public class DumperSubsystem extends SubsystemBase {
     encodeCollect.setPosition(0);
   }
 
+  public double readIndexer(){
+    return encodeCollect.getPosition();
+  }
+
   public void stopDump() {
     dumpCollect.stopMotor();
   }
@@ -156,9 +160,7 @@ public class DumperSubsystem extends SubsystemBase {
     if (encodeShoot.getVelocity() <= encodeVelocity + 900 && encodeShoot.getVelocity() >= encodeVelocity
         && rotateStop <= encodeCollect.getPosition() + ROTATE_LIMIT){
       setDumpForward(true);
-    } else {
-      stopDump();
-    }
+    } // Got rid of the else{} where it stops the motor and resets everything again
     
     // TODO: shooter needs to turn off when this method isn't called continuously
   }

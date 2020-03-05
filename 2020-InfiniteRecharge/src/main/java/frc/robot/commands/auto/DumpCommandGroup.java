@@ -26,7 +26,7 @@ public class DumpCommandGroup extends SequentialCommandGroup {
       new AutoDump(dump),
 
       // Drives backwards 10 rotations to get to the trench
-      new DriveForward(-50)
+      new DriveForward(-75)
 
       // If we can, we turn around to face the trench? Not sure if want. 3/2/20
       // new DriveTurn(4)

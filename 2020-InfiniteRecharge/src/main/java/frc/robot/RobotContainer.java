@@ -177,7 +177,7 @@ public class RobotContainer {
   }
 
   public static int cameraPOV(){
-    return driver.getPOV();
+    return secondary.getPOV();
   }
 
   // -------------------- PRIMARY: LIMELIGHT SECTION OF JOYSTICK ---------------------

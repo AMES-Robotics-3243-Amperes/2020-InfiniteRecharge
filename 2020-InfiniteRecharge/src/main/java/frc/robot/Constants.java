@@ -21,26 +21,26 @@ public final class Constants {
     public static final boolean TEST_VERSION = false; // When false, disables some troubleshooting SmartDashboard outputs
 
     public static final class DriveConstants {
-        public static final int kLTID = 4;
-        public static final int kLBID = 3;
-        public static final int kRTID = 2;
-        public static final int kRBID = 1;
+        public static final int kLTID = 4;  // CAN
+        public static final int kLBID = 3;  // CAN
+        public static final int kRTID = 2;  // CAN
+        public static final int kRBID = 1;  // CAN
 
-        public static final int kPracLTID = 9;
-        public static final int kPracLBID = 10;
-        public static final int kPracRTID = 8;
-        public static final int kPracRBID = 7;
-        public static final int kPracLEncode3 = 3;
-        public static final int kPracLEncode4 = 4;
-        public static final int kPracREncode0 = 0;
-        public static final int kPracREncode1 = 1;
+        public static final int kPracLTID = 9;  // Victor PWM
+        public static final int kPracLBID = 10; // Victor PWM
+        public static final int kPracRTID = 8;  // Victor PWM
+        public static final int kPracRBID = 7;  // Victor PWM
+        public static final int kPracLEncode3 = 3;  // PWM
+        public static final int kPracLEncode4 = 4;  // PWM
+        public static final int kPracREncode0 = 0;  // PWM
+        public static final int kPracREncode1 = 1;  // PWM
 
         public static final double DRIVE_SLOW_SPEED = 0.85 * 1;
     }
 
     public static final class IndexerConstants {
-        public static final int kIndexCollectID = 11;
-        public static final int kIndexShootID = 8;
+        public static final int kIndexCollectID = 11;   // CAN
+        public static final int kIndexShootID = 8;  // CAN
         public static final double BELT_SPEED = 0.75;
     }
 
@@ -56,27 +56,27 @@ public final class Constants {
     }
 
     public static final class ClimbingConstant {
-        public static final int kClimbAdjID = 10;
-        public static final int kClimbRID = 12;
-        public static final int kClimbLID = 9;
+        public static final int kClimbAdjID = 10;   // CAN
+        public static final int kClimbRID = 12; // CAN
+        public static final int kClimbLID = 9;  // CAN
 
         // Limit switches
-        public static final int kBottomWinchLimitID = 3;
-        public static final int kTopWinchLimitID = 4;
-        public static final int kLeftLimitID = 0;
-        public static final int kRightLimitID = 1;
+        public static final int kBottomWinchLimitID = 3;    // DIO
+        public static final int kTopWinchLimitID = 4;   // DIO
+        public static final int kLeftLimitID = 0;   // DIO
+        public static final int kRightLimitID = 1;  // DIO
 
     }
 
     public static final class ControlPanelConstants {
         public static final int kpanelSpinnerID = 5;
-        public static final int mechanismLifterID = 0; // Servo ID Don't know yet
+        public static final int mechanismLifterID = 10; // Servo ID Don't know yet
     }
 
     public static final class BallCollectConstants {
-        public static final int kSpinID = 7;
-        public static final int kActuateID = 6;
-        public static final int kCameraServo = 5;
+        public static final int kSpinID = 7;    // CAN
+        public static final int kActuateID = 6; // CAN
+        public static final int kCameraServo = 0;   // PWM
     }
 
 }

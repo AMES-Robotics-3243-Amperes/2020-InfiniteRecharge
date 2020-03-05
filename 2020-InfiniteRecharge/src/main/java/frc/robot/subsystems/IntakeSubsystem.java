@@ -47,6 +47,7 @@ public class IntakeSubsystem extends SubsystemBase {
       if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentExtended) {
         currentRetracted = false; 
         intakeActuator.set(-0.65);
+        cameraIntake.setAngle(40);
       } else {
         intakeActuator.set(0.0);
         currentExtended = true;
@@ -59,20 +60,10 @@ public class IntakeSubsystem extends SubsystemBase {
     if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentRetracted) { 
       currentExtended = false;
       intakeActuator.set(0.65);
+      cameraIntake.setAngle(100);
     } else{
       currentRetracted = true;
       intakeActuator.stopMotor();
-    }
-  }
-
-  // ADJUST THE ANGLE TO DRIVERS' PREFERENCE 3/4/20
-  public void setCamera(int angle){
-    if(angle == 180){
-      cameraIntake.setAngle(15);
-    } else if(angle == 0){
-      cameraIntake.setAngle(90);
-    } else {
-      cameraIntake.setAngle(40);
     }
   }
 
@@ -80,6 +71,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public void periodic() {
 
     SmartDashboard.putNumber("intake amp draw", intakeActuator.getOutputCurrent());
+    SmartDashboard.putNumber("Camera Angle", cameraIntake.getAngle());
 
     if(currentExtended)
       lastTimeWasExtended = Timer.getFPGATimestamp();

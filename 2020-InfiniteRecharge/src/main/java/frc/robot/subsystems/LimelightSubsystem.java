@@ -37,8 +37,7 @@ public class LimelightSubsystem extends SubsystemBase {
   boolean target = false;
   boolean alignDone = false;
 
-  static double refArea = 0;
-  static final int IS_TALL = 5; // Look for the height difference between the loading bay & shooting goal targets
+  static double refArea = 3.9;
 
   public LimelightSubsystem() {
     m_PIDSteer.setIntegratorRange(-0.9, 0.9);

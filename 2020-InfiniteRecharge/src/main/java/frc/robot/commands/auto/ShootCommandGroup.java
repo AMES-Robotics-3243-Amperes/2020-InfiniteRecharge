@@ -28,7 +28,7 @@ public class ShootCommandGroup extends SequentialCommandGroup {
       new AutoMoveAndShootCommand(drive, align, dump),
       
       // Drives backwards 10 rotations to get to the trench
-      new DriveForward(-10)
+      new DriveForward(-25)
 
       // If we can, we turn around to face the trench? Not sure if want. 3/2/20
       // new DriveTurn(4)

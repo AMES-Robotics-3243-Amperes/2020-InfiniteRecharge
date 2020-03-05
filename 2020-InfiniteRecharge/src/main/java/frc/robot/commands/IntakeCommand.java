@@ -37,13 +37,12 @@ public class IntakeCommand extends CommandBase {
       intake.setExtend();
     }
 
-    intake.setCamera(RobotContainer.cameraPOV());
-
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+
   }
 
   // Returns true when the command should end.

@@ -39,6 +39,7 @@ public class AutoMoveAndShootCommand extends CommandBase {
   @Override
   public void initialize() {
     hasAligned = false;
+    shooter.resetIndexer();
 
     limeAlign.setPIDSteer();
     limeAlign.setPIDDist();
@@ -51,7 +52,6 @@ public class AutoMoveAndShootCommand extends CommandBase {
   @Override
   public void execute() {
     // TODO: steer with limelight, set isAligned to whether or not we're good to shoot
-
     if(hasAligned)
     {
       shooter.shootBall();
@@ -61,12 +61,13 @@ public class AutoMoveAndShootCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    driveTrain.tankDrive(0, 0, false, false);
+    shooter.stopShoot();
+    shooter.stopDump();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return shooter.readIndexer() >= 200;
   }
 }
