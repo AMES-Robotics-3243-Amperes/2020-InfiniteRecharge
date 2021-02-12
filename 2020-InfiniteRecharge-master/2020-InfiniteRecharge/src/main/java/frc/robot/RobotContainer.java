@@ -259,7 +259,7 @@ public class RobotContainer {
 
   public static boolean configureBallHighShoot(){ return secondary.getRawButton(6); }
 
-  public static boolean configureBallMedShoot(){return secondary.getRawButton(2); }
+  public static boolean configureBallMedShoot(){return secondary.getRawButton(1); }
 
   public static boolean configureBallLowShoot(){ return secondary.getRawButton(8); }
 
