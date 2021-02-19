@@ -237,10 +237,10 @@ public class RobotContainer {
     return steer;
   }
   /** Method below returns signum for POV**/
-  private static double getPovNums(boolean isHoriPressed){ // TO BE DONE. RIGHT NOW JUST GET THE SHOOTER DONE.
+  //private static double getPovNums(boolean isHoriPressed){ // TO BE DONE. RIGHT NOW JUST GET THE SHOOTER DONE.
    // double Pov = isHoriPressed ? JoystUtil.getPOV(secondary, 5) * Math.signum(secondary.getPOV())
-  }
-  /
+
+
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
   // ----------------- SECONDARY: INTAKE SECTION OF JOYSTICK -------------
@@ -259,7 +259,7 @@ public class RobotContainer {
 
   public static boolean configureBallHighShoot(){ return secondary.getRawButton(6); }
 
-  public static boolean configureBallMedShoot(){return secondary.getRawButton(1); }
+  public static boolean configureBallMedShoot(){return secondary.getRawButton(1); } // medium shoot speed
 
   public static boolean configureBallLowShoot(){ return secondary.getRawButton(8); }
 
