@@ -43,11 +43,6 @@ public final class Constants {
         public static final int kIndexShootID = 8;  // CAN
         public static final double BELT_SPEED = 0.75;
     }
-    public static final class ActuatorConstants{
-        public static final int actuatorConnectorOne = 1;
-        public static final int actuatorConnectorTwo = 2;
-
-    }
 
     public static class FieldConstants {
         public static double highGoalHeightInches = 8*12 + 2 + (1/4);
