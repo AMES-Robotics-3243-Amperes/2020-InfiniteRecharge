@@ -221,11 +221,11 @@ public class RobotContainer {
     return steerRight;
   }
   /**ConfigurePov*/
-  public static double configurePovHoriz(boolean isHoriPressed){
+  //public static double configurePovHoriz(boolean isHoriPressed){
     // Attempting to create a method to use POV pad like ordinary buttons
 
 
-  }
+  //}
 
   /** Gets a joystick value, with dead zone applied. */
   private static double  getJoystWithDead(boolean isLeft) {
@@ -239,11 +239,11 @@ public class RobotContainer {
   /** Method below returns signum for POV**/
   //private static double getPovNums(boolean isHoriPressed){ // TO BE DONE. RIGHT NOW JUST GET THE SHOOTER DONE.
    // double Pov = isHoriPressed ? JoystUtil.getPOV(secondary, 5) * Math.signum(secondary.getPOV())
-
+ // }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
-  // ----------------- SECONDARY: INTAKE SECTION OF JOYSTICK -------------
+  // -----------------                SECONDARY: INTAKE SECTION OF JOYSTICK -------------
   public static boolean configureIndexShaft() {
     return secondary.getRawButton(3);
   }
@@ -259,7 +259,7 @@ public class RobotContainer {
 
   public static boolean configureBallHighShoot(){ return secondary.getRawButton(6); }
 
-  public static boolean configureBallMedShoot(){return secondary.getRawButton(1); } // medium shoot speed
+  public static boolean configureBallMedShoot(){return secondary.getRawButton(1); }
 
   public static boolean configureBallLowShoot(){ return secondary.getRawButton(8); }
 

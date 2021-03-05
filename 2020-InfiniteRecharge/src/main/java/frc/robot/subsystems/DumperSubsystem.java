@@ -46,15 +46,15 @@ public class DumperSubsystem extends SubsystemBase {
    * - Lower RPM for new goal (currently -5500) - needs to go into low goal,
    * rather than the high one - tune PID constants to correct oscillation -
    */
-  static double kpShoot = 6e-3; // PID constan
+  static double kpShoot = 6e-4; // PID constan
   double kiShoot = 0;
-  double kdShoot = 1e-1;
+  double kdShoot = 20;
 
   static double encodePosition = 0.0;
   static final double autoPosition = 200;
   static final double encodeVelocity = -6500; // 5700 is max rpm. Negative to invert motor (Free Speed) RPM
-  static final double encodeMedVelocity = -3500;
-  final double lowRPM = -1500; //lowest speed
+  static final double encodeMedVelocity = -5000;
+  final double lowRPM = -3500; //lowest speed
 
   public DumperSubsystem() {
     dumpCollect = new CANSparkMax(Constants.IndexerConstants.kIndexCollectID, MotorType.kBrushless);
