@@ -70,8 +70,7 @@ public class DumperSubsystem extends SubsystemBase {
     pidCollect.setP(kp);
     pidCollect.setI(ki);
     pidCollect.setD(kd);
-    pidCollect.setOutputRange(min, max);
-
+    pidCollect.setOutputRange(min, max); 
     // the .setP() is set in the two different High and Low shooting methods
     pidShoot.setI(kiShoot);
     pidShoot.setD(kdShoot);

@@ -56,6 +56,7 @@ public class RobotContainer {
   public static DumperSubsystem m_dumperSubsystem = new DumperSubsystem();
   public static ClimbArmsSubsystem m_climbArmsSubsystem = new ClimbArmsSubsystem();
   public static ClimbWinchSubsystem m_climbWinchSubsystem = new ClimbWinchSubsystem();
+  public static ActuatorSubsystem m_ActuatorSubsystem = new ActuatorSubsystem();
 
   //-------------------------------------- COMMANDS -----------------------------------------------
   public final static DriveTrainCommand m_robotDriveCommand = new DriveTrainCommand(m_robotDriveSubsystem);
@@ -64,6 +65,7 @@ public class RobotContainer {
   public static IntakeCommand m_IntakeCommand = new IntakeCommand(m_IntakeSubsystem);
   private static DumperCommand m_dumperCommand = new DumperCommand();
   private ShootCommand m_shootCommand = new ShootCommand(m_dumperSubsystem, m_limelightSubsystem);
+  private ActuatorCommand m_ActuatorCommand = new ActuatorCommand();
 
   //------------------------------------ CONTROL PANEL --------------------------------------------
   private final ControlPanelCommand.TurnNumTimes turn4Times = new ControlPanelCommand.TurnNumTimes(
@@ -263,6 +265,7 @@ public class RobotContainer {
 
   public static boolean configureBallLowShoot(){ return secondary.getRawButton(8); }
 
+  
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *

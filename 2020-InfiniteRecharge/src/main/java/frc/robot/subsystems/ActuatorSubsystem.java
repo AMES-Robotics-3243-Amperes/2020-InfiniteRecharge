@@ -17,7 +17,7 @@ public class ActuatorSubsystem extends SubsystemBase {
   //private static servoBallAdj instance = null;
   private static final double MIN_ANGLE_DEG = 0.0;
   private static final double MAX_ANGLE_DEG = 100;
-  private static final boolean inverted = false;
+  private static final boolean inverted = false; //Honestly not sure what I'm doing here...
   public ActuatorSubsystem() { // Le actuator constructor
     actuatorServo = new Servo(frc.robot.Constants.ActuatorConstants.actuatorConnectorOne); 
     setActAngle(MIN_ANGLE_DEG);
@@ -45,5 +45,8 @@ public class ActuatorSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    getActuatorAngle();
+
+    
   }
 }
