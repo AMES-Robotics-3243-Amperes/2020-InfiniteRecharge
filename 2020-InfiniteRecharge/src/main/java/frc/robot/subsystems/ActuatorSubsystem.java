@@ -36,7 +36,7 @@ public class ActuatorSubsystem extends SubsystemBase {
     servo.setAngle(angle);
 
   }
-  private static void stopMotor(Servo servo){
+  private static void stopMotor(Servo servo){      
     stopMotor(servo);
   }
 
