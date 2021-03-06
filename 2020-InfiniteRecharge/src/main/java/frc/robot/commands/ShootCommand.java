@@ -19,7 +19,7 @@ public class ShootCommand extends CommandBase {
   // full motor speed (no PID) = 101 inches to frame front
 
 
-  public ShootCommand(DumperSubsystem shooter, LimelightSubsystem limelight) {
+  public ShootCommand(DumperSubsystem shooter, LimelightSubsystem limelight) { //Dependency declaration constructor
     this.shooter = shooter;
     this.limelight = limelight;
   }

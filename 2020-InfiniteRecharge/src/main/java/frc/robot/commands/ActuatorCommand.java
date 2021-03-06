@@ -3,13 +3,20 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
-
+//Library imports
 import edu.wpi.first.wpilibj2.command.CommandBase;
+//class imports
+import frc.robot.RobotContainer;
+import frc.robot.subsystems.ActuatorSubsystem;
 
 public class ActuatorCommand extends CommandBase {
+  private ActuatorSubsystem actuation;
+  private static boolean isActPressed = false;
+  
   /** Creates a new ActuatorCommand. */
-  public ActuatorCommand() {
+  public ActuatorCommand(ActuatorSubsystem actuation) {
     // Use addRequirements() here to declare subsystem dependencies.
+      this.actuation = actuation;
   }
 
   // Called when the command is initially scheduled.
@@ -18,7 +25,16 @@ public class ActuatorCommand extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    if(RobotContainer.getActuatorButton()){
+      actuation.setActAngle(170);
+      isActPressed = true; 
+    } else if (RobotContainer.getActuatorButton() && isActPressed){
+      actuation.setActAngle(0);
+    } else {
+      actuation.stopActuation(); //TODO: THIS REALLY NEEDS TO GET TESTED ASAP 
+    }
+  }
 
   // Called once the command ends or is interrupted.
   @Override

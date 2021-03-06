@@ -3,9 +3,12 @@
 // the WPILib BSD license file in the root directory of this project.
 // Setting up code for angle adustment of the shooter
 package frc.robot.subsystems;
+//library imports
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.PWM;
+// class imports
 import frc.robot.Constants;
 import frc.robot.Constants.ActuatorConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -33,15 +36,23 @@ public class ActuatorSubsystem extends SubsystemBase {
     servo.setAngle(angle);
 
   }
-
-  public double getActuatorAngle(){ //returns values of actuator angle and angle
-    return getAngle(actuatorServo, MAX_ANGLE_DEG);
+  private static void stopMotor(Servo servo){
+    stopMotor(servo);
   }
 
-  public double getAngle(Servo servo, double maxAngle){ //Retrieves servo angle for actuator
+  public double getActuatorAngle(){ //returns values of actuator angle
+    return getAngle(actuatorServo);
+  }
+
+  public double getAngle(Servo servo){ //Retrieves servo angle for actuator
     double angle = servo.getAngle();
     return angle; 
   }
+  public void stopActuation(){
+    stopMotor(actuatorServo);
+  }
+  
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
