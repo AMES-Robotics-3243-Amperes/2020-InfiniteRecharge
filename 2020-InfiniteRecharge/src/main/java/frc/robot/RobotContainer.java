@@ -265,8 +265,8 @@ public class RobotContainer {
 
   public static boolean configureBallLowShoot(){ return secondary.getRawButton(8); }
 
-  public static boolean getActuatorButton(){
-    return secondary.getRawButton(9);
+  public static double getActuatorButton(){
+    return secondary.getPOV();
   }
   
   /**
