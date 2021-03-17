@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.ClimbResetCommand;
 import frc.robot.commands.ClimberJoystickCommand;
 import frc.robot.commands.DumperCommand;
+import frc.robot.commands.ActuatorCommand;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -39,7 +40,7 @@ public class Robot extends TimedRobot {
   private Command m_limelightCommand;
   private Command m_shootCommand;
   private Command m_climbManualCommand;
-
+  private Command m_ActuatorCommand;
   private Command m_climbResetCommand;
 
   private static final String kLineAuto = "Auto Line";
@@ -152,6 +153,7 @@ public class Robot extends TimedRobot {
     m_shootCommand = m_robotContainer.getShootCommand();
     m_climbManualCommand = new ClimberJoystickCommand(m_robotContainer.m_climbArmsSubsystem, m_robotContainer.m_climbWinchSubsystem, m_robotContainer.secondary);
     m_dumpCommand = new DumperCommand();
+    m_ActuatorCommand = new ActuatorCommand();
  ////////////////////////////////////////////////////////////////// SCHEDULING COMMANDS ////////////////////////////////
     m_driveCommand.schedule();
     m_shootCommand.schedule();

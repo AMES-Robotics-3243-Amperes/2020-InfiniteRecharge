@@ -31,8 +31,10 @@ public class ActuatorCommand extends CommandBase {
       isActPressed = true; 
     } else if (RobotContainer.getActuatorButton() == 180){
       actuation.setActAngle(0);
+      isActPressed = true;
     } else {
-      actuation.stopActuation(); //TODO: THIS REALLY NEEDS TO GET TESTED ASAP 
+      actuation.stopActuation(); //TODO: THIS REALLY NEEDS TO GET TESTED ASAP
+      isActPressed = false;
     }
   }
 
