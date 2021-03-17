@@ -153,7 +153,7 @@ public class Robot extends TimedRobot {
     m_shootCommand = m_robotContainer.getShootCommand();
     m_climbManualCommand = new ClimberJoystickCommand(m_robotContainer.m_climbArmsSubsystem, m_robotContainer.m_climbWinchSubsystem, m_robotContainer.secondary);
     m_dumpCommand = new DumperCommand();
-    m_ActuatorCommand = new ActuatorCommand();
+    m_ActuatorCommand = new ActuatorCommand(m_robotContainer.m_ActuatorSubsystem);
  ////////////////////////////////////////////////////////////////// SCHEDULING COMMANDS ////////////////////////////////
     m_driveCommand.schedule();
     m_shootCommand.schedule();
