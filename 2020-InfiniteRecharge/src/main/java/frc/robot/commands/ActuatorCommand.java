@@ -11,7 +11,7 @@ import frc.robot.subsystems.ActuatorSubsystem;
 
 public class ActuatorCommand extends CommandBase {
   private ActuatorSubsystem actuation;
-  private static boolean isActPressed = false;
+  
   
   /** Creates a new ActuatorCommand. */
   public ActuatorCommand(ActuatorSubsystem actuation) {
@@ -28,13 +28,12 @@ public class ActuatorCommand extends CommandBase {
   public void execute() {
     if(RobotContainer.getActuatorButton() == 0){
       actuation.setActAngle(170);
-      isActPressed = true; 
+     
     } else if (RobotContainer.getActuatorButton() == 180){
       actuation.setActAngle(0);
-      isActPressed = true;
+      
     } else {
       actuation.stopActuation(); //TODO: THIS REALLY NEEDS TO GET TESTED ASAP
-      isActPressed = false;
     }
   }
 

@@ -69,7 +69,6 @@ public class Robot extends TimedRobot {
     m_dumpAutoCommand = m_robotContainer.getDumpAutoCommand();  // Dumps and then backs up
     m_lineAutoCommand = m_robotContainer.getDriveForwardCommand();  // Drives forward only
     m_doNothingCommand = m_robotContainer.getDoNothingCommand();  // Doesn't do anything for autonomous
-
     m_chooser.setDefaultOption(kShootAuto, m_shootAutoCommand); // This is the default auto
     m_chooser.addOption(kLineAuto, m_lineAutoCommand);
     m_chooser.addOption(kDumpAuto, m_dumpAutoCommand);
@@ -160,6 +159,7 @@ public class Robot extends TimedRobot {
     m_climbManualCommand.schedule();
     m_climbResetCommand.schedule(false);
     m_dumpCommand.schedule();
+    m_ActuatorCommand.schedule();
 
     CommandScheduler.getInstance().run();
 ////////////////////////////////////////////////////

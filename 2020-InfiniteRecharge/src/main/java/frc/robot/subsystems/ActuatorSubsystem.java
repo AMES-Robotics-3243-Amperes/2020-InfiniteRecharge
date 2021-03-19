@@ -37,7 +37,7 @@ public class ActuatorSubsystem extends SubsystemBase {
 
   }
   private static void stopMotor(Servo servo){
-    stopMotor(servo);
+    servo.stopMotor();
   }
 
   public double getActuatorAngle(){ //returns values of actuator angle
