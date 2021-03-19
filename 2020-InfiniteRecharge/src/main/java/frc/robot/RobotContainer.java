@@ -222,6 +222,9 @@ public class RobotContainer {
 
     return steerRight;
   }
+  public static boolean configureFastButton(){
+    return driver.getRawButton(1); // X-button
+  }
   /**ConfigurePov*/
   //public static double configurePovHoriz(boolean isHoriPressed){
     // Attempting to create a method to use POV pad like ordinary buttons
@@ -265,8 +268,11 @@ public class RobotContainer {
 
   public static boolean configureBallLowShoot(){ return secondary.getRawButton(8); }
 
-  public static double getActuatorButton(){
-    return secondary.getPOV();
+  public static boolean actuatorExtend(){
+    return secondary.getRawButton(9);
+  }
+  public static boolean actuatorRetract(){
+    return secondary.getRawButton(10);
   }
   
   /**

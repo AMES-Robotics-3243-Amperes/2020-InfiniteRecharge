@@ -126,12 +126,12 @@ public class DriveTrainSubSystem extends SubsystemBase {
     return rightSparkEncode;
   }
 
-  public static void tankDrive(double speedL, double speedR, boolean isTurbo, boolean isSlow)
+  public static void tankDrive(double speedL, double speedR, boolean forwardFast, boolean isTurbo, boolean isSlow)
   {
-    tankDrive(speedL, speedR, isTurbo, isSlow, false);
+    tankDrive(speedL, speedR, forwardFast, isTurbo, isSlow, false);
   }
-
-  public static void tankDrive(double varLeft, double varRight, boolean isTurbo, boolean isSlow, boolean shouldSmoothDeceleration) {
+// varLeft = configureDriveLeft(); varRight = configureDriveRight(); forwardFast = configureFastButton(); 
+  public static void tankDrive(double varLeft, double varRight, boolean forwardFast, boolean isTurbo, boolean isSlow, boolean shouldSmoothDeceleration) {
     double dTime = Timer.getFPGATimestamp() - timeAtLastTankDrive; // Drive time
     timeAtLastTankDrive = Timer.getFPGATimestamp(); // Timer.getFPGATTimestamp returns the system's clock time in seconds
 
@@ -149,6 +149,9 @@ public class DriveTrainSubSystem extends SubsystemBase {
       speedMulti = 1.5;
     else if(isSlow)
       speedMulti = 0.33;
+    else if(forwardFast) // x button makes it move forward at 0.675 speed. 
+    leftVector = 0.675;
+    rightVector = 0.675;
 
     m_rightSide.setSetpoint(rightVector * speedMulti);
     m_leftSide.setSetpoint(-leftVector * speedMulti);
@@ -172,7 +175,7 @@ public class DriveTrainSubSystem extends SubsystemBase {
     return rightSparkEncode.getPosition();
   }
 
-  public static void setPosition(double leftSet, double rightSet) {
+  public static void setPosition(double leftSet, double rightSet) { // Encoder method
     double motorSpeedLeft;
     double motorSpeedRight;
 

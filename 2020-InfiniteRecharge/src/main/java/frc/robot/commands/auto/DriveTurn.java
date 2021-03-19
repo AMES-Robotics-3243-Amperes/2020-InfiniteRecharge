@@ -32,7 +32,7 @@ public class DriveTurn extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    DriveTrainSubSystem.tankDrive(0.0, 0.0, false, false);
+    DriveTrainSubSystem.tankDrive(0.0, 0.0, false, false, false);
   }
 
   // Returns true when the command should end.

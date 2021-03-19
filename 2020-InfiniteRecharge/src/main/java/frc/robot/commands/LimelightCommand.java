@@ -51,13 +51,13 @@ public class LimelightCommand extends CommandBase {
       SmartDashboard.putNumber("Steer", steer);
       SmartDashboard.putNumber("Dist", dist);
 
-      DriveTrainSubSystem.tankDrive(var, var2, false, false);
+      DriveTrainSubSystem.tankDrive(var, var2, false, false, false);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    DriveTrainSubSystem.tankDrive(0, 0, false, false);
+    DriveTrainSubSystem.tankDrive(0, 0, false, false, false);
   }
 
   // Returns true when the command should end.

@@ -26,10 +26,10 @@ public class ActuatorCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(RobotContainer.getActuatorButton() == 0){
+    if(RobotContainer.actuatorExtend()){
       actuation.setActAngle(170);
      
-    } else if (RobotContainer.getActuatorButton() == 180){
+    } else if (RobotContainer.actuatorRetract()){
       actuation.setActAngle(0);
       
     } else {
