@@ -25,7 +25,7 @@ public class ActuatorSubsystem extends SubsystemBase {
   public ActuatorSubsystem() { //  actuator constructor
     actuatorServo = new Servo(ActuatorConstants.actuatorConnectorOne); 
     actuatorServoTwo = new Servo(ActuatorConstants.actuatorConnectorTwo);
-    setActAngle(MIN_ANGLE_DEG);
+    //setActAngle(MIN_ANGLE_DEG);
   }
 
 
