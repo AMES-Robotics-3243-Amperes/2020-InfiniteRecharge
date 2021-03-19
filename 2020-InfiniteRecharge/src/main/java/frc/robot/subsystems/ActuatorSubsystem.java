@@ -17,23 +17,27 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class ActuatorSubsystem extends SubsystemBase {
   /** Creates a new ActuatorSubsystem. */
   private static Servo actuatorServo;
+  private static Servo actuatorServoTwo;
   //private static servoBallAdj instance = null;
   private static final double MIN_ANGLE_DEG = 0.0;
   private static final double MAX_ANGLE_DEG = 100;
   private static final boolean inverted = false; //Honestly not sure what I'm doing here...
   public ActuatorSubsystem() { // Le actuator constructor
     actuatorServo = new Servo(frc.robot.Constants.ActuatorConstants.actuatorConnectorOne); 
+    actuatorServoTwo = new Servo(ActuatorConstants.actuatorConnectorTwo);
     setActAngle(MIN_ANGLE_DEG);
   }
 
 
   public void setActAngle(double angle){ //sets the angle for the actuator
     setAngle(angle, actuatorServo);
+    setAngle(angle, actuatorServoTwo);
   }
 
 
   private static void setAngle(double angle, Servo servo){ //plugs in values from setActAngle
     servo.setAngle(angle);
+    
 
   }
   private static void stopMotor(Servo servo){
