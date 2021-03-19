@@ -22,8 +22,8 @@ public class ActuatorSubsystem extends SubsystemBase {
   private static final double MIN_ANGLE_DEG = 0.0;
   private static final double MAX_ANGLE_DEG = 100;
   private static final boolean inverted = false; //Honestly not sure what I'm doing here...
-  public ActuatorSubsystem() { // Le actuator constructor
-    actuatorServo = new Servo(frc.robot.Constants.ActuatorConstants.actuatorConnectorOne); 
+  public ActuatorSubsystem() { //  actuator constructor
+    actuatorServo = new Servo(ActuatorConstants.actuatorConnectorOne); 
     actuatorServoTwo = new Servo(ActuatorConstants.actuatorConnectorTwo);
     setActAngle(MIN_ANGLE_DEG);
   }
@@ -46,6 +46,7 @@ public class ActuatorSubsystem extends SubsystemBase {
 
   public double getActuatorAngle(){ //returns values of actuator angle
     return getAngle(actuatorServo);
+    
   }
 
   public double getAngle(Servo servo){ //Retrieves servo angle for actuator
@@ -54,6 +55,7 @@ public class ActuatorSubsystem extends SubsystemBase {
   }
   public void stopActuation(){
     stopMotor(actuatorServo);
+    stopMotor(actuatorServoTwo);
   }
   
 
