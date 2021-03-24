@@ -2,6 +2,7 @@ package frc.robot.util;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants;
 
 public class JoystUtil
@@ -12,6 +13,7 @@ public class JoystUtil
    * <p>
    * Useful for trying to drive in a straight line.
    */
+
   public static double matchZone(double steer1, double steer2) {
     double matchZoneRadius = 0.09;
 
@@ -67,7 +69,7 @@ public class JoystUtil
     return scale * Math.abs(scale); // ^2, Keeps negative input negative
     //return Math.pow(scale, 3);
   }
-
+  
   
 
   public static double getAxisMagnitude(Joystick joyst, int xAxis)
