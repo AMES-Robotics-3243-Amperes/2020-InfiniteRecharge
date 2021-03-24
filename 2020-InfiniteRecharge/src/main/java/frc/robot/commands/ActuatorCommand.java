@@ -27,7 +27,7 @@ public class ActuatorCommand extends CommandBase {
   @Override
   public void execute() {
     if(RobotContainer.actuatorExtend()){
-      actuation.setActAngle(170);
+      actuation.setActAngle(180);
      
     } else if (RobotContainer.actuatorRetract()){
       actuation.setActAngle(0);
