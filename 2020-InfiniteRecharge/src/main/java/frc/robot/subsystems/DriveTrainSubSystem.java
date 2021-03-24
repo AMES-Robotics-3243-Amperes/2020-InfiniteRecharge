@@ -149,10 +149,10 @@ public class DriveTrainSubSystem extends SubsystemBase {
       speedMulti = 1.5;
     else if(isSlow)
       speedMulti = 0.33;
-    //else if(forwardFast) // x button makes it move forward at 0.675 speed. 
-    //leftVector = 0.675;
-    //rightVector = 0.675;
-
+    else if(forwardFast){ // x button makes it move forward at 0.675 speed. 
+    leftVector = 0.675;
+    rightVector = 0.675;
+    }
     m_rightSide.setSetpoint(rightVector * speedMulti);
     m_leftSide.setSetpoint(-leftVector * speedMulti);
   }

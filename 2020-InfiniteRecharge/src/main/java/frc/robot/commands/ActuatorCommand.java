@@ -32,6 +32,8 @@ public class ActuatorCommand extends CommandBase {
     } else if (RobotContainer.actuatorRetract()){
       actuation.setActAngle(0);
       
+    } else if(RobotContainer.actuatorSixty() == 90){
+      actuation.setActAngle(60);
     } else {
       actuation.stopActuation(); //TODO: THIS REALLY NEEDS TO GET TESTED ASAP
     }

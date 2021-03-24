@@ -274,6 +274,9 @@ public class RobotContainer {
   public static boolean actuatorRetract(){
     return secondary.getRawButton(10);
   }
+  public static double actuatorSixty(){
+    return secondary.getPOV(0);
+  }
   
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
