@@ -198,6 +198,8 @@ public class DriveTrainSubSystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    /*The periodic method within the Drive subsystem is responsible only for getting feedback from encoders that are then
+    pasted to smartDashboard.  */
 
     SmartDashboard.putNumber("Vector Left: ", leftVector);
     SmartDashboard.putNumber("Vector Right: ", rightVector);
