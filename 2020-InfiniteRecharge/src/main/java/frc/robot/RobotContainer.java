@@ -54,8 +54,8 @@ public class RobotContainer {
   public static ControlPanelSubsystem m_controlPanelSubsystem = new ControlPanelSubsystem();
   public final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
   public static DumperSubsystem m_dumperSubsystem = new DumperSubsystem();
-  public static ClimbArmsSubsystem m_climbArmsSubsystem = new ClimbArmsSubsystem();
-  public static ClimbWinchSubsystem m_climbWinchSubsystem = new ClimbWinchSubsystem();
+  //public static ClimbArmsSubsystem m_climbArmsSubsystem = new ClimbArmsSubsystem();
+  //public static ClimbWinchSubsystem m_climbWinchSubsystem = new ClimbWinchSubsystem();
   public static ActuatorSubsystem m_ActuatorSubsystem = new ActuatorSubsystem();
 
   //-------------------------------------- COMMANDS -----------------------------------------------
