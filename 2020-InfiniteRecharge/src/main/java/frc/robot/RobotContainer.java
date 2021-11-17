@@ -170,7 +170,7 @@ public class RobotContainer {
     // SECONDARY
     JoystickButton climberButton = new JoystickButton(secondary, 4);
     // Starts running ClimbCommand when button 4 is pressed
-    climberButton.whenPressed(m_climbCommand);
+    //climberButton.whenPressed(m_climbCommand);
     
     //JoystickButton winchButton = new JoystickButton(secondary, 1);
     //winchButton.cancelWhenPressed(m_climbCommand.extendWinch);
@@ -268,14 +268,14 @@ public class RobotContainer {
 
   public static boolean configureBallLowShoot(){ return secondary.getRawButton(8); }
 
-  //public static boolean actuatorExtend(){
-  //  return secondary.getRawButton(9);
+  public static boolean actuatorExtend(){
+   return secondary.getRawButton(9);
   }
-  //public static boolean actuatorRetract(){
-  //  return secondary.getRawButton(10);
+  public static boolean actuatorRetract(){
+   return secondary.getRawButton(10);
   }
-  //public static double actuatorSixty(){
-  //  return secondary.getPOV(0);
+  public static double actuatorSixty(){
+   return secondary.getPOV(0);
   }
   
   /**

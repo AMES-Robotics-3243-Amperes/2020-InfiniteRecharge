@@ -40,7 +40,7 @@ public class Robot extends TimedRobot {
   private Command m_limelightCommand;
   private Command m_shootCommand;
   //private Command m_climbManualCommand;
-  //private Command m_ActuatorCommand;
+  private Command m_ActuatorCommand;
   //private Command m_climbResetCommand;
 
   private static final String kLineAuto = "Auto Line";
