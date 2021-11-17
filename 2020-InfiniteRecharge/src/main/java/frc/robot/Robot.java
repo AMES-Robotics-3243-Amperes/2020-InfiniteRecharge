@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.ClimbResetCommand;
-import frc.robot.commands.ClimberJoystickCommand;
+//import frc.robot.commands.ClimbResetCommand;
+//import frc.robot.commands.ClimberJoystickCommand;
 import frc.robot.commands.DumperCommand;
 import frc.robot.commands.ActuatorCommand;
 
@@ -39,9 +39,9 @@ public class Robot extends TimedRobot {
   private Command m_dumpCommand;
   private Command m_limelightCommand;
   private Command m_shootCommand;
-  private Command m_climbManualCommand;
-  private Command m_ActuatorCommand;
-  private Command m_climbResetCommand;
+  //private Command m_climbManualCommand;
+  //private Command m_ActuatorCommand;
+  //private Command m_climbResetCommand;
 
   private static final String kLineAuto = "Auto Line";
   private static final String kShootAuto = "Auto Shoot";
@@ -63,7 +63,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
-    m_climbResetCommand = new ClimbResetCommand(m_robotContainer.m_climbArmsSubsystem, m_robotContainer.m_climbWinchSubsystem);
+    //m_climbResetCommand = new ClimbResetCommand(m_robotContainer.m_climbArmsSubsystem, m_robotContainer.m_climbWinchSubsystem);
 
     m_shootAutoCommand = m_robotContainer.getShootAutoCommand();  // Shoots and then backs up
     m_dumpAutoCommand = m_robotContainer.getDumpAutoCommand();  // Dumps and then backs up
@@ -127,7 +127,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.schedule(); // Schedule the autonomous command
     }
 
-    m_climbResetCommand.schedule(false);
+    //m_climbResetCommand.schedule(false);
   }
 
   /**
@@ -150,14 +150,14 @@ public class Robot extends TimedRobot {
     m_driveCommand = m_robotContainer.getDriveCommand(); // Autonomous
     m_limelightCommand = m_robotContainer.getLimelightCommand();
     m_shootCommand = m_robotContainer.getShootCommand();
-    m_climbManualCommand = new ClimberJoystickCommand(m_robotContainer.m_climbArmsSubsystem, m_robotContainer.m_climbWinchSubsystem, m_robotContainer.secondary);
+    //m_climbManualCommand = new ClimberJoystickCommand(m_robotContainer.m_climbArmsSubsystem, m_robotContainer.m_climbWinchSubsystem, m_robotContainer.secondary);
     m_dumpCommand = new DumperCommand();
     m_ActuatorCommand = new ActuatorCommand(m_robotContainer.m_ActuatorSubsystem);
  ////////////////////////////////////////////////////////////////// SCHEDULING COMMANDS ////////////////////////////////
     m_driveCommand.schedule();
     m_shootCommand.schedule();
-    m_climbManualCommand.schedule();
-    m_climbResetCommand.schedule(false);
+    //m_climbManualCommand.schedule();
+    //m_climbResetCommand.schedule(false);
     m_dumpCommand.schedule();
     m_ActuatorCommand.schedule();
 

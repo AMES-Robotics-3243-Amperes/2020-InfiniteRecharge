@@ -61,7 +61,7 @@ public class RobotContainer {
   //-------------------------------------- COMMANDS -----------------------------------------------
   public final static DriveTrainCommand m_robotDriveCommand = new DriveTrainCommand(m_robotDriveSubsystem);
   private final LimelightCommand m_limelightCommand = new LimelightCommand(m_robotDriveSubsystem, m_limelightSubsystem);
-  protected final ClimbCommand m_climbCommand = new ClimbCommand(m_climbWinchSubsystem, m_climbArmsSubsystem);
+  //protected final ClimbCommand m_climbCommand = new ClimbCommand(m_climbWinchSubsystem, m_climbArmsSubsystem);
   public static IntakeCommand m_IntakeCommand = new IntakeCommand(m_IntakeSubsystem);
   private static DumperCommand m_dumperCommand = new DumperCommand();
   private ShootCommand m_shootCommand = new ShootCommand(m_dumperSubsystem, m_limelightSubsystem);
@@ -172,10 +172,10 @@ public class RobotContainer {
     // Starts running ClimbCommand when button 4 is pressed
     climberButton.whenPressed(m_climbCommand);
     
-    JoystickButton winchButton = new JoystickButton(secondary, 1);
-    winchButton.cancelWhenPressed(m_climbCommand.extendWinch);
-    winchButton.cancelWhenPressed(m_climbCommand.retractWinch);
-    winchButton.cancelWhenPressed(m_climbCommand);
+    //JoystickButton winchButton = new JoystickButton(secondary, 1);
+    //winchButton.cancelWhenPressed(m_climbCommand.extendWinch);
+    //winchButton.cancelWhenPressed(m_climbCommand.retractWinch);
+    //winchButton.cancelWhenPressed(m_climbCommand);
   }
 
   public static int cameraPOV(){
@@ -268,14 +268,14 @@ public class RobotContainer {
 
   public static boolean configureBallLowShoot(){ return secondary.getRawButton(8); }
 
-  public static boolean actuatorExtend(){
-    return secondary.getRawButton(9);
+  //public static boolean actuatorExtend(){
+  //  return secondary.getRawButton(9);
   }
-  public static boolean actuatorRetract(){
-    return secondary.getRawButton(10);
+  //public static boolean actuatorRetract(){
+  //  return secondary.getRawButton(10);
   }
-  public static double actuatorSixty(){
-    return secondary.getPOV(0);
+  //public static double actuatorSixty(){
+  //  return secondary.getPOV(0);
   }
   
   /**

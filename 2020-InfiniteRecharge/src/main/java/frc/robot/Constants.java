@@ -60,6 +60,7 @@ public final class Constants {
         public static final double INCHES_TO_GROUND = 25 + (3/16);
     }
 
+    /*
     public static final class ClimbingConstant {
         public static final int kClimbAdjID = 10;   // CAN
         public static final int kClimbRID = 12; // CAN
@@ -72,7 +73,7 @@ public final class Constants {
         public static final int kRightLimitID = 1;  // DIO
 
     }
-
+    */
     public static final class ControlPanelConstants {
         public static final int kpanelSpinnerID = 5;
         public static final int mechanismLifterID = 10; // Servo ID Don't know yet
