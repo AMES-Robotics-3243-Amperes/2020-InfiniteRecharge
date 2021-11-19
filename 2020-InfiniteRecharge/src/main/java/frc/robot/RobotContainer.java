@@ -137,7 +137,7 @@ public class RobotContainer {
     JoystickButton triggerSpinner = new JoystickButton(driver, 1);
 
     JoystickButton selectColor = new JoystickButton(driver, 7);
-    JoystickButton colorBlue = new JoystickButton(driver, B_BLUE); // TODO: and selectColor
+    JoystickButton colorBlue = new JoystickButton(driver, B_BLUE);
     JoystickButton colorGreen = new JoystickButton(driver, B_GREEN);
     JoystickButton colorRed = new JoystickButton(driver, B_RED);
     JoystickButton colorYellow = new JoystickButton(driver, B_YELLOW);
