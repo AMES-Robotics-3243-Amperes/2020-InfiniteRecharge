@@ -22,9 +22,9 @@ public final class Constants {
 
     public static final class DriveConstants {
         public static final int kLTID = 4;  // CAN
-        public static final int kLBID = 2;  // CAN
-        public static final int kRTID = 1;  // CAN
-        public static final int kRBID = 3;  // CAN
+        public static final int kLBID = 3;  // CAN
+        public static final int kRTID = 2;  // CAN
+        public static final int kRBID = 1;  // CAN
 
         public static final int kPracLTID = 9;  // Victor PWM
         public static final int kPracLBID = 10; // Victor PWM
