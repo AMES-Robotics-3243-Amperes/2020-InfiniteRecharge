@@ -44,8 +44,12 @@ public class JoystUtil
     // and lowerBound, or between avgSteer and upperBound.
     double result = Math.signum(steer1 - avgSteer) * Math.max(0, Math.abs(steer1 - avgSteer) - r) + avgSteer
         + ((steer1 > avgSteer + r) ? upperBoundCorrector : lowerBoundCorrector);
-
+      
+      if (Constants.TEST_VERSION) {
+      SmartDashboard.putNumber("upperBoundConnector", result);
+    }
     return result;
+    
   }
 
   private static double clamp(double a, double min, double max) {
@@ -63,7 +67,7 @@ public class JoystUtil
     // This makes input increase smoothly, instead of jumping up slightly as soon as
     // 0.09 is passed. Math.Max = returns the greatest of two inputs
     return Math.signum(dead) * Math.max(0, Math.abs(dead * (1 + deadZoneRadius)) - deadZoneRadius);
-  }
+  } //DEADZONE HERE REMINDER FOR LATER
 
   public static double scaleZone(double scale) {
     return scale * Math.abs(scale); // ^2, Keeps negative input negative

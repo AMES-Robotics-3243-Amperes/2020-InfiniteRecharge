@@ -24,50 +24,63 @@ import frc.robot.commands.auto.DoNothingAuto;
 import frc.robot.commands.auto.DriveForward;
 import frc.robot.commands.auto.DumpCommandGroup;
 import frc.robot.commands.auto.ShootCommandGroup;
+
 //--------------------------------------------------------
 /**
- * This class is where the bulk of the robot should be declared.  Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
- * (including subsystems, commands, and button mappings) should be declared here.
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in
+ * the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of
+ * the robot
+ * (including subsystems, commands, and button mappings) should be declared
+ * here.
  */
 public class RobotContainer {
 
-  //Joysticks
+  // Joysticks
   public static Joystick driver = new Joystick(0);
   public static Joystick secondary = new Joystick(1);
   static double steerLeft;
   static double steerRight;
 
-  // This helps the code know if we're using the practice robot or the competition robot
-  // DO NOT CHANGE isPractice TO ANYTHING ELSE OTHER THAN false FOR THE COMPETITION
-  public static boolean isPractice = false; //Preferences.getInstance().getBoolean("Is Practice", false);
+  // This helps the code know if we're using the practice robot or the competition
+  // robot
+  // DO NOT CHANGE isPractice TO ANYTHING ELSE OTHER THAN false FOR THE
+  // COMPETITION
+  public static boolean isPractice = false; // Preferences.getInstance().getBoolean("Is Practice", false);
   static boolean toggleActOn = false;
   static boolean toggleActPressed = false;
-  
+
   static boolean toggleSerOn = false;
   static boolean toggleSerPressed = false;
 
-  //-------------------------------------- SUBSYSTEMS --------------------------------------------
+  // -------------------------------------- SUBSYSTEMS
+  // --------------------------------------------
   private static IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
   public static DriveTrainSubSystem m_robotDriveSubsystem = new DriveTrainSubSystem();
   public static ControlPanelSubsystem m_controlPanelSubsystem = new ControlPanelSubsystem();
   public final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
   public static DumperSubsystem m_dumperSubsystem = new DumperSubsystem();
-  //public static ClimbArmsSubsystem m_climbArmsSubsystem = new ClimbArmsSubsystem();
-  //public static ClimbWinchSubsystem m_climbWinchSubsystem = new ClimbWinchSubsystem();
+  // public static ClimbArmsSubsystem m_climbArmsSubsystem = new
+  // ClimbArmsSubsystem();
+  // public static ClimbWinchSubsystem m_climbWinchSubsystem = new
+  // ClimbWinchSubsystem();
   public static ActuatorSubsystem m_ActuatorSubsystem = new ActuatorSubsystem();
 
-  //-------------------------------------- COMMANDS -----------------------------------------------
+  // -------------------------------------- COMMANDS
+  // -----------------------------------------------
   public final static DriveTrainCommand m_robotDriveCommand = new DriveTrainCommand(m_robotDriveSubsystem);
   private final LimelightCommand m_limelightCommand = new LimelightCommand(m_robotDriveSubsystem, m_limelightSubsystem);
-  //protected final ClimbCommand m_climbCommand = new ClimbCommand(m_climbWinchSubsystem, m_climbArmsSubsystem);
+  // protected final ClimbCommand m_climbCommand = new
+  // ClimbCommand(m_climbWinchSubsystem, m_climbArmsSubsystem);
   public static IntakeCommand m_IntakeCommand = new IntakeCommand(m_IntakeSubsystem);
   private static DumperCommand m_dumperCommand = new DumperCommand();
   private ShootCommand m_shootCommand = new ShootCommand(m_dumperSubsystem, m_limelightSubsystem);
   private ActuatorCommand m_ActuatorCommand = new ActuatorCommand(m_ActuatorSubsystem);
 
-  //------------------------------------ CONTROL PANEL --------------------------------------------
+  // ------------------------------------ CONTROL PANEL
+  // --------------------------------------------
   private final ControlPanelCommand.TurnNumTimes turn4Times = new ControlPanelCommand.TurnNumTimes(
       m_controlPanelSubsystem, 3.5, 4);
   private final ControlPanelCommand.TurnToColor turnToColorBlue = new ControlPanelCommand.TurnToColor(
@@ -85,9 +98,11 @@ public class RobotContainer {
   private final ControlPanelCommand.Manual manualPanelRight = new ControlPanelCommand.Manual(m_controlPanelSubsystem,
       0.5);
 
-  //------------------------------------- AUTONOMOUS ----------------------------------------------------
-  
-  private ShootCommandGroup m_shootAuto = new ShootCommandGroup(m_robotDriveSubsystem, m_limelightSubsystem, m_dumperSubsystem);
+  // ------------------------------------- AUTONOMOUS
+  // ----------------------------------------------------
+
+  private ShootCommandGroup m_shootAuto = new ShootCommandGroup(m_robotDriveSubsystem, m_limelightSubsystem,
+      m_dumperSubsystem);
   private DumpCommandGroup m_dumpAuto = new DumpCommandGroup(m_dumperSubsystem);
   private DoNothingAuto m_doNothing = new DoNothingAuto();
   private DriveForward m_driveForward = new DriveForward(50);
@@ -112,7 +127,6 @@ public class RobotContainer {
     // This says that the robot we're on will pass in true (if it's the prac robot)
     // and false (if it's the comp robot)
     // Preferences.getInstance().putBoolean("Is Practice", true);
-
 
     // Setup Commands //////////////// I DON'T KNOW WHAT THIS IS JUNE 2020
     turnToColorBlue.addRequirements(m_controlPanelSubsystem); // Keep panel rotation cmds from running simultaneously
@@ -170,90 +184,103 @@ public class RobotContainer {
     // SECONDARY
     JoystickButton climberButton = new JoystickButton(secondary, 4);
     // Starts running ClimbCommand when button 4 is pressed
-    //climberButton.whenPressed(m_climbCommand);
-    
-    //JoystickButton winchButton = new JoystickButton(secondary, 1);
-    //winchButton.cancelWhenPressed(m_climbCommand.extendWinch);
-    //winchButton.cancelWhenPressed(m_climbCommand.retractWinch);
-    //winchButton.cancelWhenPressed(m_climbCommand);
+    // climberButton.whenPressed(m_climbCommand);
+
+    // JoystickButton winchButton = new JoystickButton(secondary, 1);
+    // winchButton.cancelWhenPressed(m_climbCommand.extendWinch);
+    // winchButton.cancelWhenPressed(m_climbCommand.retractWinch);
+    // winchButton.cancelWhenPressed(m_climbCommand);
   }
 
-  public static int cameraPOV(){
+  public static int cameraPOV() {
     return secondary.getPOV();
   }
 
-  // -------------------- PRIMARY: LIMELIGHT SECTION OF JOYSTICK ---------------------
+  // -------------------- PRIMARY: LIMELIGHT SECTION OF JOYSTICK
+  // ---------------------
   public static boolean driveLime() {
     return driver.getRawButton(6);
   }
 
-  // -------------------- PRIMARY: DRIVING SECTION OF JOYSTICK -----------------------
+  // -------------------- PRIMARY: DRIVING SECTION OF JOYSTICK
+  // -----------------------
   public static boolean getTurbo() { // GAS GAS GAS : feedback from controller method
     return driver.getRawButton(5);
   }
+
   private static boolean shouldDriveSlow = false; // initial speed (true from the motor perspective v v v)
+
   public static boolean getShouldDriveSlow() {
-    if(driver.getRawButtonPressed(7))
-      shouldDriveSlow = !shouldDriveSlow; // This method is called periodically, so toggling logic  will work here.
+    if (driver.getRawButtonPressed(7))
+      shouldDriveSlow = !shouldDriveSlow; // This method is called periodically, so toggling logic will work here.
     return shouldDriveSlow;
   }
 
-  public static double configureDriveLeft() { // This passes in the axis steering for robot drive ///////////////////////////////////////////////////////////
-    steerLeft = getJoystWithDead(true); // Should be the left axis       return driver.getRawButton(5);
-
+  public static double configureDriveLeft() { // This passes in the axis steering for robot drive
+                                              // ///////////////////////////////////////////////////////////
+    steerLeft = getJoystWithDead(true); // Should be the left axis return driver.getRawButton(5);
     double sr = getJoystWithDead(false);
 
     steerLeft = JoystUtil.matchZone(steerLeft, sr);
     if (Constants.TEST_VERSION)
       SmartDashboard.putNumber("Unscaled JoyL", steerLeft);
-    steerLeft =  Constants.DriveConstants.DRIVE_SLOW_SPEED * JoystUtil.scaleZone(steerLeft);
+    steerLeft = Constants.DriveConstants.DRIVE_SLOW_SPEED * JoystUtil.scaleZone(steerLeft);
 
     return steerLeft;
   }
 
+  // REMINDER FOR TOMOROW
   public static double configureDriveRight() {
     steerRight = getJoystWithDead(false);
-    double sl = getJoystWithDead(true); 
+    double sl = getJoystWithDead(true);
 
     steerRight = JoystUtil.matchZone(steerRight, sl);
     if (Constants.TEST_VERSION)
-      SmartDashboard.putNumber("Unscaled JoyR", steerRight);
-    steerRight = Constants.DriveConstants.DRIVE_SLOW_SPEED * JoystUtil.scaleZone(steerRight);
+      SmartDashboard.putNumber("Unscaled JoyR", steerRight); // Unscaled joystick output
+    steerRight = Constants.DriveConstants.DRIVE_SLOW_SPEED * JoystUtil.scaleZone(steerRight); // Scaling done here???
 
     return steerRight;
   }
-  public static boolean configureFastButton(){
+
+  public static boolean configureFastButton() {
     return driver.getRawButton(1); // X-button
   }
-  /**ConfigurePov*/
-  //public static double configurePovHoriz(boolean isHoriPressed){
-    // Attempting to create a method to use POV pad like ordinary buttons
+  /** ConfigurePov */
+  // public static double configurePovHoriz(boolean isHoriPressed){
+  // Attempting to create a method to use POV pad like ordinary buttons
 
+  // }
 
-  //}
-
-  /** Gets a joystick value, with dead zone applied. */
-  private static double  getJoystWithDead(boolean isLeft) {
-    // Silas: trying using the amount the stick is pressed in any direction times the sign of the vertical axis.
-    //     Is more intuitive, and may help with perceived stick sensitivity issues.
-    double steer = isLeft ? JoystUtil.getAxisMagnitude(driver, 0) * Math.signum(driver.getRawAxis(1)) // Checking if steer signum: 0 | 1.0 | -1.0
-      : JoystUtil.getAxisMagnitude(driver, 2) * Math.signum(driver.getRawAxis(3));
-    steer = JoystUtil.deadZone(steer); // value of double steer is plugged into deadZone, where the final steer output is returned
+  /** Gets a joystick value, with dead zone applied. */ // DEADZONE JOYSTICK REMINDER//
+  private static double getJoystWithDead(boolean isLeft) {
+    // Silas: trying using the amount the stick is pressed in any direction times
+    // the sign of the vertical axis.
+    // Is more intuitive, and may help with perceived stick sensitivity issues.
+    double steer = isLeft ? JoystUtil.getAxisMagnitude(driver, 0) * Math.signum(driver.getRawAxis(1)) // Checking if
+                                                                                                      // steer signum: 0
+                                                                                                      // | 1.0 | -1.0
+        : JoystUtil.getAxisMagnitude(driver, 2) * Math.signum(driver.getRawAxis(3));
+    steer = JoystUtil.deadZone(steer); // value of double steer is plugged into deadZone, where the final steer output
+                                       // is returned
     return steer;
   }
-  /** Method below returns signum for POV**/
-  //private static double getPovNums(boolean isHoriPressed){ // TO BE DONE. RIGHT NOW JUST GET THE SHOOTER DONE.
-   // double Pov = isHoriPressed ? JoystUtil.getPOV(secondary, 5) * Math.signum(secondary.getPOV())
- // }
+
+  /** Method below returns signum for POV **/
+  // private static double getPovNums(boolean isHoriPressed){ // TO BE DONE. RIGHT
+  // NOW JUST GET THE SHOOTER DONE.
+  // double Pov = isHoriPressed ? JoystUtil.getPOV(secondary, 5) *
+  // Math.signum(secondary.getPOV())
+  // }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////
-  // -----------------                SECONDARY: INTAKE SECTION OF JOYSTICK -------------
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////
+  // ----------------- SECONDARY: INTAKE SECTION OF JOYSTICK -------------
   public static boolean configureIndexShaft() {
     return secondary.getRawButton(3);
   }
 
-  // ----------------- SECONDARY: SHOOTER / INDEX SECTION OF JOYSTICK --------------------
+  // ----------------- SECONDARY: SHOOTER / INDEX SECTION OF JOYSTICK
+  // --------------------
   public static boolean configureBallCollect() {
     return secondary.getRawButton(7);
   }
@@ -262,35 +289,44 @@ public class RobotContainer {
     return secondary.getRawButton(5);
   }
 
-  public static boolean configureBallHighShoot(){ return secondary.getRawButton(6); }
-
-  public static boolean configureBallMedShoot(){return secondary.getRawButton(1); }
-
-  public static boolean configureBallLowShoot(){ return secondary.getRawButton(8); }
-
-  public static boolean actuatorExtend(){
-   return secondary.getRawButton(9);
+  public static boolean configureBallHighShoot() {
+    return secondary.getRawButton(6);
   }
-  public static boolean actuatorRetract(){
-   return secondary.getRawButton(10);
+
+  public static boolean configureBallMedShoot() {
+    return secondary.getRawButton(1);
   }
-  public static double actuatorSixty(){
-   return secondary.getPOV(0);
+
+  public static boolean configureBallLowShoot() {
+    return secondary.getRawButton(8);
   }
-  
+
+  public static boolean actuatorExtend() {
+    return secondary.getRawButton(9);
+  }
+
+  public static boolean actuatorRetract() {
+    return secondary.getRawButton(10);
+  }
+
+  public static double actuatorSixty() {
+    return secondary.getPOV(0);
+  }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
 
-  // ----------------------------- AUTONOMOUS COMMANDS ----------------------------
+  // ----------------------------- AUTONOMOUS COMMANDS
+  // ----------------------------
 
-  public Command getShootAutoCommand(){
+  public Command getShootAutoCommand() {
     return m_shootAuto;
   }
 
-  public Command getDumpAutoCommand(){
+  public Command getDumpAutoCommand() {
     return m_dumpAuto;
   }
 
@@ -298,29 +334,31 @@ public class RobotContainer {
     return m_doNothing;
   }
 
-  public Command getDriveForwardCommand(){
+  public Command getDriveForwardCommand() {
     return m_driveForward;
   }
 
-  // ------------------------------------ DRIVING ---------------------------------------
+  // ------------------------------------ DRIVING
+  // ---------------------------------------
 
   public static Command getDriveCommand() { // for auto driving
 
     return m_robotDriveCommand;
-}
+  }
 
-public Command getLimelightCommand(){
+  public Command getLimelightCommand() {
 
-  return m_limelightCommand;
-}
+    return m_limelightCommand;
+  }
 
-//-------------- BALL COLLECTION / SHOOTER / SECONDARY FUNCTIONS -----------------
+  // -------------- BALL COLLECTION / SHOOTER / SECONDARY FUNCTIONS
+  // -----------------
 
-  public Command getShootCommand(){
+  public Command getShootCommand() {
     return m_shootCommand;
   }
- 
-  public Command getIntakeCommand(){
+
+  public Command getIntakeCommand() {
 
     return m_IntakeCommand;
   }

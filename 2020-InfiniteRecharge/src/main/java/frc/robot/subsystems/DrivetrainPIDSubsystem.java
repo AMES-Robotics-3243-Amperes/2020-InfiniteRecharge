@@ -23,16 +23,17 @@ public class DrivetrainPIDSubsystem extends PIDSubsystem {
   double ki;
   double kd;
 
+  // PID LOOP FOR DRIVE TRAIN
   public DrivetrainPIDSubsystem(SpeedControllerGroup group, CANEncoder encoderSpark, Encoder encoderVictor) {
     super(
         // The PIDController used by the subsystem
         new PIDController(0.75, 1e-6, 1e-4));
-      
+
     m_group = group;
     m_encoderSpark = encoderSpark;
     m_encoderVictor = encoderVictor;
 
-    if(m_encoderVictor != null){
+    if (m_encoderVictor != null) {
       m_encoderVictor.setDistancePerPulse(1.0 / 76.25);
     }
   }
@@ -46,13 +47,12 @@ public class DrivetrainPIDSubsystem extends PIDSubsystem {
   @Override
   public double getMeasurement() {
     // Return the process variable measurement here
-    if(m_encoderSpark != null){
-      return m_encoderSpark.getVelocity()/5676; // Free speed is 5676
-    }else if(m_encoderVictor != null){
-      return m_encoderVictor.getRate()/1486.8;  // 5310 (free spd of cim) multiplied by gear ratio of 14/50
-    } else{
+    if (m_encoderSpark != null) {
+      return m_encoderSpark.getVelocity() / 5676; // Free speed is 5676
+    } else if (m_encoderVictor != null) {
+      return m_encoderVictor.getRate() / 1486.8; // 5310 (free spd of cim) multiplied by gear ratio of 14/50
+    } else {
       return 0;
     }
   }
 }
-
