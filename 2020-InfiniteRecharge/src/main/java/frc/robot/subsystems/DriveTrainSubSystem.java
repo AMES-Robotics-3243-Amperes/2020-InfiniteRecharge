@@ -46,8 +46,9 @@ public class DriveTrainSubSystem extends SubsystemBase {
   static boolean testBot = false;
   static double leftVector = 0.0; // deci multiple of 0.11111 - 0.99999
   static double rightVector = 0.0;
-  static double timeAtLastTankDrive = -1;
-  static final double SMOOTH_DECELERATION_COEFF = 5;
+  static double timeAtLastTankDrive = 2;
+  static final double SMOOTH_DECELERATION_COEFF = 2.5; //Smooth Deceleration HERE
+  //! Mess around with this during robotics so the smooth deceleration is actually smooth :)
 
   // Encoder data objects
   private static DrivetrainPIDSubsystem m_rightSide;
