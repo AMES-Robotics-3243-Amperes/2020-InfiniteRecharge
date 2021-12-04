@@ -50,7 +50,7 @@ public class IntakeSubsystem extends SubsystemBase {
       // This makes sense: if the output is less than the constant, it will continue to extend
       if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentExtended) {
         currentRetracted = false; 
-        intakeActuator.set(0.65);
+        intakeActuator.set(-0.65);
         //!Check this value if intake does not work correctly ^^
         //? Not yet tested
         cameraIntake.setAngle(40);
@@ -66,7 +66,7 @@ public class IntakeSubsystem extends SubsystemBase {
     iLimitSwitchhit = indexerLimitSwitch.get();
     if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentRetracted  /*&& !iLimitSwitchhit*/ ) { //? Add if limit switch isnt pressed  
       currentExtended = false;
-      intakeActuator.set(-0.65);
+      intakeActuator.set(0.65);
       //!Check this value if intake does not work correctly ^^
       //* Just reversed the twi 0.65 values because I think that the intake is reversed -Zain K
       cameraIntake.setAngle(100);
