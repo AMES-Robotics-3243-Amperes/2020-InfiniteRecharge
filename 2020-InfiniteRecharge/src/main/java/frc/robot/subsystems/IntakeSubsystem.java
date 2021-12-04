@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // Wpilib imports
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import edu.wpi.first.wpilibj.DigitalInput;
+
 
 // SparkMAX imports
 import com.revrobotics.CANSparkMax;
@@ -29,9 +31,11 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public static boolean currentExtended = false;
   public static boolean currentRetracted = true;
+  public static boolean iLimitSwitchhit = true;
   public boolean shouldSpin = false;
   static final double CURRENT_CONST = 19.0;
   private double lastTimeWasExtended = -100;
+  private DigitalInput indexerLimitSwitch = new DigitalInput(Constants.BallCollectConstants.kBallCollectorRetractedID);
 
   public IntakeSubsystem() {
     intakeShaft = new CANSparkMax(Constants.BallCollectConstants.kSpinID, MotorType.kBrushless);
@@ -46,7 +50,9 @@ public class IntakeSubsystem extends SubsystemBase {
       // This makes sense: if the output is less than the constant, it will continue to extend
       if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentExtended) {
         currentRetracted = false; 
-        intakeActuator.set(-0.65);
+        intakeActuator.set(0.65);
+        //!Check this value if intake does not work correctly ^^
+        //? Not yet tested
         cameraIntake.setAngle(40);
       } else {
         intakeActuator.set(0.0);
@@ -57,9 +63,12 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void setRetract(){
     
-    if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentRetracted) { 
+    iLimitSwitchhit = indexerLimitSwitch.get();
+    if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentRetracted /* && !iLimitSwitchhit */) { //? Add if limit switch isnt pressed  
       currentExtended = false;
-      intakeActuator.set(0.65);
+      intakeActuator.set(-0.65);
+      //!Check this value if intake does not work correctly ^^
+      //* Just reversed the twi 0.65 values because I think that the intake is reversed -Zain K
       cameraIntake.setAngle(100);
     } else{
       currentRetracted = true;
@@ -72,6 +81,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("intake amp draw", intakeActuator.getOutputCurrent());
     SmartDashboard.putNumber("Camera Angle", cameraIntake.getAngle());
+    SmartDashboard.putBoolean("Index Limit Switch Hit?", iLimitSwitchhit);
+    SmartDashboard.putBoolean("Index Limit Switch True value", indexerLimitSwitch.get());
 
     if(currentExtended)
       lastTimeWasExtended = Timer.getFPGATimestamp();

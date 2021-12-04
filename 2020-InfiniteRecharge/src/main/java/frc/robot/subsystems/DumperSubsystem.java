@@ -29,6 +29,7 @@ public class DumperSubsystem extends SubsystemBase {
   static CANPIDController pidCollect;
   static CANPIDController pidShoot;
 
+  //! Maybe change this???
   private static final double ballRotation = 2; // We don't know the correct rotations yet
   private double rotateStop = 0.0;
   private final double ROTATE_LIMIT = 200.0; // Is this in RPM?
@@ -89,7 +90,7 @@ public class DumperSubsystem extends SubsystemBase {
       dumpCollect.stopMotor();
     }
 
-  }
+  }//! Mess around with this if you want intake belts to not be as slow
 
   public void setDumpForward(boolean auto) {
     if( ! auto){

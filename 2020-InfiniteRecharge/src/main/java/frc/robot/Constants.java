@@ -82,6 +82,9 @@ public final class Constants {
         public static final int kSpinID = 7;    // CAN
         public static final int kActuateID = 6; // CAN
         public static final int kCameraServo = 0;   // PWM
+
+        //Limit Switches
+        public static final int kBallCollectorRetractedID = 5; //DIO
     }
 
 }

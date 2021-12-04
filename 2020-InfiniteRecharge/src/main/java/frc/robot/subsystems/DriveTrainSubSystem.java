@@ -26,6 +26,8 @@ import frc.robot.subsystems.DrivetrainPIDSubsystem;
 import frc.robot.util.JoystUtil;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import edu.wpi.first.wpilibj.DigitalInput;
+
 
 public class DriveTrainSubSystem extends SubsystemBase {
 
@@ -49,6 +51,7 @@ public class DriveTrainSubSystem extends SubsystemBase {
   static double timeAtLastTankDrive = -1;
   static final double SMOOTH_DECELERATION_COEFF = 2.5;
   //! Smooth Deceleration coeff change here
+  //? Maybe experiment with it some more to fine tune it, it's not how I like it atm
 
   // Encoder data objects
   private static DrivetrainPIDSubsystem m_rightSide;
