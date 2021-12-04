@@ -31,9 +31,9 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public static boolean currentExtended = false;
   public static boolean currentRetracted = true;
-  public static boolean iLimitSwitchhit = true;
+  public static boolean iLimitSwitchhit;
   public boolean shouldSpin = false;
-  static final double CURRENT_CONST = 19.0;
+  static final double CURRENT_CONST = 19.0; // prev 19
   private double lastTimeWasExtended = -100;
   private DigitalInput indexerLimitSwitch = new DigitalInput(Constants.BallCollectConstants.kBallCollectorRetractedID);
 
@@ -64,7 +64,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public void setRetract(){
     
     iLimitSwitchhit = indexerLimitSwitch.get();
-    if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentRetracted /* && !iLimitSwitchhit */) { //? Add if limit switch isnt pressed  
+    if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentRetracted  /*&& !iLimitSwitchhit*/ ) { //? Add if limit switch isnt pressed  
       currentExtended = false;
       intakeActuator.set(-0.65);
       //!Check this value if intake does not work correctly ^^

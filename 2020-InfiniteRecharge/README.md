@@ -19,3 +19,5 @@ Project is created with:
 ## TODO
 * We need to take out anything to do with climbing
 * We need to fine tune the intake to work
+* Change shooter slow speed
+* Change intake belts from set point to velocity
