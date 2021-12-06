@@ -63,10 +63,10 @@ public class DriveTrainSubSystem extends SubsystemBase {
     // Checks to see if the robot is the practice robot or competition robot
     if (RobotContainer.isPractice) { // If practice robot, use VictorSPX motors and encoders
 
-      motorLT = new WPI_VictorSPX(Constants.DriveConstants.kPracLTID);
+      /* motorLT = new WPI_VictorSPX(Constants.DriveConstants.kPracLTID);
       motorLB = new WPI_VictorSPX(Constants.DriveConstants.kPracLBID);
       motorRT = new WPI_VictorSPX(Constants.DriveConstants.kPracRTID);
-      motorRB = new WPI_VictorSPX(Constants.DriveConstants.kPracRBID);
+      motorRB = new WPI_VictorSPX(Constants.DriveConstants.kPracRBID); */
 
       leftVictorEncode = new Encoder(Constants.DriveConstants.kPracLEncode3, Constants.DriveConstants.kPracLEncode4,
           false, EncodingType.k4X); // The external encoder on the practice robot

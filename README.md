@@ -5,6 +5,7 @@
 * [General info](#general-info)
 * [Technologies](#technologies)
 * [TODO](#TODO)
+* [Libraries](#Libraries)
 
 ## General info
 This is the official code for the official 2020 season robot now named as the shooter bot
@@ -25,3 +26,8 @@ Project is created with:
 * Clean up the code if we have the time 
 * Indexer is still acting weird
 * I think that i fixed the intake but double check
+
+## Libraries
+* http://revrobotics.com/content/sw/color-sensor-v3/sdk/REVColorSensorV3.json 
+* http://devsite.ctr-electronics.com/maven/release/com/ctre/phoenix/Phoenix-latest.json 
+* https://www.revrobotics.com/content/sw/max/sdk/REVRobotics.json  
