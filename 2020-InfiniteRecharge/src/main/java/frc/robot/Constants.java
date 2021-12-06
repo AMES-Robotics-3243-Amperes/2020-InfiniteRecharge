@@ -41,7 +41,7 @@ public final class Constants {
     public static final class IndexerConstants {
         public static final int kIndexCollectID = 11;   // CAN
         public static final int kIndexShootID = 8;  // CAN
-        public static final double BELT_SPEED = 0.75;
+        public static final double BELT_SPEED = 0.75; //* Not even being used
     }
     public static final class ActuatorConstants{
         public static final int actuatorConnectorOne = 1;
@@ -56,6 +56,7 @@ public final class Constants {
     public static class LimelightConstants {
         public static final double PITCH_DEGREES = 9.3;
         // Measurements on limelight lens, 2 measurements each gave the same distance
+        //?Change this for preseaon if we want
         public static final double INCHES_TO_FRAME_FRONT = 9 + (9/16);
         public static final double INCHES_TO_GROUND = 25 + (3/16);
     }

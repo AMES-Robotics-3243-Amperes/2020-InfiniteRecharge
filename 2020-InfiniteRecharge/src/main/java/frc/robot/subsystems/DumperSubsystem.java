@@ -30,7 +30,7 @@ public class DumperSubsystem extends SubsystemBase {
   static CANPIDController pidShoot;
 
   //! Maybe change this???
-  private static final double ballRotation = 2; // We don't know the correct rotations yet
+  private static final double ballRotation = 10; // We don't know the correct rotations yet
   private double rotateStop = 0.0;
   private final double ROTATE_LIMIT = 200.0; // Is this in RPM?
 
@@ -46,6 +46,7 @@ public class DumperSubsystem extends SubsystemBase {
   /*
    * - Lower RPM for new goal (currently -5500) - needs to go into low goal,
    * rather than the high one - tune PID constants to correct oscillation -
+   ! Run the dumper with velocity instead of position
    */
   static double kpShoot = 6e-4; // PID constan
   double kiShoot = 0;
@@ -55,6 +56,11 @@ public class DumperSubsystem extends SubsystemBase {
   static final double autoPosition = 200;
   static final double encodeVelocity = -6500; // 5700 is max rpm. Negative to invert motor (Free Speed) RPM
   static final double encodeMedVelocity = -5000;
+
+  //Dumper speeds
+  static final double dumperSpeed = 10;
+  static final double dumperSpeedNoShoot = 11;
+
   final double lowRPM = -3500; //lowest speed
 
   public DumperSubsystem() {
@@ -79,6 +85,34 @@ public class DumperSubsystem extends SubsystemBase {
 
   }
 
+  //! New code for dumper here: 
+  //* Note: not tested yet
+  //? Change domp to dump when wanting to test!
+
+  public void setDompCollectSpeed(boolean shoot, boolean backwards) {
+    if (shoot && !backwards) {
+      dumpCollect.set(dumperSpeed);
+    } else if (backwards && !shoot) {
+      dumpCollect.set(dumperSpeedNoShoot);
+    } else {
+      dumpCollect.stopMotor();
+    }
+  }
+
+  public void setDompForward(boolean auto) {
+    if (!auto) {
+      dumpCollect.set(dumperSpeed);
+    } else {
+      pidCollect.setReference(autoPosition, ControlType.kPosition);
+    }
+  }
+
+  public void setDompBackward() {
+    dumpCollect.set(-dumperSpeed);
+  }
+
+  //! End of test code
+
   public void setDumpCollectSpeed(boolean shoot, boolean backwards) {
     if (shoot && !backwards) {
       encodePosition = encodeCollect.getPosition() + ballRotation;
@@ -90,7 +124,7 @@ public class DumperSubsystem extends SubsystemBase {
       dumpCollect.stopMotor();
     }
 
-  }//! Mess around with this if you want intake belts to not be as slow
+  }
 
   public void setDumpForward(boolean auto) {
     if( ! auto){

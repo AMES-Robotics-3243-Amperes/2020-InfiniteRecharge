@@ -31,7 +31,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public static boolean currentExtended = false;
   public static boolean currentRetracted = true;
-  public static boolean iLimitSwitchhit;
   public boolean shouldSpin = false;
   static final double CURRENT_CONST = 19.0; // prev 19
   private double lastTimeWasExtended = -100;
@@ -48,11 +47,9 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void setExtend(){
       // This makes sense: if the output is less than the constant, it will continue to extend
-      if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentExtended) {
+      if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentExtended /*&& indexerLimitSwitch.get() */) {
         currentRetracted = false; 
-        intakeActuator.set(-0.65);
-        //!Check this value if intake does not work correctly ^^
-        //? Not yet tested
+        intakeActuator.set(0.65);
         cameraIntake.setAngle(40);
       } else {
         intakeActuator.set(0.0);
@@ -63,12 +60,9 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void setRetract(){
     
-    iLimitSwitchhit = indexerLimitSwitch.get();
-    if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentRetracted  /*&& !iLimitSwitchhit*/ ) { //? Add if limit switch isnt pressed  
+    if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentRetracted  && !indexerLimitSwitch.get() ) { //? Maybe limit switches if current detection does not work 
       currentExtended = false;
-      intakeActuator.set(0.65);
-      //!Check this value if intake does not work correctly ^^
-      //* Just reversed the twi 0.65 values because I think that the intake is reversed -Zain K
+      intakeActuator.set(-0.65);
       cameraIntake.setAngle(100);
     } else{
       currentRetracted = true;
@@ -81,8 +75,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("intake amp draw", intakeActuator.getOutputCurrent());
     SmartDashboard.putNumber("Camera Angle", cameraIntake.getAngle());
-    SmartDashboard.putBoolean("Index Limit Switch Hit?", iLimitSwitchhit);
-    SmartDashboard.putBoolean("Index Limit Switch True value", indexerLimitSwitch.get());
+    SmartDashboard.putBoolean("Index Limit Switch True value", indexerLimitSwitch.get()); //* This var shows that I pressed the button
 
     if(currentExtended)
       lastTimeWasExtended = Timer.getFPGATimestamp();

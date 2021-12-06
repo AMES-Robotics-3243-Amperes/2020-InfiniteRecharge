@@ -20,4 +20,8 @@ Project is created with:
 * We need to take out anything to do with climbing
 * We need to fine tune the intake to work
 * Change shooter slow speed
-* Change intake belts from set point to velocity
+* Change intake belts from set point to velocity 
+* Change the deceleration coeff to what it was on the 2020botpreseason branch (wrong branch stuff)
+* Clean up the code if we have the time 
+* Indexer is still acting weird
+* I think that i fixed the intake but double check
