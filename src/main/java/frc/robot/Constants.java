@@ -86,6 +86,7 @@ public final class Constants {
 
         //Limit Switches
         public static final int kBallCollectorRetractedID = 5; //DIO
+        public static final int kBallCollectorExtendedID = 6; //DIO
     }
 
 }

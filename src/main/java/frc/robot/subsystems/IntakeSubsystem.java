@@ -34,7 +34,8 @@ public class IntakeSubsystem extends SubsystemBase {
   public boolean shouldSpin = false;
   static final double CURRENT_CONST = 19.0; // prev 19
   private double lastTimeWasExtended = -100;
-  private DigitalInput indexerLimitSwitch = new DigitalInput(Constants.BallCollectConstants.kBallCollectorRetractedID);
+  private DigitalInput indexerLimitSwitchRetracted = new DigitalInput(Constants.BallCollectConstants.kBallCollectorRetractedID);
+  private DigitalInput indexerLimitSwitchExtened = new DigitalInput(Constants.BallCollectConstants.kBallCollectorExtendedID);
 
   public IntakeSubsystem() {
     intakeShaft = new CANSparkMax(Constants.BallCollectConstants.kSpinID, MotorType.kBrushless);
@@ -47,7 +48,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void setExtend(){
       // This makes sense: if the output is less than the constant, it will continue to extend
-      if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentExtended /*&& indexerLimitSwitch.get() */) {
+      if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentExtended && indexerLimitSwitchExtened.get()) {
         currentRetracted = false; 
         intakeActuator.set(0.65);
         cameraIntake.setAngle(40);
@@ -60,7 +61,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void setRetract(){
     
-    if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentRetracted  && !indexerLimitSwitch.get() ) { //? Maybe limit switches if current detection does not work 
+    if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentRetracted  && !indexerLimitSwitchRetracted.get() ) { //? Maybe limit switches if current detection does not work 
       currentExtended = false;
       intakeActuator.set(-0.65);
       cameraIntake.setAngle(100);
@@ -75,7 +76,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("intake amp draw", intakeActuator.getOutputCurrent());
     SmartDashboard.putNumber("Camera Angle", cameraIntake.getAngle());
-    SmartDashboard.putBoolean("Index Limit Switch True value", indexerLimitSwitch.get()); //* This var shows that I pressed the button
+    SmartDashboard.putBoolean("Index Limit Switch True value", indexerLimitSwitchRetracted.get()); //* This var shows that I pressed the button
 
     if(currentExtended)
       lastTimeWasExtended = Timer.getFPGATimestamp();
