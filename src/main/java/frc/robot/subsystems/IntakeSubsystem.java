@@ -21,6 +21,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+//TODO: Check spark max brushless motor settings in intake shaft
+
 public class IntakeSubsystem extends SubsystemBase {
 
   static CANSparkMax intakeShaft;
@@ -42,7 +44,8 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeActuator = new CANSparkMax(Constants.BallCollectConstants.kActuateID, MotorType.kBrushed);
     cameraIntake = new Servo(Constants.BallCollectConstants.kCameraServo);
     
-    intakeShaft.setSmartCurrentLimit(39);
+    //intakeShaft.setSmartCurrentLimit(30);
+    intakeShaft.setSmartCurrentLimit(20, 38, 5700); //First value: stall current limit; Second value: current limit; Third value: max rpm
     intakeActuator.setSmartCurrentLimit(28);
   }
 
@@ -50,7 +53,7 @@ public class IntakeSubsystem extends SubsystemBase {
       // This makes sense: if the output is less than the constant, it will continue to extend
       if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentExtended && !indexerLimitSwitchExtened.get()) {
         currentRetracted = false; 
-        intakeActuator.set(0.65);
+        intakeActuator.set(0.45);
         cameraIntake.setAngle(40);
       } else {
         intakeActuator.set(0.0);
@@ -78,12 +81,17 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Camera Angle", cameraIntake.getAngle());
     SmartDashboard.putBoolean("currentlyExtendedLimitSwitch", indexerLimitSwitchExtened.get());
     SmartDashboard.putBoolean("currentlyRetractedLimitSwitch", indexerLimitSwitchRetracted.get());
+    SmartDashboard.putNumber("Intake Shaft amp draw", intakeShaft.getOutputCurrent());
+    SmartDashboard.putNumber("True Intake Shaft amp draw", intakeShaft.getAppliedOutput());
+    SmartDashboard.putNumber("Intake Shaft faults", intakeShaft.getStickyFaults());
+
 
     if(currentExtended)
       lastTimeWasExtended = Timer.getFPGATimestamp();
 
     if(Timer.getFPGATimestamp() < lastTimeWasExtended+1)
       intakeShaft.set(-0.6); // Needs help moving when intake is out; prev 0.6
+      
     else
       intakeShaft.stopMotor();
   }
