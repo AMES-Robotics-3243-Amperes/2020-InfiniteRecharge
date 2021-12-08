@@ -53,10 +53,9 @@ public final class Constants {
         public static double highGoalHeightInches = 8*12 + 2 + (1/4);
     }
 
-    public static class LimelightConstants {
+    public static class LimelightConstants {//? Change this for preseaon if we want
         public static final double PITCH_DEGREES = 9.3;
         // Measurements on limelight lens, 2 measurements each gave the same distance
-        //?Change this for preseaon if we want
         public static final double INCHES_TO_FRAME_FRONT = 9 + (9/16);
         public static final double INCHES_TO_GROUND = 25 + (3/16);
     }

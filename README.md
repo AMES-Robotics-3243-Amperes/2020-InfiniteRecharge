@@ -18,16 +18,12 @@ Project is created with:
 * Magic
 	
 ## TODO
-* We need to take out anything to do with climbing
 * We need to fine tune the intake to work
 * Change shooter slow speed
-* Change intake belts from set point to velocity 
-* Change the deceleration coeff to what it was on the 2020botpreseason branch (wrong branch stuff)
-* Clean up the code if we have the time 
 * Indexer is still acting weird
-* I think that i fixed the intake but double check
 
 ## Libraries
+### If the libraries are not working make sure you have these libraries installed
 * http://revrobotics.com/content/sw/color-sensor-v3/sdk/REVColorSensorV3.json 
 * http://devsite.ctr-electronics.com/maven/release/com/ctre/phoenix/Phoenix-latest.json 
 * https://www.revrobotics.com/content/sw/max/sdk/REVRobotics.json  

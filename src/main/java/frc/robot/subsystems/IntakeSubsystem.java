@@ -42,13 +42,13 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeActuator = new CANSparkMax(Constants.BallCollectConstants.kActuateID, MotorType.kBrushed);
     cameraIntake = new Servo(Constants.BallCollectConstants.kCameraServo);
     
-    intakeShaft.setSmartCurrentLimit(30);
+    intakeShaft.setSmartCurrentLimit(39);
     intakeActuator.setSmartCurrentLimit(28);
   }
 
   public void setExtend(){
       // This makes sense: if the output is less than the constant, it will continue to extend
-      if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentExtended && indexerLimitSwitchExtened.get()) {
+      if (intakeActuator.getOutputCurrent() < CURRENT_CONST && !currentExtended && !indexerLimitSwitchExtened.get()) {
         currentRetracted = false; 
         intakeActuator.set(0.65);
         cameraIntake.setAngle(40);
@@ -76,17 +76,15 @@ public class IntakeSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("intake amp draw", intakeActuator.getOutputCurrent());
     SmartDashboard.putNumber("Camera Angle", cameraIntake.getAngle());
-    SmartDashboard.putBoolean("Index Limit Switch True value", indexerLimitSwitchRetracted.get()); //* This var shows that I pressed the button
+    SmartDashboard.putBoolean("currentlyExtendedLimitSwitch", indexerLimitSwitchExtened.get());
+    SmartDashboard.putBoolean("currentlyRetractedLimitSwitch", indexerLimitSwitchRetracted.get());
 
     if(currentExtended)
       lastTimeWasExtended = Timer.getFPGATimestamp();
 
     if(Timer.getFPGATimestamp() < lastTimeWasExtended+1)
-      intakeShaft.set(-0.5);
+      intakeShaft.set(-0.6); // Needs help moving when intake is out; prev 0.6
     else
       intakeShaft.stopMotor();
-
-      SmartDashboard.putBoolean("currentExtended", currentExtended);
-      SmartDashboard.putBoolean("currentRetracted", currentRetracted);
   }
 }
